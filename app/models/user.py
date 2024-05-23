@@ -1,7 +1,8 @@
+from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy.orm import relationship, backref
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -13,6 +14,15 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String, nullable=True)
+    created_at = db.Column(db.DateTime, nullable=True)
+    updated_at = db.Column(db.DateTime, nullable=True)
+
+    profile_images = db.relationship('ProfileImage', backref='user', lazy=True)
+    messages = db.relationship('Message', backref='user', lazy=True)
+    reactions = db.relationship('UserReaction', backref='user', lazy=True)
+    servers = db.relationship('ServerUser', backref='user', lazy=True)
+    direct_messages = db.relationship('DirectMessagesUser', backref='user', lazy=True)
 
     @property
     def password(self):
