@@ -89,7 +89,6 @@ class Message(db.Model):
     resource_id = db.Column(db.Integer, nullable=False)
     text_field = db.Column(db.String(240))
     image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
-    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
     reactions = db.relationship('Reaction', backref='message', lazy=True)
     message_images = db.relationship('MessageImage', backref='message', lazy=True)
 
