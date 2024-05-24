@@ -81,12 +81,23 @@ class Channel(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     messages = db.relationship('Message', backref='channel', lazy=True)
 
-class Message(db.Model):
-    __tablename__ = 'messages'
+class ChannelMessages(db.Model):
+    __tablename__ = 'channel_messages'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     resource_type = db.Column(db.String(52), nullable=False)
-    resource_id = db.Column(db.Integer, nullable=False)
+    channel_id = db.Column(db.Integer, nullable=False)
+    text_field = db.Column(db.String(240))
+    image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
+    reactions = db.relationship('Reaction', backref='message', lazy=True)
+    message_images = db.relationship('MessageImage', backref='message', lazy=True)
+
+class ChatRoomMessages(db.Model):
+    __tablename__ = 'chat_room_messages'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    resource_type = db.Column(db.String(52), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
     text_field = db.Column(db.String(240))
     image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
     reactions = db.relationship('Reaction', backref='message', lazy=True)
@@ -112,14 +123,14 @@ class UserReaction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     reaction_id = db.Column(db.Integer, db.ForeignKey('reactions.id'), nullable=False)
 
-class DirectMessage(db.Model):
-    __tablename__ = 'direct_messages'
+class ChatRoom(db.Model):
+    __tablename__ = 'chat_rooms'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    users = db.relationship('DirectMessagesUser', backref='direct_message', lazy=True)
+    users = db.relationship('DirectMessagesUser', backref='chat_room', lazy=True)
 
-class DirectMessagesUser(db.Model):
-    __tablename__ = 'direct_messages_users'
+class ChatRoomUser(db.Model):
+    __tablename__ = 'chat_room_users'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    direct_message_id = db.Column(db.Integer, db.ForeignKey('direct_messages.id'), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
