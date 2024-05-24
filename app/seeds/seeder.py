@@ -1,5 +1,6 @@
 from app.models import db, User, ProfileImage, ServerImage, Server, ServerUser, Channel, Message, MessageImage, Reaction, UserReaction, DirectMessage, DirectMessagesUser, environment, SCHEMA
 from sqlalchemy.sql import text
+from datetime import datetime
 
 
 # Adds a demo user, you can add other users here if you want
