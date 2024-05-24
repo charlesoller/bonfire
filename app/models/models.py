@@ -17,7 +17,6 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, nullable=True)
     updated_at = db.Column(db.DateTime, nullable=True)
-
     profile_images = db.relationship('ProfileImage', backref='user', lazy=True)
     messages = db.relationship('Message', backref='user', lazy=True)
     reactions = db.relationship('UserReaction', backref='user', lazy=True)
