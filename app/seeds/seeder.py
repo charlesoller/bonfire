@@ -51,7 +51,7 @@ def seed_data():
     direct_messages_user1 = ChatRoomUser(user_id=1, chat_room_id=1)
 
     db.session.add_all([user1, user2, profile_image1, profile_image2, server1, server2, server_image1, server_image2,
-                        server_user1, server_user2, channel1, channel2, message1, message2, message_image1, message_image2,
+                        server_user1, server_user2, channel1, channel2, message1, message2, message3, message4, message_image1, message_image2,
                         reaction1, reaction2, user_reaction1, user_reaction2, direct_message1, direct_message2,
                         direct_messages_user1, direct_messages_user2])
 
@@ -68,6 +68,7 @@ def undo_users():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM users"))
+        db.session.execute(text("DELETE FROM users, profile_images, server_images, servers, server_user, channels, channel_messages, chat_room_messages, message_images, reactions, user_reactions, chat_rooms, chat_room_users"))
+
         
     db.session.commit()

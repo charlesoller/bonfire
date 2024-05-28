@@ -17,12 +17,12 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, nullable=True)
     updated_at = db.Column(db.DateTime, nullable=True)
-    profile_images = db.relationship('ProfileImage', backref='user', lazy=True)
+    profile_images = db.relationship('ProfileImage', cascade="all,delete", backref='user', lazy=True)
     channel_messages = db.relationship('ChannelMessage', backref='user', lazy=True)
     chat_room_messages = db.relationship('ChatRoomMessage', backref='user', lazy=True)
     reactions = db.relationship('UserReaction', backref='user', lazy=True)
-    servers = db.relationship('ServerUser', backref='user', lazy=True)
-    chat_rooms = db.relationship('ChatRoomUser', backref='user', lazy=True)
+    servers = db.relationship('ServerUser', cascade="all,delete", backref='user', lazy=True)
+    chat_rooms = db.relationship('ChatRoomUser', cascade="all,delete", backref='user', lazy=True)
 
     @property
     def password(self):
@@ -62,9 +62,9 @@ class Server(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
-    channels = db.relationship('Channel', backref='server', lazy=True)
-    server_images = db.relationship('ServerImage', backref='server', lazy=True)
-    users = db.relationship('ServerUser', backref='server', lazy=True)
+    channels = db.relationship('Channel', cascade="all,delete", backref='server', lazy=True)
+    server_images = db.relationship('ServerImage', cascade="all,delete", backref='server', lazy=True)
+    users = db.relationship('ServerUser', cascade="all,delete", backref='server', lazy=True)
 
 class ServerUser(db.Model):
     __tablename__ = 'server_user'
@@ -80,7 +80,7 @@ class Channel(db.Model):
     name = db.Column(db.String(52), nullable=False)
     server_id = db.Column(db.Integer, db.ForeignKey('servers.id'), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    messages = db.relationship('ChannelMessage', backref='channel', lazy=True)
+    messages = db.relationship('ChannelMessage', cascade="all,delete", backref='channel', lazy=True)
 
 class ChannelMessage(db.Model):
     __tablename__ = 'channel_messages'
@@ -88,9 +88,8 @@ class ChannelMessage(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
     text_field = db.Column(db.String(240))
-    image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
-    reactions = db.relationship('Reaction', backref='channel_message', lazy=True)
-    message_images = db.relationship('MessageImage', backref='channel_message', lazy=True)
+    reactions = db.relationship('Reaction', cascade="all,delete", backref='channel_message', lazy=True)
+    message_images = db.relationship('MessageImage', cascade="all,delete", backref='channel_message', lazy=True)
 
 class ChatRoomMessage(db.Model):
     __tablename__ = 'chat_room_messages'
@@ -98,9 +97,8 @@ class ChatRoomMessage(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
     text_field = db.Column(db.String(240))
-    image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
-    reactions = db.relationship('Reaction', backref='chat_room_message', lazy=True)
-    message_images = db.relationship('MessageImage', backref='chat_room_message', lazy=True)
+    reactions = db.relationship('Reaction', cascade="all,delete", backref='chat_room_message', lazy=True)
+    message_images = db.relationship('MessageImage', cascade="all,delete", backref='chat_room_message', lazy=True)
 
 class MessageImage(db.Model):
     __tablename__ = 'message_images'
@@ -118,7 +116,7 @@ class Reaction(db.Model):
     resource_type = db.Column(db.String, nullable=False)
     emoji = db.Column(db.String(1), nullable=False)
     count = db.Column(db.Integer, nullable=False)
-    user_reactions = db.relationship('UserReaction', backref='reaction', lazy=True)
+    user_reactions = db.relationship('UserReaction', cascade="all,delete", backref='reaction', lazy=True)
 
 class UserReaction(db.Model):
     __tablename__ = 'user_reaction'
@@ -130,7 +128,7 @@ class ChatRoom(db.Model):
     __tablename__ = 'chat_rooms'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    users = db.relationship('ChatRoomUser', backref='chat_room', lazy=True)
+    users = db.relationship('ChatRoomUser', cascade="all,delete", backref='chat_room', lazy=True)
 
 class ChatRoomUser(db.Model):
     __tablename__ = 'chat_room_users'
