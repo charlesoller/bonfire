@@ -18,10 +18,11 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, nullable=True)
     updated_at = db.Column(db.DateTime, nullable=True)
     profile_images = db.relationship('ProfileImage', backref='user', lazy=True)
-    messages = db.relationship('Message', backref='user', lazy=True)
+    channel_messages = db.relationship('ChannelMessage', backref='user', lazy=True)
+    chat_room_messages = db.relationship('ChatRoomMessage', backref='user', lazy=True)
     reactions = db.relationship('UserReaction', backref='user', lazy=True)
     servers = db.relationship('ServerUser', backref='user', lazy=True)
-    direct_messages = db.relationship('DirectMessagesUser', backref='user', lazy=True)
+    chat_rooms = db.relationship('ChatRoomUser', backref='user', lazy=True)
 
     @property
     def password(self):
@@ -79,29 +80,27 @@ class Channel(db.Model):
     name = db.Column(db.String(52), nullable=False)
     server_id = db.Column(db.Integer, db.ForeignKey('servers.id'), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    messages = db.relationship('Message', backref='channel', lazy=True)
+    messages = db.relationship('ChannelMessage', backref='channel', lazy=True)
 
-class ChannelMessages(db.Model):
+class ChannelMessage(db.Model):
     __tablename__ = 'channel_messages'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    resource_type = db.Column(db.String(52), nullable=False)
-    channel_id = db.Column(db.Integer, nullable=False)
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
     text_field = db.Column(db.String(240))
     image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
-    reactions = db.relationship('Reaction', backref='message', lazy=True)
-    message_images = db.relationship('MessageImage', backref='message', lazy=True)
+    reactions = db.relationship('Reaction', backref='channel_message', lazy=True)
+    message_images = db.relationship('MessageImage', backref='channel_message', lazy=True)
 
-class ChatRoomMessages(db.Model):
+class ChatRoomMessage(db.Model):
     __tablename__ = 'chat_room_messages'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    resource_type = db.Column(db.String(52), nullable=False)
     chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
     text_field = db.Column(db.String(240))
     image_id = db.Column(db.Integer, db.ForeignKey('message_images.id'))
-    reactions = db.relationship('Reaction', backref='message', lazy=True)
-    message_images = db.relationship('MessageImage', backref='message', lazy=True)
+    reactions = db.relationship('Reaction', backref='chat_room_message', lazy=True)
+    message_images = db.relationship('MessageImage', backref='chat_room_message', lazy=True)
 
 class MessageImage(db.Model):
     __tablename__ = 'message_images'
@@ -112,7 +111,9 @@ class MessageImage(db.Model):
 class Reaction(db.Model):
     __tablename__ = 'reactions'
     id = db.Column(db.Integer, primary_key=True)
-    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'), nullable=False)
+    channel_message_id = db.Column(db.Integer, db.ForeignKey('channel_messages.id'))
+    chat_room_message_id = db.Column(db.Integer, db.ForeignKey('chat_room_messages.id'))
+    resource_type = db.Column(db.String, nullable=False)
     emoji = db.Column(db.String(1), nullable=False)
     count = db.Column(db.Integer, nullable=False)
     user_reactions = db.relationship('UserReaction', backref='reaction', lazy=True)
@@ -127,7 +128,7 @@ class ChatRoom(db.Model):
     __tablename__ = 'chat_rooms'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    users = db.relationship('DirectMessagesUser', backref='chat_room', lazy=True)
+    users = db.relationship('ChatRoomUser', backref='chat_room', lazy=True)
 
 class ChatRoomUser(db.Model):
     __tablename__ = 'chat_room_users'

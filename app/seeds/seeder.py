@@ -1,4 +1,9 @@
-from app.models import db, User, ProfileImage, ServerImage, Server, ServerUser, Channel, Message, MessageImage, Reaction, UserReaction, DirectMessage, DirectMessagesUser, environment, SCHEMA
+from app.models import (
+    db, User, ProfileImage, ServerImage, Server, 
+    ServerUser, Channel, ChatRoomMessage, ChannelMessage, 
+    MessageImage, Reaction, UserReaction, ChatRoom, 
+    ChatRoomUser, environment, SCHEMA
+)
 from sqlalchemy.sql import text
 from datetime import datetime
 
@@ -19,27 +24,31 @@ def seed_data():
 
     server_user1 = ServerUser(user_id=1, server_id=1, created_at=datetime.now(), updated_at=datetime.now())
     server_user2 = ServerUser(user_id=2, server_id=2, created_at=datetime.now(), updated_at=datetime.now())
+    
+    direct_message1 = ChatRoom(name="super awesome chat")
+    direct_message2 = ChatRoom(name="super average chat")
 
     channel1 = Channel(name='Channel1', server_id=1, owner_id=1)
     channel2 = Channel(name='Channel2', server_id=2, owner_id=2)
 
-    message1 = Message(user_id=1, resource_type='channel', resource_id=1, text_field='Hello, world!')
-    message2 = Message(user_id=2, resource_type='channel', resource_id=2, text_field='Hi there!')
+    message1 = ChannelMessage(user_id=1, channel_id=1, text_field='Hello, world!')
+    message2 = ChannelMessage(user_id=2, channel_id=2, text_field='Hi there!')
+
+    message3 = ChatRoomMessage(user_id=1, chat_room_id=1, text_field='Hello, universe!')
+    message4 = ChatRoomMessage(user_id=2, chat_room_id=2, text_field='Hi their!')
 
     message_image1 = MessageImage(url='http://example.com/message1.jpg', message_id=1)
     message_image2 = MessageImage(url='http://example.com/message2.jpg', message_id=2)
 
-    reaction1 = Reaction(message_id=1, emoji='😀', count=5)
-    reaction2 = Reaction(message_id=2, emoji='😢', count=3)
+    reaction1 = Reaction(channel_message_id=1, resource_type='channel', emoji='😀', count=5)
+    reaction2 = Reaction(chat_room_message_id=2, resource_type='chat_room', emoji='😢', count=3)
 
     user_reaction1 = UserReaction(user_id=1, reaction_id=1)
     user_reaction2 = UserReaction(user_id=2, reaction_id=2)
 
-    direct_message1 = DirectMessage(name="super awesome chat")
-    direct_message2 = DirectMessage()
 
-    direct_messages_user1 = DirectMessagesUser(user_id=1, direct_message_id=1)
-    direct_messages_user2 = DirectMessagesUser(user_id=2, direct_message_id=2)
+    direct_messages_user2 = ChatRoomUser(user_id=2, chat_room_id=2)
+    direct_messages_user1 = ChatRoomUser(user_id=1, chat_room_id=1)
 
     db.session.add_all([user1, user2, profile_image1, profile_image2, server1, server2, server_image1, server_image2,
                         server_user1, server_user2, channel1, channel2, message1, message2, message_image1, message_image2,
