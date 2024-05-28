@@ -106,7 +106,9 @@ class MessageImage(db.Model):
     __tablename__ = 'message_images'
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
-    message_id = db.Column(db.Integer, db.ForeignKey('messages.id'), nullable=False)
+    resource_type = db.Column(db.Integer, nullable=False)
+    channel_message_id = db.Column(db.Integer, db.ForeignKey('channel_messages.id'))
+    chat_room_message_id = db.Column(db.Integer, db.ForeignKey('chat_room_messages.id'))
 
 class Reaction(db.Model):
     __tablename__ = 'reactions'

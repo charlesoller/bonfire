@@ -37,8 +37,8 @@ def seed_data():
     message3 = ChatRoomMessage(user_id=1, chat_room_id=1, text_field='Hello, universe!')
     message4 = ChatRoomMessage(user_id=2, chat_room_id=2, text_field='Hi their!')
 
-    message_image1 = MessageImage(url='http://example.com/message1.jpg', message_id=1)
-    message_image2 = MessageImage(url='http://example.com/message2.jpg', message_id=2)
+    message_image1 = MessageImage(url='http://example.com/message1.jpg', resource_type='channel', channel_message_id=1)
+    message_image2 = MessageImage(url='http://example.com/message2.jpg', resource_type='chat_room', chat_room_message_id=2)
 
     reaction1 = Reaction(channel_message_id=1, resource_type='channel', emoji='😀', count=5)
     reaction2 = Reaction(chat_room_message_id=2, resource_type='chat_room', emoji='😢', count=3)
