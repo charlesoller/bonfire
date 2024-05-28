@@ -1,8 +1,8 @@
-"""seeders are seeding
+"""added_cascades
 
-Revision ID: 9d010e79ac3a
+Revision ID: 82a41a9e7caa
 Revises: 
-Create Date: 2024-05-28 19:18:29.238517
+Create Date: 2024-05-28 19:54:31.453171
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9d010e79ac3a'
+revision = '82a41a9e7caa'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -56,7 +56,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=2048), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('servers',

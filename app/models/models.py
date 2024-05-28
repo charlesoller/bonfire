@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, nullable=True)
     updated_at = db.Column(db.DateTime, nullable=True)
-    profile_images = db.relationship('ProfileImage', cascade="all,delete", backref='user', lazy=True)
+    profile_images = db.relationship('ProfileImage', backref='user', cascade="all, delete", lazy=True)
     channel_messages = db.relationship('ChannelMessage', backref='user', lazy=True)
     chat_room_messages = db.relationship('ChatRoomMessage', backref='user', lazy=True)
     reactions = db.relationship('UserReaction', backref='user', lazy=True)
@@ -46,7 +46,7 @@ class ProfileImage(db.Model):
     __tablename__ = 'profile_images'
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
 class ServerImage(db.Model):
     __tablename__ = 'server_images'
