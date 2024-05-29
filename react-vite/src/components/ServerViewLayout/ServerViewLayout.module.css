@@ -1,3 +1,12 @@
 .body {
     display: flex;
+    height: 100vh;
+    /* padding-top: 0; */
+    background-color: lightblue;
+}
+
+.main {
+    padding: 0;
+    background: blue;
+    width: 100%;
 }

@@ -1,7 +1,9 @@
+import styles from "./ServerView.module.css"
+
 export default function ServerView(){
     return (
-        <div>
+        <section className={styles.serverView}>
             <h1>Server View</h1>
-        </div>
+        </section>
     )
 }
