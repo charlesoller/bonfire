@@ -1,5 +1,5 @@
 WEBSOCKETS ARE REQUIRED
-https://socket.io/
+https://flask-socketio.readthedocs.io/en/latest/
 
 ALL ROUTES BEGIN WITH: /api/...
 
