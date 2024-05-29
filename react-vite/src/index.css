@@ -4,6 +4,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+  color: #F2F3F5;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
