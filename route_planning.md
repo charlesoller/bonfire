@@ -31,7 +31,6 @@ Messages
     - PUT /channel_messages/{message_id}
 - Users should be able to delete messages they sent.
     - DELETE /channel_messages/{message_id}
-  
 Reactions
 - Users should be able to view all reactions on a message.
     - GET /channel_messages/{message_id}/reactions
@@ -41,7 +40,6 @@ Reactions
     - POST /chat_room_messages/{message_id}/reactions
 - Users should be able to remove their reaction(s) from a message.
     - DELETE /reactions/{reaction_id}
-
 Bonus: Threads
 - Users should be able to view all threads within a channel.
     - GET /channels/threads
