@@ -10,8 +10,9 @@ from .api.auth_routes import auth_routes
 from .api.server import server
 from .seeds import seed_commands
 from .config import Config
-from .api.messages import messages_bp
+# from .api.messages import messages_bp
 from .api.reactions import reactions_bp
+from .api.channels import channels_bp
 from .api.server import server
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
@@ -32,7 +33,7 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(messages_bp, url_prefix='/api/messages')
+app.register_blueprint(channels_bp, url_prefix='/api/channels')
 app.register_blueprint(reactions_bp, url_prefix='/api/reactions')
 app.register_blueprint(server, url_prefix="/api/servers")
 db.init_app(app)
