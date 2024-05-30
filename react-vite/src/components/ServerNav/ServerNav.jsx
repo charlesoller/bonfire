@@ -1,9 +1,19 @@
 import styles from "./ServerNav.module.css"
+import { FaUserCircle } from "react-icons/fa"
 
 export default function ServerNav(){
     return (
         <aside className={styles.serverNav}>
-            <h1>Server Nav here</h1>
+            <div className={styles.directMessageIcon}>
+                <FaUserCircle size={40}/>
+            </div>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
+            <FaUserCircle size={44}/>
         </aside>
     )
 }

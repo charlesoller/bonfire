@@ -1,5 +1,29 @@
 .userList {
     background: #2B2D31;
     margin-left: auto;
-    width: 21rem;
+    width: 15rem;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    position: fixed;
+    right: 0;
+    height: 100%;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.userRoleName {
+    color: #8E959E;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.user__name {
+    font-weight: 500;
+    font-size: 0.85rem;
 }

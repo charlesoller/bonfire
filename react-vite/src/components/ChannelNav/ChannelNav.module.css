@@ -1,18 +1,26 @@
 .channelNav {
     background: #2B2D31;
-    width: 21rem;
+    width: 15rem;
+    position: fixed;
+    height: 100%;
+    left: 4.1rem;
 }
 
 .channelName {
     height: 2.8rem;
-    background: #313338;
+    background: #2B2D31;
     border-bottom: 1.2px solid rgba(0,0,0,0.3);
     display: flex;
+    gap: 0.5em;
     align-items: center;
     padding: 0 1em;
-    font-size: 0.65rem;
 }
 
 .channelName__header {
     font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.channelName__logo {
+    font-weight: 500;
 }

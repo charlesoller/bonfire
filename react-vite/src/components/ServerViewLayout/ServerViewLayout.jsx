@@ -13,9 +13,11 @@ export default function ServerViewLayout(){
             <ChannelNav />
             <section className={styles.main}>
                 <HeaderInfo />
-                <Outlet />
+                <div className={styles.channel_view}>
+                    <Outlet />
+                    <UserList />
+                </div>
             </section>
-            <UserList />
         </main>
     )
 }

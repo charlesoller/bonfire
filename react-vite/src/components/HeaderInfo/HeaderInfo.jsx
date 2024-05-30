@@ -1,9 +1,11 @@
 import styles from "./HeaderInfo.module.css"
+import { FaCode } from "react-icons/fa"
 
 export default function HeaderInfo(){
     return (
         <header className={styles.headerInfo}>
-            <h1>Header here</h1>
+            <FaCode />
+            <h3 className={styles.headerTitle}>Channel Name</h3>
         </header>
     )
 }

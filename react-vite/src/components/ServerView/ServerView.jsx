@@ -1,9 +1,10 @@
 import styles from "./ServerView.module.css"
+import MessageLayout from "../MessageLayout/MessageLayout"
 
 export default function ServerView(){
     return (
         <section className={styles.serverView}>
-            <h1>Server View</h1>
+            <MessageLayout />
         </section>
     )
 }

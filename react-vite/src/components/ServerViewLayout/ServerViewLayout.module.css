@@ -7,6 +7,11 @@
 
 .main {
     padding: 0;
-    background: blue;
     width: 100%;
+}
+
+.channel_view {
+    background: red;
+    height: 100%;
+    display: flex;
 }

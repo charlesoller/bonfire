@@ -1,0 +1,37 @@
+.message {
+    padding: 0.8em 1em;
+    display: flex;
+    gap: 1em;
+}
+
+.icon {
+    align-self: flex-start;
+    height: fit-content;
+}
+
+.message:hover,
+.message:focus {
+    background: #2c2d32
+}
+
+.textBody {
+    color: #DBDEE1;
+    line-height: 120%;
+    font-weight: 300;
+    font-size: 0.95rem;
+}
+
+.userDetails {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.userName {
+    color: #9B59B6;
+}
+
+.date {
+    font-size: 0.65rem;
+    color: #949BA4;
+}
