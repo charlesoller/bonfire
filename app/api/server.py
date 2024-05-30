@@ -12,6 +12,11 @@ def get_all_servers():
     print([server.to_dict() for server in servers])
     return [server.to_dict() for server in servers]
 
+@server.route("/", methods=["POST"])
+def create_new_server():
+    print("HELLO SERVERS POST")
+    
+
 @server.route("/<int:server_id>/channels")
 # @login_required
 def get_all_server_channels(server_id):
