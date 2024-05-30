@@ -9,6 +9,7 @@ auth_routes = Blueprint('auth', __name__)
 
 @auth_routes.route('/')
 def authenticate():
+    print("HELLO AUTH ROUTES")
     """
     Authenticates a user.
     """
