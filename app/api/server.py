@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from app.models import Server, db, Channel, ServerImage
 from app.forms import NewServerForm, NewChannelForm
@@ -6,7 +6,7 @@ from app.forms import NewServerForm, NewChannelForm
 server = Blueprint("servers", __name__, url_prefix="")
 
 @server.route("/")
-# @login_required
+@login_required
 def get_all_servers():
     print("HELLO SERVERS")
     servers = Server.query.all()
@@ -54,8 +54,30 @@ def create_new_server():
     else:
         return form.errors, 401
 
+@server.route("/<int:server_id>", methods=["PUT"])
+@login_required
+def update_server(server_id):
+    form = NewServerForm()
+    if form.validate_on_submit():
+        server_name = form.name.data
+        server_description = form.description.data
+        server_image = form.server_image.data
+
+        server = Sever.query.get_or_404(server_id)
+
+        if server.owner_id != current_user.id:
+            return jsonify({"error": "Unauthorized"}), 403
+        
+        server.name = server_name
+        server.description = server_description
+        server.server_image = server_image
+
+        db.session.commit()
+
+        return jsonify(server.to_dict()), 200
+
 @server.route("/<int:server_id>/channels")
-# @login_required
+@login_required
 def get_all_server_channels(server_id):
     print("HELLO CHANNELS")
     channels = Channel.query.filter_by(server_id=server_id).all()
