@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
 from app.models import Server, db, Channel, ServerImage
-from app.forms import NewServerForm
+from app.forms import NewServerForm, NewChannelForm
 
 server = Blueprint("servers", __name__, url_prefix="")
 
@@ -50,7 +50,7 @@ def create_new_server():
             server_dict['server_image'] = server_image.to_dict()
             server_data.append(server_dict)
 
-            return server_data
+        return server_data
     else:
         return form.errors, 401
 
@@ -61,3 +61,31 @@ def get_all_server_channels(server_id):
     channels = Channel.query.filter_by(server_id=server_id).all()
     print([channel.to_dict() for channel in channels])
     return [channel.to_dict() for channel in channels]
+
+@server.route("/<int:server_id>/channels", methods=["POST"])
+@login_required
+def create_new_channel(server_id):
+    print("HELLO CHANNELS POST")
+    form = NewChannelForm()
+    if form.validate_on_submit():
+        channel_name = form.name.data
+        user_id = current_user.id
+
+        new_channel = Channel(
+            name = channel_name,
+            server_id = server_id,
+            owner_id = user_id
+        )
+
+        db.session.add(new_channel)
+        db.session.commit()
+
+        results = db.session.query(Channel).filter(Channel.id == new_channel.id)
+        channel_data = []
+        for channel in results:
+            channel_dict = channel.to_dict()
+            channel_data.append(channel_dict)
+
+        return channel_data
+    else:
+        return form.errors, 401
