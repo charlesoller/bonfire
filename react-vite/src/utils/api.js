@@ -11,3 +11,10 @@ export const getAllServers = async () => {
         .catch(e => console.error(e))
     return res;
 }
+
+export const getChannelsForServerId = async (serverId) => {
+    const res = await fetch(`/api/servers/${serverId}/channels`)
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}
