@@ -10,12 +10,10 @@ channels_bp = Blueprint("channels", __name__)
 
 # Get all messages in a channel
 @channels_bp.route('/<int:channel_id>/messages', methods=['GET'])
-# @login_required
+@login_required
 def get_channel_messages(channel_id):
-    print("TEST2")
     channel = Channel.query.get_or_404(channel_id)  # Get the channel or return 404 if not found
     messages = ChannelMessage.query.filter_by(channel_id=channel_id).all()  # Get all messages in the channel
-    print(messages)
     return jsonify([message.to_dict() for message in messages])  # Return messages as JSON
 
 # Create a new message in a channel
