@@ -4,6 +4,5 @@ export const getChannelMessages = async (channelId) => {
             "Content-Type": "application/json",
         },
     }).then(res => res.json())
-    console.log("TEST: ", res)
     return res
 }
