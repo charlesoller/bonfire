@@ -19,7 +19,6 @@ const serverReducer = (state = {}, action) => {
     console.log(action.type)
     switch (action.type) {
         case LOAD_SERVERS: {
-            console.log("TEST")
             const serversState = {};
             action.servers.forEach((server) => {
                 serversState[server.id] = server;

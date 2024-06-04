@@ -6,6 +6,8 @@ export const getChannelMessages = async (channelId) => {
     })
         .then(res => res.json())
         .catch(e => console.error(e))
+
+    // console.log("MESSAGES: ", res)
     return res
 }
 
