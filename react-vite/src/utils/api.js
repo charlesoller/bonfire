@@ -3,8 +3,9 @@ export const getChannelMessages = async (channelId) => {
         headers: { 
             "Content-Type": "application/json",
         },
-    }).then(res => res.json())
-    console.log(res)
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
     return res
 }
 
@@ -15,7 +16,6 @@ export const getAllServers = async () => {
         }
     })
         .then(res => res.json())
-        // .catch(e => console.error(e))
-    console.log("SERVER", res)
+        .catch(e => console.error(e))
     return res;
 }
