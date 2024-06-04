@@ -17,9 +17,9 @@ import HeaderInfo from "../HeaderInfo/HeaderInfo"
 export default function ServerViewLayout(){
     const dispatch = useDispatch();
     const servers = Object.values(useSelector((state) => state.servers));
-    
+    getChannelMessages(1)
+
     useEffect(() => {
-        getChannelMessages()
         dispatch(fetchAllServersThunk());
     }, [dispatch])
 
