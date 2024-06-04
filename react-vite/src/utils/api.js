@@ -4,5 +4,18 @@ export const getChannelMessages = async (channelId) => {
             "Content-Type": "application/json",
         },
     }).then(res => res.json())
+    console.log(res)
     return res
+}
+
+export const getAllServers = async () => {
+    const res = await fetch(`/api/servers`, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        // .catch(e => console.error(e))
+    console.log("SERVER", res)
+    return res;
 }
