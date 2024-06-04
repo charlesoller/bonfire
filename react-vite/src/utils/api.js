@@ -1,5 +1,5 @@
 
-// const BASE_URL = "http://127.0.0.1:8000/api"
+// const BASE_URL = "http://127.0.0.1:8000"
 
 export const getChannelMessages = async (channelId) => {
     const res = await fetch(`/api/channels/${channelId}/messages`, {

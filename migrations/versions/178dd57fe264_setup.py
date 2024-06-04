@@ -1,8 +1,8 @@
-"""added_cascade_to_foreign_key
+"""setup
 
-Revision ID: 60cb8e6207c7
+Revision ID: 178dd57fe264
 Revises: 
-Create Date: 2024-05-28 20:01:38.770831
+Create Date: 2024-06-04 18:17:30.831479
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '60cb8e6207c7'
+revision = '178dd57fe264'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,16 +40,16 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('chat_room_id', sa.Integer(), nullable=False),
     sa.Column('text_field', sa.String(length=240), nullable=True),
-    sa.ForeignKeyConstraint(['chat_room_id'], ['chat_rooms.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['chat_room_id'], ['chat_rooms.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('chat_room_users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('chat_room_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['chat_room_id'], ['chat_rooms.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['chat_room_id'], ['chat_rooms.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('profile_images',
@@ -66,7 +66,7 @@ def upgrade():
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('channels',
@@ -74,15 +74,15 @@ def upgrade():
     sa.Column('name', sa.String(length=52), nullable=False),
     sa.Column('server_id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('server_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=2048), nullable=False),
     sa.Column('server_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('server_user',
@@ -91,8 +91,8 @@ def upgrade():
     sa.Column('server_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('channel_messages',
@@ -100,18 +100,18 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('channel_id', sa.Integer(), nullable=False),
     sa.Column('text_field', sa.String(length=240), nullable=True),
-    sa.ForeignKeyConstraint(['channel_id'], ['channels.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['channel_id'], ['channels.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('message_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=2048), nullable=False),
-    sa.Column('resource_type', sa.String(), nullable=False),
+    sa.Column('resource_type', sa.Integer(), nullable=False),
     sa.Column('channel_message_id', sa.Integer(), nullable=True),
     sa.Column('chat_room_message_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['chat_room_message_id'], ['chat_room_messages.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ),
+    sa.ForeignKeyConstraint(['chat_room_message_id'], ['chat_room_messages.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('reactions',
@@ -121,16 +121,16 @@ def upgrade():
     sa.Column('resource_type', sa.String(), nullable=False),
     sa.Column('emoji', sa.String(length=1), nullable=False),
     sa.Column('count', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['chat_room_message_id'], ['chat_room_messages.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ),
+    sa.ForeignKeyConstraint(['chat_room_message_id'], ['chat_room_messages.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_reaction',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('reaction_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['reaction_id'], ['reactions.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['reaction_id'], ['reactions.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
