@@ -18,3 +18,7 @@ export const getChannelsForServerId = async (serverId) => {
         .catch(e => console.error(e))
     return res;
 }
+
+export const getUsersForServerId = async (serverId) => {
+    
+}
