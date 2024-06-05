@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import Server, db, Channel, ServerImage
+from app.models import Server, db, Channel, ServerImage, User
 from app.forms import NewServerForm, NewChannelForm
 
 server = Blueprint("servers", __name__, url_prefix="")
@@ -111,3 +111,11 @@ def create_new_channel(server_id):
         return channel_data
     else:
         return form.errors, 401
+    
+# New route to get users from a specific server
+@server.route("/<int:server_id>/users")
+@login_required
+def get_server_users(server_id):
+    server = Server.query.get_or_404(server_id)
+    users = server.users  # Assuming you have a relationship defined
+    return jsonify([user.to_dict() for user in users])
