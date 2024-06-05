@@ -44,6 +44,7 @@ export default function ServerViewLayout(){
                 <div className={styles.channel_view}>
                     <ServerView 
                         activeServerId={activeServerId}
+                        activeChannelId={activeChannelId}
                         messages={messages}
                     />
                     <UserList />
