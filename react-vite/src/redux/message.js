@@ -16,12 +16,11 @@ export const fetchChannelMessagesThunk = (id) => async (dispatch) => {
 
 // ================= REDUCER ================= 
 const messageReducer = (state = {}, action) => {
-    console.log(action.type)
     switch (action.type) {
         case LOAD_MESSAGES: {
             const messagesState = {};
             action.messages.forEach((message) => {
-                messagesState[message.id] =message;
+                messagesState[message.id] = message;
             })
             return messagesState;
         }

@@ -1,33 +1,32 @@
-// import { getChannelMessages } from "../utils/api"
+import { getUsersForServerId } from "../utils/api"
 
-// export const LOAD_MESSAGES = 'messages/LOAD_MESSAGES'
+export const LOAD_USERS = 'messages/LOAD_USERS'
 
-// // ================= ACTION CREATORS ================= 
-// export const loadMessages = (messages) => ({
-//     type: LOAD_MESSAGES,
-//     messages
-// })
+// ================= ACTION CREATORS ================= 
+export const loadUsers = (users) => ({
+    type: LOAD_USERS,
+    users
+})
 
-// // ================= THUNKS ================= 
-// export const fetchChannelMessagesThunk = (id) => async (dispatch) => {
-//     const res = await getChannelMessages(id);
-//     dispatch(loadMessages(res));
-// }
+// ================= THUNKS ================= 
+export const fetchServerUsersThunk = (id) => async (dispatch) => {
+    const res = await getUsersForServerId(id);
+    dispatch(loadUsers(res));
+}
 
-// // ================= REDUCER ================= 
-// const messageReducer = (state = {}, action) => {
-//     console.log(action.type)
-//     switch (action.type) {
-//         case LOAD_MESSAGES: {
-//             const messagesState = {};
-//             action.messages.forEach((message) => {
-//                 messagesState[message.id] =message;
-//             })
-//             return messagesState;
-//         }
-//         default:
-//             return state;
-//     }
-// }
+// ================= REDUCER ================= 
+const serverUserReducer = (state = {}, action) => {
+    switch (action.type) {
+        case LOAD_USERS: {
+            const usersState = {};
+            action.users.forEach((user) => {
+                usersState[user.id] = user;
+            })
+            return usersState;
+        }
+        default:
+            return state;
+    }
+}
 
-// export default messageReducer;
+export default serverUserReducer;

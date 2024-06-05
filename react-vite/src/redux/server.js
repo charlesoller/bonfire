@@ -16,7 +16,6 @@ export const fetchAllServersThunk = () => async (dispatch) => {
 
 // ================= REDUCER ================= 
 const serverReducer = (state = {}, action) => {
-    console.log(action.type)
     switch (action.type) {
         case LOAD_SERVERS: {
             const serversState = {};

@@ -5,9 +5,9 @@ import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAllServersThunk } from "../../redux/server"
 // import { getChannelMessages, getChannelsForServerId } from "../../utils/api"
+import { getUsersForServerId } from "../../utils/api"
 
 // Components
-import { Outlet } from "react-router-dom"
 import ServerNav from "../ServerNav/ServerNav"
 import ChannelNav from "../ChannelNav/ChannelNav"
 import UserList from "../UserList/UserList"
@@ -15,6 +15,7 @@ import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import ServerView from "../ServerView/ServerView"
 import { fetchChannelsForServerIdThunk } from "../../redux/channel"
 import { fetchChannelMessagesThunk } from "../../redux/message"
+import { fetchServerUsersThunk } from "../../redux/serverUser"
 
 export default function ServerViewLayout(){
     const dispatch = useDispatch();
@@ -22,16 +23,15 @@ export default function ServerViewLayout(){
     const [activeChannelId, setActiveChannelId] = useState(1);
 
     const servers = Object.values(useSelector((state) => state.servers));
-    console.log(servers)
     const channels = Object.values(useSelector((state) => state.channels));
     const messages = Object.values(useSelector((state) => state.messages));
-
-    console.log(messages)
+    const serverUsers = Object.values(useSelector((state) => state.serverUsers));
 
     useEffect(() => {
         dispatch(fetchAllServersThunk());
         dispatch(fetchChannelsForServerIdThunk(activeServerId))
         dispatch(fetchChannelMessagesThunk(activeChannelId))
+        dispatch(fetchServerUsersThunk(activeServerId))
     }, [dispatch, activeServerId, activeChannelId])
 
     return (
@@ -48,7 +48,9 @@ export default function ServerViewLayout(){
                         activeChannelId={activeChannelId}
                         messages={messages}
                     />
-                    <UserList />
+                    <UserList 
+                        serverUsers={serverUsers}
+                    />
                 </div>
             </section>
         </main>
