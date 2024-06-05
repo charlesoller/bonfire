@@ -85,7 +85,8 @@ class Server(db.Model):
             'id': self.id,
             'name': self.name,
             'description': self.description,
-            'owner_id': self.owner_id
+            'owner_id': self.owner_id,
+            'server_images': [server_image.to_dict() for server_image in self.server_images]
         }
 
 class ServerUser(db.Model):

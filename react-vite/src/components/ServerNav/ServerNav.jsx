@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa"
 import { CiCirclePlus } from "react-icons/ci";
 
 export default function ServerNav({ servers }){
-    // console.log("Servers: ", servers)
+    console.log("Servers: ", servers)
     const dispatch = useDispatch();
 
     const newServer = async (e) => {
@@ -18,7 +18,7 @@ export default function ServerNav({ servers }){
             server_image: "not/a/url.jpg"
         }
         console.log("NEW SERVER", server)
-        await dispatch(addNewServer(server))
+        dispatch(addNewServer(server))
     }
 
     return (
@@ -26,13 +26,6 @@ export default function ServerNav({ servers }){
             <div className={styles.directMessageIcon}>
                 <FaUserCircle size={40}/>
             </div>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
             <button onClick={newServer}>
                 <CiCirclePlus size={44}/>
             </button>

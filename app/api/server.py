@@ -8,7 +8,6 @@ server = Blueprint("servers", __name__, url_prefix="")
 @server.route("/")
 @login_required
 def get_all_servers():
-    print("HELLO SERVERS")
     servers = Server.query.all()
     print([server.to_dict() for server in servers])
     return [server.to_dict() for server in servers]
@@ -64,7 +63,7 @@ def update_server(server_id):
         server_description = form.description.data
         server_image = form.server_image.data
 
-        server = Sever.query.get_or_404(server_id)
+        server = Server.query.get_or_404(server_id)
 
         if server.owner_id != current_user.id:
             return jsonify({"error": "Unauthorized"}), 403
