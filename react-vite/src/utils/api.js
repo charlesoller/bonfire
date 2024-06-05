@@ -19,6 +19,17 @@ export const getChannelsForServerId = async (serverId) => {
     return res;
 }
 
-export const getUsersForServerId = async (serverId) => {
+// export const getUsersForServerId = async (serverId) => {
     
+// }
+
+export const addServer = async (server) => {
+    const res = await fetch('/api/servers', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(server)
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
 }

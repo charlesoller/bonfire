@@ -1,6 +1,7 @@
-import { getAllServers } from "../utils/api"
+import { getAllServers, addServer } from "../utils/api"
 
 export const LOAD_SERVERS = 'servers/LOAD_SERVERS'
+export const LOAD_ONE_SERVER = 'servers/LOAD_ONE_SERVER'
 
 // ================= ACTION CREATORS ================= 
 export const loadServers = (servers) => ({
@@ -8,10 +9,20 @@ export const loadServers = (servers) => ({
     servers
 })
 
+export const loadOneServer = (server) => ({
+    type: LOAD_ONE_SERVER,
+    server
+})
+
 // ================= THUNKS ================= 
 export const fetchAllServersThunk = () => async (dispatch) => {
     const res = await getAllServers();
     dispatch(loadServers(res))
+}
+
+export const addNewServer = (server) => async (dispatch) => {
+    const res = await addServer(server);
+    dispatch(loadOneServer(res))
 }
 
 // ================= REDUCER ================= 
@@ -25,6 +36,11 @@ const serverReducer = (state = {}, action) => {
             })
             return serversState;
         }
+
+        case LOAD_ONE_SERVER: {
+            return { ...state, [action.server.id]: action.server};
+        }
+        
         default:
             return state;
     }
