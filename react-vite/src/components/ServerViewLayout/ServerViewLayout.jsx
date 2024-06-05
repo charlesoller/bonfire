@@ -22,6 +22,7 @@ export default function ServerViewLayout(){
     const [activeChannelId, setActiveChannelId] = useState(1);
 
     const servers = Object.values(useSelector((state) => state.servers));
+    console.log(servers)
     const channels = Object.values(useSelector((state) => state.channels));
     const messages = Object.values(useSelector((state) => state.messages));
 

@@ -6,7 +6,7 @@ from app.forms import NewServerForm, NewChannelForm
 server = Blueprint("servers", __name__, url_prefix="")
 
 @server.route("/")
-# @login_required
+@login_required
 def get_all_servers():
     print("HELLO SERVERS")
     servers = Server.query.all()
