@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { addNewServer } from "../../redux/server";
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchAllServersThunk, clearServerDetails } from '../../redux/server';
+import { useEffect } from 'react';
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import NewServerModal from "../NewServerModal/NewServerModal";
 import styles from "./ServerNav.module.css"
 import { FaUserCircle } from "react-icons/fa"
 import { CiCirclePlus } from "react-icons/ci";
@@ -8,34 +10,31 @@ import { CiCirclePlus } from "react-icons/ci";
 export default function ServerNav({ servers }){
     // console.log("Servers: ", servers)
     const dispatch = useDispatch();
+    const listedServers = Object.values(useSelector(state => state.servers));
 
-    const newServer = async (e) => {
-        e.preventDefault();
-        const server = {
-            name: "Button Server",
-            description: "This server was made by clicking a button",
-            csrf_token: "ImEzMDQ0NzlkNjBjNDAyYzQ0MjRjODdjYmI2ZjdjMGMyYjRlNmM1NDMi.Zl_Bwg.xotKL4lt2YfZDcY5alI9Pr6Zk7o",
-            server_image: "not/a/url.jpg"
+    useEffect(() => {
+        dispatch(fetchAllServersThunk());
+
+        return () => {
+            dispatch(clearServerDetails());
         }
-        console.log("NEW SERVER", server)
-        await dispatch(addNewServer(server))
-    }
+    }, [dispatch]);
 
     return (
         <aside className={styles.serverNav}>
             <div className={styles.directMessageIcon}>
                 <FaUserCircle size={40}/>
             </div>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <FaUserCircle size={44}/>
-            <button onClick={newServer}>
-                <CiCirclePlus size={44}/>
-            </button>
+            {listedServers.map(server => {
+                return (
+                    <FaUserCircle size={44}/>
+                )
+            })}
+
+            <OpenModalButton
+                buttonText={<CiCirclePlus size={44}/>}
+                modalComponent={<NewServerModal/>}
+            />
         </aside>
     )
 }
