@@ -29,10 +29,10 @@ export default function ServerViewLayout(){
         dispatch(fetchChannelMessagesThunk(activeChannelId))
         dispatch(fetchServerUsersThunk(activeServerId))
     }, [dispatch, activeServerId, activeChannelId])
-
+    console.log(activeServerId)
     return (
         <main className={styles.body}> 
-            <ServerNav servers={servers}/>
+            <ServerNav servers={servers} setActiveServerId={setActiveServerId}/>
             <section className={styles.main}>
                 <div className={styles.channel_view}>
                     <ServerView 
