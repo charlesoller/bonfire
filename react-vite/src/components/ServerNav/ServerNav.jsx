@@ -5,6 +5,8 @@ import styles from "./ServerNav.module.css"
 // Components
 import ServerIcon from "./components/ServerIcon";
 import { FaUserCircle } from "react-icons/fa"
+import { FaFireAlt, FaFire } from "react-icons/fa";
+import { AiFillFire } from "react-icons/ai";
 import { CiCirclePlus } from "react-icons/ci";
 
 const IMAGE_PLACEHOLDER = "https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg"
@@ -33,7 +35,7 @@ export default function ServerNav({ servers, setActiveServerId }){
     return (
         <aside className={styles.serverNav}>
             <div className={styles.directMessageIcon}>
-                <FaUserCircle size={40}/>
+                <AiFillFire size={40} fill="orange"/>
             </div>
             {serverElements}
             <button onClick={newServer}>
