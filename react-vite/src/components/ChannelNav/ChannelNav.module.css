@@ -24,3 +24,7 @@
 .channelName__logo {
     font-weight: 500;
 }
+
+.channelOptions {
+    padding: 0.8em 0.4em;
+}
