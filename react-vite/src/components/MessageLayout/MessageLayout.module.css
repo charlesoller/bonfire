@@ -3,9 +3,9 @@
     height: 100%;
     overflow-y: scroll;
     position: fixed;
-    top: 2.8rem;
-    right: 15rem;
-    left: 19.1rem;
+    top: 2.5rem;
+    right: 11.9rem;
+    left: 15.6rem;
 }
 
 ::-webkit-scrollbar {

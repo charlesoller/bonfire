@@ -1,13 +1,14 @@
 .userList {
     background: #2B2D31;
     margin-left: auto;
-    width: 15rem;
+    width: 11.9rem;
     padding: 1em;
     display: flex;
     flex-direction: column;
     gap: 0.5em;
     position: fixed;
     right: 0;
+    top: 2.5rem;
     height: 100%;
 }
 

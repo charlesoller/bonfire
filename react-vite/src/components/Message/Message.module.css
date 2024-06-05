@@ -16,9 +16,9 @@
 
 .textBody {
     color: #DBDEE1;
-    line-height: 120%;
+    line-height: 130%;
     font-weight: 300;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
 }
 
 .userDetails {
@@ -29,6 +29,7 @@
 
 .userName {
     color: #9B59B6;
+    font-size: 0.85rem;
 }
 
 .date {

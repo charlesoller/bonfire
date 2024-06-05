@@ -1,13 +1,13 @@
 .channelNav {
     background: #2B2D31;
-    width: 15rem;
+    width: 11.9rem;
     position: fixed;
     height: 100%;
-    left: 4.1rem;
+    left: 3.7rem;
 }
 
 .channelName {
-    height: 2.8rem;
+    height: 2.5rem;
     background: #2B2D31;
     border-bottom: 1.2px solid rgba(0,0,0,0.3);
     display: flex;

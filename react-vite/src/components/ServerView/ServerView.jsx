@@ -8,6 +8,9 @@ import { fetchChannelsForServerIdThunk } from "../../redux/channel"
 
 // Components
 import MessageLayout from "../MessageLayout/MessageLayout"
+import ChannelNav from "../ChannelNav/ChannelNav"
+import HeaderInfo from "../HeaderInfo/HeaderInfo"
+import UserList from "../UserList/UserList"
 
 export default function ServerView({ activeServerId, activeChannelId, messages }) {
     const dispatch = useDispatch()
@@ -20,7 +23,10 @@ export default function ServerView({ activeServerId, activeChannelId, messages }
 
     return (
         <section className={styles.serverView}>
+            <ChannelNav />
+            <HeaderInfo />
             <MessageLayout />
+            <UserList />
         </section>
     )
 }
