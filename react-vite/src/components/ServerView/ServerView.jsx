@@ -12,8 +12,8 @@ import MessageLayout from "../MessageLayout/MessageLayout"
 export default function ServerView({ activeServerId }) {
     const dispatch = useDispatch()
     const channels = Object.values(useSelector((state) => state.channels))
-    console.log("Channels: ", channels)
-    
+    // console.log("Channels: ", channels)
+
     useEffect(() => {
         dispatch(fetchChannelsForServerIdThunk(activeServerId));
     }, [dispatch, activeServerId])

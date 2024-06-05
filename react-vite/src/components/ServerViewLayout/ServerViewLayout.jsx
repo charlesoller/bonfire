@@ -13,28 +13,38 @@ import ChannelNav from "../ChannelNav/ChannelNav"
 import UserList from "../UserList/UserList"
 import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import ServerView from "../ServerView/ServerView"
+import { fetchChannelsForServerIdThunk } from "../../redux/channel"
+import { fetchChannelMessagesThunk } from "../../redux/message"
 
 export default function ServerViewLayout(){
     const dispatch = useDispatch();
     const [activeServerId, setActiveServerId] = useState(1);
+    const [activeChannelId, setActiveChannelId] = useState(1);
+
     const servers = Object.values(useSelector((state) => state.servers));
-    const channels = Object.values(useSelector((state) => state.channels))
-    // getChannelMessages(1)
-    // getChannelsForServerId(1)
+    const channels = Object.values(useSelector((state) => state.channels));
+    const messages = Object.values(useSelector((state) => state.messages));
+
+    console.log(messages)
 
     useEffect(() => {
         dispatch(fetchAllServersThunk());
-    }, [dispatch])
+        dispatch(fetchChannelsForServerIdThunk(activeServerId))
+        dispatch(fetchChannelMessagesThunk(activeChannelId))
+    }, [dispatch, activeServerId, activeChannelId])
 
     return (
         <main className={styles.body}> 
             <ServerNav servers={servers}/>
-            <ChannelNav />
+            <ChannelNav 
+                channels={channels}
+            />
             <section className={styles.main}>
                 <HeaderInfo />
                 <div className={styles.channel_view}>
                     <ServerView 
                         activeServerId={activeServerId}
+                        channels={channels}
                     />
                     <UserList />
                 </div>

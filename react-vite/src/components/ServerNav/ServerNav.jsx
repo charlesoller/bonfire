@@ -2,7 +2,7 @@ import styles from "./ServerNav.module.css"
 import { FaUserCircle } from "react-icons/fa"
 
 export default function ServerNav({ servers }){
-    console.log("Servers: ", servers)
+    // console.log("Servers: ", servers)
     return (
         <aside className={styles.serverNav}>
             <div className={styles.directMessageIcon}>
