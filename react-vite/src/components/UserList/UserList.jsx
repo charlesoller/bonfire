@@ -1,7 +1,7 @@
 import styles from "./UserList.module.css"
 import { FaUserCircle } from "react-icons/fa"
 
-export default function UserList(){
+export default function UserList({ serverUsers }){
     return (
         <aside className={styles.userList}>
             <h5 className={styles.userRoleName}>ROLE NAME - 25</h5>

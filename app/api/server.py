@@ -52,6 +52,7 @@ def create_new_server():
 
         return server_data
     else:
+        print("FORM ERRORS", form.errors)
         return form.errors, 401
 
 @server.route("/<int:server_id>", methods=["PUT"])

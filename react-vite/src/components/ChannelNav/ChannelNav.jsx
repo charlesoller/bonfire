@@ -1,7 +1,7 @@
 import styles from "./ChannelNav.module.css"
 import { FaCode } from "react-icons/fa"
 
-export default function ChannelNav(){
+export default function ChannelNav({ channels }){
     return (
         <aside className={styles.channelNav}>
             <div className={styles.channelName}>

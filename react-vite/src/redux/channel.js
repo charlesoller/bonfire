@@ -16,7 +16,6 @@ export const fetchChannelsForServerIdThunk = (id) => async (dispatch) => {
 
 // ================= REDUCER ================= 
 const channelReducer = (state = {}, action) => {
-    console.log(action.type)
     switch (action.type) {
         case LOAD_CHANNELS: {
             const channelsState = {};

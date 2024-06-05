@@ -9,7 +9,7 @@ import { fetchChannelsForServerIdThunk } from "../../redux/channel"
 // Components
 import MessageLayout from "../MessageLayout/MessageLayout"
 
-export default function ServerView({ activeServerId }) {
+export default function ServerView({ activeServerId, activeChannelId, messages }) {
     const dispatch = useDispatch()
     const channels = Object.values(useSelector((state) => state.channels))
     // console.log("Channels: ", channels)
