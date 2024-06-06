@@ -17,12 +17,16 @@ export default function ServerView({ activeServerId }) {
     const [activeChannelId, setActiveChannelId] = useState(1);
     const channels = Object.values(useSelector((state) => state.channels))
     const messages = Object.values(useSelector((state) => state.messages));
-    console.log(messages)
-    console.log(activeChannelId)
+   
     useEffect(() => {
         dispatch(fetchChannelsForServerIdThunk(activeServerId));
         dispatch(fetchChannelMessagesThunk(activeChannelId))
     }, [dispatch, activeServerId, activeChannelId])
+
+    useEffect(() => {
+        // This is responsible for changing the active channel when the server changes
+        setActiveChannelId(channels[0].id)
+    }, [activeServerId, channels])
 
     return (
         <section className={styles.serverView}>

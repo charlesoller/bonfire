@@ -6,7 +6,8 @@
 
 .icon {
     align-self: flex-start;
-    height: fit-content;
+    height: 30px;
+    width: 30px;
 }
 
 .message:hover,

@@ -86,6 +86,7 @@ class Server(db.Model):
             'name': self.name,
             'description': self.description,
             'owner_id': self.owner_id,
+            'channels': [channel.to_dict() for channel in self.channels],
             'server_images': [server_image.to_dict() for server_image in self.server_images]
         }
 
