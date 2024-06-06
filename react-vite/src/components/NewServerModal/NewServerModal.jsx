@@ -19,7 +19,6 @@ function NewServerModal() {
                 name: serverName,
                 description: serverDescription,
                 server_image: serverImage,
-                csrf_token: "ImZiNDQ1Njc1OTFkNmRkM2MwOTllZDU4ZTQ2MThlYmJiMGRjZGE0YjUi.ZmEYcA.YDmBe8JVAr77xge9H6pdyysTKJ0"
             })
         );
 
