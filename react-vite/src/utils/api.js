@@ -23,6 +23,8 @@ export const getUsersForServerId = async (serverId) => {
     const res = await fetch(`/api/servers/${serverId}/users`)
         .then(res => res.json())
         .catch(e => console.error(e))
+
+    console.log("RES: ", res)
     return res;
 }
 

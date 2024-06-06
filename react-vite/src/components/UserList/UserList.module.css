@@ -12,19 +12,8 @@
     height: 100%;
 }
 
-.user {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-}
-
 .userRoleName {
     color: #8E959E;
     font-weight: 500;
     font-size: 0.8rem;
-}
-
-.user__name {
-    font-weight: 500;
-    font-size: 0.85rem;
 }

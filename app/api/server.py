@@ -9,7 +9,6 @@ server = Blueprint("servers", __name__, url_prefix="")
 @login_required
 def get_all_servers():
     servers = Server.query.all()
-    print([server.to_dict() for server in servers])
     return [server.to_dict() for server in servers]
 
 @server.route("/", methods=["POST"])
@@ -17,7 +16,6 @@ def get_all_servers():
 def create_new_server():
     form = NewServerForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    print(form)
     if form.validate_on_submit():
         server_name = form.name.data
         server_description = form.description.data
@@ -115,5 +113,8 @@ def create_new_channel(server_id):
 def get_server_users(server_id):
     server = Server.query.get_or_404(server_id)
     users = server.users  # Assuming you have a relationship defined
-    print([user.to_dict() for user in users])
+    user_list = [user.to_dict() for user in users]
+    user_ids = [item['user_id'] for item in user_list]
+    users = User.query.filter(User.id.in_(user_ids)).all()
+
     return jsonify([user.to_dict() for user in users])

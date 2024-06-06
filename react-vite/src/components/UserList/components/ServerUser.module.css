@@ -1,0 +1,17 @@
+.user {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.user__name {
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.profile_picture {
+    height: 25px;
+    width: 25px;
+    object-fit: cover;
+    border-radius: 100%;
+}
