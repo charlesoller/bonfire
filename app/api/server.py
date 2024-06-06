@@ -18,7 +18,6 @@ def create_new_server():
     form = NewServerForm()
     print(form)
     if form.validate_on_submit():
-        print("HELLO SERVERS POST")
         server_name = form.name.data
         server_description = form.description.data
         server_image = form.server_image.data
@@ -79,15 +78,12 @@ def update_server(server_id):
 @server.route("/<int:server_id>/channels")
 @login_required
 def get_all_server_channels(server_id):
-    print("HELLO CHANNELS")
     channels = Channel.query.filter_by(server_id=server_id).all()
-    print([channel.to_dict() for channel in channels])
     return [channel.to_dict() for channel in channels]
 
 @server.route("/<int:server_id>/channels", methods=["POST"])
 @login_required
 def create_new_channel(server_id):
-    print("HELLO CHANNELS POST")
     form = NewChannelForm()
     if form.validate_on_submit():
         channel_name = form.name.data
@@ -118,4 +114,5 @@ def create_new_channel(server_id):
 def get_server_users(server_id):
     server = Server.query.get_or_404(server_id)
     users = server.users  # Assuming you have a relationship defined
+    print([user.to_dict() for user in users])
     return jsonify([user.to_dict() for user in users])

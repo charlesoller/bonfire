@@ -40,7 +40,8 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'profile_images': [profile_image.to_dict() for profile_image in self.profile_images]
         }
     
 class ProfileImage(db.Model):

@@ -30,7 +30,7 @@ export default function ServerView({ activeServerId }) {
         // This is responsible for changing the active channel when the server changes
         setActiveChannelId(channels[0]?.id)
     }, [activeServerId, channels])
-
+    
     return (
         <section className={styles.serverView}>
             <ChannelNav channels={channels} setActiveChannel={setActiveChannelId} />

@@ -24,7 +24,6 @@ def get_channel_messages(channel_id):
             .filter(ChannelMessage.channel_id == channel_id)
             .all()
     )
-    print(messages_with_users)
     # Convert to dictionary format
     messages_dict = [
         {
