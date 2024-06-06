@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
-from app.models import Channel, db, ChannelMessage, Reaction, UserReaction, ChatRoomMessage
+from app.models import Channel, db, ChannelMessage, Reaction, UserReaction, ChatRoomMessage, User
+from sqlalchemy.orm import joinedload
 
 channels_bp = Blueprint("channels", __name__)
 
@@ -12,9 +13,37 @@ channels_bp = Blueprint("channels", __name__)
 @channels_bp.route('/<int:channel_id>/messages', methods=['GET'])
 @login_required
 def get_channel_messages(channel_id):
-    channel = Channel.query.get_or_404(channel_id)  # Get the channel or return 404 if not found
-    messages = ChannelMessage.query.filter_by(channel_id=channel_id).all()  # Get all messages in the channel
-    return jsonify([message.to_dict() for message in messages])  # Return messages as JSON
+    # Get the channel or return 404 if not found
+    channel = Channel.query.get_or_404(channel_id)
+    
+    # Query to get all messages in the channel with the associated user
+    messages_with_users = (
+        db.session.query(ChannelMessage)
+            .join(User, ChannelMessage.user_id == User.id)
+            .options(joinedload(ChannelMessage.user))
+            .filter(ChannelMessage.channel_id == channel_id)
+            .all()
+    )
+    print(messages_with_users)
+    # Convert to dictionary format
+    messages_dict = [
+        {
+            'message_id': message.id,
+            'user': {
+                'id': message.user.id,
+                'username': message.user.username,
+                'email': message.user.email
+            },
+            'channel_id': message.channel_id,
+            'text_field': message.text_field,
+            'created_at': message.created_at,
+            'updated_at': message.updated_at
+        }
+        for message in messages_with_users
+    ]
+
+    # Return messages as JSON
+    return jsonify(messages_dict), 200
 
 # Create a new message in a channel
 @login_required

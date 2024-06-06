@@ -25,7 +25,7 @@ export default function ServerView({ activeServerId }) {
 
     useEffect(() => {
         // This is responsible for changing the active channel when the server changes
-        setActiveChannelId(channels[0].id)
+        setActiveChannelId(channels[0]?.id)
     }, [activeServerId, channels])
 
     return (
