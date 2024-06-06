@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Server, db, Channel, ServerImage, User
 from app.forms import NewServerForm, NewChannelForm
@@ -16,6 +16,7 @@ def get_all_servers():
 @login_required
 def create_new_server():
     form = NewServerForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     print(form)
     if form.validate_on_submit():
         server_name = form.name.data
