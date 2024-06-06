@@ -25,13 +25,18 @@ def get_channel_messages(channel_id):
             .all()
     )
     # Convert to dictionary format
+    # print("=============================================================================================================================================================================================")
+    # print(messages_with_users)
+    # print("=============================================================================================================================================================================================")
+
     messages_dict = [
         {
             'message_id': message.id,
             'user': {
                 'id': message.user.id,
                 'username': message.user.username,
-                'email': message.user.email
+                'email': message.user.email,
+                'profile_image': [profile_image.to_dict() for profile_image in message.user.profile_images]
             },
             'channel_id': message.channel_id,
             'text_field': message.text_field,
@@ -42,7 +47,7 @@ def get_channel_messages(channel_id):
     ]
 
     # Return messages as JSON
-    return jsonify(messages_dict), 200
+    return jsonify(messages_dict)
 
 # Create a new message in a channel
 @login_required

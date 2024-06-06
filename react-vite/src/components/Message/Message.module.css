@@ -37,3 +37,11 @@
     font-size: 0.65rem;
     color: #949BA4;
 }
+
+.profile_picture {
+    margin-top: 4px;
+    height: 32px;
+    width: 32px;
+    object-fit: cover;
+    border-radius: 100%;
+}
