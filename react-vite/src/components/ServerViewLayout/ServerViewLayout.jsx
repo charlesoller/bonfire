@@ -16,11 +16,9 @@ export default function ServerViewLayout(){
     const [activeServerId, setActiveServerId] = useState(1);
 
     const servers = Object.values(useSelector((state) => state.servers));
-    const serverUsers = Object.values(useSelector((state) => state.serverUsers));
 
     useEffect(() => {
         dispatch(fetchAllServersThunk());
-        dispatch(fetchServerUsersThunk(activeServerId))
     }, [dispatch, activeServerId])
     
     return (

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchChannelsForServerIdThunk } from "../../redux/channel"
 import { fetchChannelMessagesThunk } from "../../redux/message"
+import { fetchServerUsersThunk } from "../../redux/serverUser"
 
 // Components
 import MessageLayout from "../MessageLayout/MessageLayout"
@@ -17,10 +18,12 @@ export default function ServerView({ activeServerId }) {
     const [activeChannelId, setActiveChannelId] = useState(1);
     const channels = Object.values(useSelector((state) => state.channels))
     const messages = Object.values(useSelector((state) => state.messages));
+    const serverUsers = Object.values(useSelector((state) => state.serverUsers));
    
     useEffect(() => {
         dispatch(fetchChannelsForServerIdThunk(activeServerId));
         dispatch(fetchChannelMessagesThunk(activeChannelId))
+        dispatch(fetchServerUsersThunk(activeServerId))
     }, [dispatch, activeServerId, activeChannelId])
 
     useEffect(() => {
@@ -30,10 +33,10 @@ export default function ServerView({ activeServerId }) {
 
     return (
         <section className={styles.serverView}>
-            <ChannelNav channels={channels} setActiveChannel={setActiveChannelId}/>
+            <ChannelNav channels={channels} setActiveChannel={setActiveChannelId} />
             <HeaderInfo />
-            <MessageLayout messages={messages}/>
-            <UserList />
+            <MessageLayout messages={messages} />
+            <UserList users={serverUsers} />
         </section>
     )
 }
