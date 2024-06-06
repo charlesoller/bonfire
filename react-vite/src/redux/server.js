@@ -2,6 +2,7 @@ import { getAllServers, addServer } from "../utils/api"
 
 export const LOAD_SERVERS = 'servers/LOAD_SERVERS'
 export const LOAD_ONE_SERVER = 'servers/LOAD_ONE_SERVER'
+export const CLEAR_SERVER_DETAILS = 'servers/CLEAR_SERVER_DETAILS'
 
 // ================= ACTION CREATORS ================= 
 export const loadServers = (servers) => ({
@@ -12,6 +13,10 @@ export const loadServers = (servers) => ({
 export const loadOneServer = (server) => ({
     type: LOAD_ONE_SERVER,
     server
+})
+
+export const clearServerDetails = () => ({
+    type: CLEAR_SERVER_DETAILS
 })
 
 // ================= THUNKS ================= 
@@ -38,6 +43,10 @@ const serverReducer = (state = {}, action) => {
 
         case LOAD_ONE_SERVER: {
             return { ...state, [action.server.id]: action.server};
+        }
+
+        case CLEAR_SERVER_DETAILS: {
+            return {};
         }
         
         default:
