@@ -1,11 +1,12 @@
-import { useEffect, useState, useMemo } from "react";
-import { useDispatch } from "react-redux";
-import { addNewServer } from "../../redux/server";
+import { useEffect, useMemo } from "react";
+import { useDispatch } from 'react-redux';
+import { fetchAllServersThunk, clearServerDetails } from '../../redux/server';
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import NewServerModal from "../NewServerModal/NewServerModal";
 import styles from "./ServerNav.module.css"
-// Components
 import ServerIcon from "./components/ServerIcon";
-import { FaUserCircle } from "react-icons/fa"
-import { FaFireAlt, FaFire } from "react-icons/fa";
+// import { FaUserCircle } from "react-icons/fa"
+// import { FaFireAlt, FaFire } from "react-icons/fa";
 import { AiFillFire } from "react-icons/ai";
 import { CiCirclePlus } from "react-icons/ci";
 
@@ -14,17 +15,13 @@ const IMAGE_PLACEHOLDER = "https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t
 export default function ServerNav({ servers, setActiveServerId }){
     const dispatch = useDispatch();
 
-    const newServer = async (e) => {
-        e.preventDefault();
-        const server = {
-            name: "Button Server",
-            description: "This server was made by clicking a button",
-            csrf_token: "ImEzMDQ0NzlkNjBjNDAyYzQ0MjRjODdjYmI2ZjdjMGMyYjRlNmM1NDMi.Zl_Bwg.xotKL4lt2YfZDcY5alI9Pr6Zk7o",
-            server_image: "not/a/url.jpg"
+    useEffect(() => {
+        dispatch(fetchAllServersThunk());
+
+        return () => {
+            dispatch(clearServerDetails());
         }
-        console.log("NEW SERVER", server)
-        dispatch(addNewServer(server))
-    }
+    }, [dispatch]);
 
     const serverElements = useMemo(() => servers.map((server) => {
         return (
@@ -38,9 +35,11 @@ export default function ServerNav({ servers, setActiveServerId }){
                 <AiFillFire size={40} fill="orange"/>
             </div>
             {serverElements}
-            <button onClick={newServer}>
-                <CiCirclePlus size={44}/>
-            </button>
+
+            <OpenModalButton
+                buttonText={<CiCirclePlus size={44}/>}
+                modalComponent={<NewServerModal/>}
+            />
         </aside>
     )
 }
