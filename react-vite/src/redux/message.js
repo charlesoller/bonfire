@@ -31,16 +31,12 @@ const messageReducer = (state = {}, action) => {
         case LOAD_MESSAGES: {
             const messagesState = {};
             action.messages.forEach((message) => {
-                messagesState[message.id] = message;
+                messagesState[message.message_id] = message;
             })
             return messagesState;
         }
         case ADD_MESSAGE: {
-            const newState = { ...state };
-            const channelMessages = newState[action.message.channel_id] || [];
-            channelMessages.push(action.message);
-            newState[action.message.channel_id] = channelMessages;
-            return newState;
+            return { ...state, [action.message.message_id]: action.message};
         }
         default:
             return state;
