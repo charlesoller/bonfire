@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createMessageThunk, fetchChannelMessagesThunk } from '../../redux/message';
-import Message from '../Message/Message';
 import styles from './MessageInput.module.css';
 
 const MessageInput = ({ channelId }) => {
   const dispatch = useDispatch();
-  const messages = useSelector(state => state.messages[channelId] || []);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -20,6 +18,7 @@ const MessageInput = ({ channelId }) => {
       dispatch(createMessageThunk(channelId, { text_field: message }));
       setMessage('');
     }
+    dispatch(fetchChannelMessagesThunk(channelId))
   };
 
   const handleEditMessage = (messageId, newText) => {
