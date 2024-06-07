@@ -10,7 +10,7 @@ export default function UserList({ users }){
 
     return (
         <aside className={styles.userList}>
-            <h5 className={styles.userRoleName}>{`${users.length} User${users.length > 1 ? 's' : ''}`}</h5>
+            <h5 className={styles.userRoleName}>{`${users.length} USER${users.length > 1 ? 'S' : ''}`}</h5>
             { userElements }
         </aside>
     )

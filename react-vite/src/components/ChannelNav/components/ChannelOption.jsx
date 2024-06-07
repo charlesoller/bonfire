@@ -1,7 +1,6 @@
 import styles from "./ChannelOption.module.css"
 
 export default function ChannelOption({id, name, setActiveChannel, active}){
-    console.log(active)
     const activeStyle = active ? {"background": "#37393f"} : {}
 
     return (
