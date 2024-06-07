@@ -1,0 +1,40 @@
+/* Wrapper for the chat room */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    position: fixed;
+    bottom: 0.6rem;
+    right: 11.9rem;
+    left: 15.6rem;
+}
+
+/* Message input container */
+.message_input_container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #2f3136;
+    width: 100%;
+}
+
+/* Message input field */
+.message_input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #40444b;
+    color: #ffffff;
+    width: 100%;
+}
+
+/* Send button */
+.send_button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #7289da;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
