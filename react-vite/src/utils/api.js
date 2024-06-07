@@ -24,7 +24,6 @@ export const getUsersForServerId = async (serverId) => {
         .then(res => res.json())
         .catch(e => console.error(e))
 
-    console.log("RES: ", res)
     return res;
 }
 

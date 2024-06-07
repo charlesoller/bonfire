@@ -4,7 +4,6 @@ import { FaUserCircle } from "react-icons/fa"
 import ServerUser from "./components/ServerUser"
 
 export default function UserList({ users }){
-    console.log(users)
     const userElements = useMemo(() => users.map(user => (
         <ServerUser key={user.id} name={user.username} img={user.profile_images[0].url} />
     )), [users])
