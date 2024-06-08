@@ -12,6 +12,9 @@ from .seeds import seed_commands
 from .config import Config
 from .api.channels import channels_bp
 from .api.server import server
+from .socket import socketio
+from flask_socketio import SocketIO, emit
+
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
@@ -30,6 +33,7 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
+
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(channels_bp, url_prefix='/api/channels')
@@ -38,8 +42,8 @@ db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app)
-
+CORS(app,resources={r"/*":{"origins":"*"}})
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.
@@ -95,3 +99,25 @@ def react_root(path):
 @app.errorhandler(404)
 def not_found(e):
     return app.send_static_file('index.html')
+
+@socketio.on("connect")
+def connected():
+    """event listener when client connects to the server"""
+    # print(request.sid)
+    print("client has connected")
+    emit("connect",{"data":f"id: {request.sid} is connected"})
+
+@socketio.on('data')
+def handle_message(data):
+    """event listener when client types a message"""
+    print("data from the front end: ",str(data))
+    emit("data",{'data':data,'id':request.sid},broadcast=True)
+
+@socketio.on("disconnect")
+def disconnected():
+    """event listener when client disconnects to the server"""
+    print("user disconnected")
+    emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True, port=8000)

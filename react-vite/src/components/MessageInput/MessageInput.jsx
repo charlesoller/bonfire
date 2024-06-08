@@ -1,29 +1,38 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createMessageThunk, fetchChannelMessagesThunk } from '../../redux/message';
 import styles from './MessageInput.module.css';
 
 const MessageInput = ({ channelId, socket }) => {
+  const user = useSelector(state => state.session.user)
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    if (channelId) {
-      dispatch(fetchChannelMessagesThunk(channelId));
-    }
-  }, [dispatch, channelId]);
+//   useEffect(() => {
+//     if (channelId) {
+//       dispatch(fetchChannelMessagesThunk(channelId));
+//     }
+//   }, [dispatch, channelId]);
 
-  const handleSendMessage = (e) => {
-    e.preventDefault()
+//   const handleSendMessage = (e) => {
+//     e.preventDefault()
 
-    if (channelId && message.trim()) {
-        console.log("IN IF")
-        dispatch(createMessageThunk(channelId, { text_field: message }));
-        socket.emit('chat', { user: "TESTING 1 2 3" });
-        setMessage('');
+//     if (channelId && message.trim()) {
+//         console.log("IN IF")
+//         dispatch(createMessageThunk(channelId, { text_field: message }));
+//         socket.emit('chat', { user: "TESTING 1 2 3" });
+//         setMessage('');
+//     }
+//     dispatch(fetchChannelMessagesThunk(channelId))
+//   };
+
+    const handleSendMessage = (e) => {
+        e.preventDefault()
+        // emit a message
+        socket.emit("chat", { msg: message });
+        // clear the input field after the message is sent
+        setMessage("")
     }
-    dispatch(fetchChannelMessagesThunk(channelId))
-  };
 
 //   const handleEditMessage = (messageId, newText) => {
 //     // Dispatch an action to edit the message
