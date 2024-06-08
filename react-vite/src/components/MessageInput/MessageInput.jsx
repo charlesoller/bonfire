@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createMessageThunk, fetchChannelMessagesThunk } from '../../redux/message';
 import styles from './MessageInput.module.css';
 
-const MessageInput = ({ channelId }) => {
+const MessageInput = ({ channelId, socket }) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
 
@@ -17,15 +17,17 @@ const MessageInput = ({ channelId }) => {
     e.preventDefault()
 
     if (channelId && message.trim()) {
-      dispatch(createMessageThunk(channelId, { text_field: message }));
-      setMessage('');
+        console.log("IN IF")
+        dispatch(createMessageThunk(channelId, { text_field: message }));
+        socket.emit('chat', { user: "TESTING 1 2 3" });
+        setMessage('');
     }
     dispatch(fetchChannelMessagesThunk(channelId))
   };
 
-  const handleEditMessage = (messageId, newText) => {
-    // Dispatch an action to edit the message
-  };
+//   const handleEditMessage = (messageId, newText) => {
+//     // Dispatch an action to edit the message
+//   };
 
   return (
     <div className={styles.wrapper}>
@@ -38,7 +40,7 @@ const MessageInput = ({ channelId }) => {
             placeholder="Type a message..."
             />
             <button onClick={(e) => handleSendMessage(e)} className={styles.send_button}>
-            Send
+                Send
             </button>
       </form>
     </div>

@@ -36,7 +36,7 @@ export default function ServerView({ activeServerId, activeServer }) {
         <section className={styles.serverView}>
             <ChannelNav channels={channels} activeChannel={activeChannel} setActiveChannel={setActiveChannelId} activeServer={activeServer} />
             <HeaderInfo activeChannel={activeChannel} />
-            <MessageLayout messages={messages} channelId={activeChannelId}/>
+            <MessageLayout defaultMessages={messages} channelId={activeChannelId}/>
             <UserList users={serverUsers} />
         </section>
     )

@@ -48,7 +48,7 @@ export const createChannelMessage = async (channelId, message) => {
     });
     if (res.ok) {
         const data = await res.json();
-        console.log('API call createChannelMessage response:', data);
+        // console.log('API call createChannelMessage response:', data);
         return data;
     }
     throw new Error('Failed to create message');
