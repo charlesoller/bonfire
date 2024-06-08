@@ -1,11 +1,26 @@
 .main {
     background-color: #313338;
     height: 100%;
-    overflow-y: scroll;
     position: fixed;
     top: 2.5rem;
     right: 11.9rem;
     left: 15.6rem;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    overflow-y: scroll;
+    /* justify-content: flex-end; */
+    top: 2.5rem;
+    right: 11.9rem;
+    left: 15.6rem;
+    bottom: 3.6rem;
+}
+
+.messages > :first-child {
+    margin-top: auto;
 }
 
 ::-webkit-scrollbar {

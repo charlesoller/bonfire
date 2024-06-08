@@ -45,4 +45,6 @@
     width: 32px;
     object-fit: cover;
     border-radius: 100%;
+    min-width: 32px;
+    max-width: 32px;
 }

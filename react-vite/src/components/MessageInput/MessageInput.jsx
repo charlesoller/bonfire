@@ -13,7 +13,9 @@ const MessageInput = ({ channelId }) => {
     }
   }, [dispatch, channelId]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (e) => {
+    e.preventDefault()
+
     if (channelId && message.trim()) {
       dispatch(createMessageThunk(channelId, { text_field: message }));
       setMessage('');
@@ -27,18 +29,18 @@ const MessageInput = ({ channelId }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.message_input_container}>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className={styles.message_input}
-          placeholder="Type a message..."
-        />
-        <button onClick={handleSendMessage} className={styles.send_button}>
-          Send
-        </button>
-      </div>
+      <form className={styles.message_input_container}>
+            <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className={styles.message_input}
+            placeholder="Type a message..."
+            />
+            <button onClick={(e) => handleSendMessage(e)} className={styles.send_button}>
+            Send
+            </button>
+      </form>
     </div>
   );
 };

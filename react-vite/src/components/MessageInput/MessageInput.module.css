@@ -4,7 +4,7 @@
     flex-direction: column;
     height: fit-content;
     position: fixed;
-    bottom: 0.6rem;
+    bottom: 1.2rem;
     right: 11.9rem;
     left: 15.6rem;
 }
@@ -12,8 +12,7 @@
 /* Message input container */
 .message_input_container {
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #2f3136;
+    padding: 0 0.5em;
     width: 100%;
 }
 
@@ -37,4 +36,8 @@
     background-color: #7289da;
     color: rgb(255, 255, 255);
     cursor: pointer;
+}
+
+.send_button:hover {
+    background-color: #6377bf;
 }
