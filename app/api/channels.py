@@ -56,12 +56,13 @@ def create_channel_message(channel_id):
     channel = Channel.query.get_or_404(channel_id)  # Get the channel or return 404 if not found
     data = request.get_json()  # Get the JSON data from the request
     text = data.get("text_field")  # Get the text field from the data
-    
+    user_id = data.get("user_id")
+
     if not text:
         return jsonify({'error': 'Text field is required'}), 400  # Return error if text field is missing
     
     new_message = ChannelMessage(
-        user_id=1,  # Use a hardcoded user ID for testing
+        user_id=user_id,  # Use a hardcoded user ID for testing
         channel_id=channel_id,
         text_field=text
     )

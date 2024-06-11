@@ -38,13 +38,13 @@ export const addServer = async (server) => {
     return res;
 }
 
-export const createChannelMessage = async (channelId, message) => {
+export const createChannelMessage = async (channelId, message, userId) => {
     const res = await fetch(`/api/channels/${channelId}/messages`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({text_field: message}),
+        body: JSON.stringify({text_field: message, user_id: userId}),
     });
     if (res.ok) {
         const data = await res.json();

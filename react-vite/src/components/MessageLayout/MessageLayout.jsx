@@ -12,24 +12,25 @@ import MessageInput from "../MessageInput/MessageInput"
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:8000';
 let socket;
-export default function MessageLayout({ defaultMessages, channelId }){
+export default function MessageLayout({ defaultMessages, channelId }) {
     const dispatch = useDispatch()
-    const [messages, setMessages] = useState([])
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
+    const [messages, setMessages] = useState([])
+
     useEffect(() => {
         socket = io(URL);
         socket.on('chat', (data) => {
-          const { text_field: text, user, date } = data;
-          const newMessage = {
-            channel_id: channelId,
-            created_at: date,
-            updated_at: date,
-            message_id: defaultMessages.length + 1,
-            text_field: text,
-            user
-          }
+            const { text_field: text, user, date } = data;
+            const newMessage = {
+                channel_id: channelId,
+                created_at: date,
+                updated_at: date,
+                message_id: defaultMessages.length + 1,
+                text_field: text,
+                user
+            }
 
-          setMessages(messages => [...messages, newMessage])
+            setMessages(messages => [...messages, newMessage])
         })
 
         return (() => {
@@ -41,21 +42,18 @@ export default function MessageLayout({ defaultMessages, channelId }){
         // socket.emit('leave', { room: prevRoom })
         socket.emit('join', { room: channelId })
         setMessages(defaultMessages)
-        // The below error is necessary because otherwise multiple messages won't update together
-      }, [channelId])
+    }, [channelId])
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
-        dispatch(createMessageThunk(channelId, text_field))
-        // dispatch(fetchChannelMessagesThunk(channelId))
+        dispatch(createMessageThunk(channelId, text_field, currentUser.id))
         console.log("CURRENT USER: ", currentUser)
         socket.emit('chat', { text_field, room: channelId, user: currentUser, date: new Date() });
     }
 
     const messageElements = useMemo(() => messages.map((message) => {
         const { user } = message;
-        const { profile_images } = user
-        const url = profile_images[0]?.url || undefined
+        const url = user?.profile_images[0]?.url || undefined
         return <Message key={message.id} text={message.text_field} date={message.updated_at} name={message.user?.username} img={url} />
     }), [messages])
 
@@ -75,7 +73,7 @@ export default function MessageLayout({ defaultMessages, channelId }){
                 {messageElements}
                 {/* <button onClick={sendChat}>Click</button> */}
             </div>
-            <MessageInput channelId={channelId} handleSendMessage={handleSendMessage}/> 
+            <MessageInput channelId={channelId} handleSendMessage={handleSendMessage} />
         </div>
     )
 }
