@@ -13,7 +13,7 @@ from .config import Config
 from .api.channels import channels_bp
 from .api.server import server
 from .socket import socketio
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, leave_room, join_room
 
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
@@ -25,7 +25,6 @@ login.login_view = 'auth.unauthorized'
 
 @login.user_loader
 def load_user(id):
-    print("TEST: ", id)
     return User.query.get(int(id))
 
 
@@ -100,24 +99,41 @@ def react_root(path):
 def not_found(e):
     return app.send_static_file('index.html')
 
-@socketio.on("connect")
-def connected():
-    """event listener when client connects to the server"""
-    # print(request.sid)
-    print("client has connected")
-    emit("connect",{"data":f"id: {request.sid} is connected"})
+# @socketio.on("connect")
+# def connected():
+#     """event listener when client connects to the server"""
+#     print("client has connected")
+#     emit("connect",{"data":f"id: {request.sid} is connected"})
 
-@socketio.on('data')
-def handle_message(data):
-    """event listener when client types a message"""
-    print("data from the front end: ",str(data))
-    emit("data",{'data':data,'id':request.sid},broadcast=True)
+# @socketio.on('data')
+# def handle_message(data):
+#     """event listener when client types a message"""
+#     print("data from the front end: ",str(data))
+#     emit("data",{'data':data,'id':request.sid}, broadcast=True)
 
-@socketio.on("disconnect")
-def disconnected():
-    """event listener when client disconnects to the server"""
-    print("user disconnected")
-    emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
+# @socketio.on("disconnect")
+# def disconnected():
+#     """event listener when client disconnects to the server"""
+#     print("user disconnected")
+#     emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
+
+@socketio.on("chat")
+def handle_chat(data):
+    print("1==========================================================================================================================================================================================================================================================")
+    print(data)
+    print("1==========================================================================================================================================================================================================================================================")
+    emit('chat', data, broadcast=False, to=data['room'])
+
+@socketio.on('leave')
+def handle_leave(data):
+    leave_room(data['room'])
+
+@socketio.on('join')
+def handle_join(data):
+    # print("2==========================================================================================================================================================================================================================================================")
+    # print(data)
+    # print("2==========================================================================================================================================================================================================================================================")
+    join_room(data['room'])
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=8000)

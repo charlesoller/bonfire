@@ -1,18 +1,64 @@
 import styles from "./MessageLayout.module.css"
 // Util
 import { useMemo, useEffect, useState, useRef } from "react"
-import { io } from 'socket.io-client'
+import { io } from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
+import { createMessageThunk } from "../../redux/message";
+
 
 // Components
 import Message from "../Message/Message"
 import MessageInput from "../MessageInput/MessageInput"
-import Chat from "./Chat"
 
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:8000';
 let socket;
 export default function MessageLayout({ defaultMessages, channelId }){
-    const messageElements = useMemo(() => defaultMessages.map((message) => (
-        <Message key={message.id} text={message.text_field} date={message.updated_at} name={message.user?.username} img={message.user?.profile_image[0].url}/>
-    )), [defaultMessages])
+    const dispatch = useDispatch()
+    const [messages, setMessages] = useState([])
+    const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
+    useEffect(() => {
+        socket = io(URL);
+        socket.on('chat', (data) => {
+          const { text_field: text, user, date } = data;
+          const newMessage = {
+            channel_id: channelId,
+            created_at: date,
+            updated_at: date,
+            message_id: defaultMessages.length + 1,
+            text_field: text,
+            user
+          }
+
+          setMessages(messages => [...messages, newMessage])
+        })
+
+        return (() => {
+            socket.disconnect()
+        })
+    }, []);
+
+    useEffect(() => {
+        // socket.emit('leave', { room: prevRoom })
+        socket.emit('join', { room: channelId })
+        setMessages(defaultMessages)
+        // The below error is necessary because otherwise multiple messages won't update together
+      }, [channelId])
+
+    const handleSendMessage = (e, text_field) => {
+        e.preventDefault()
+        dispatch(createMessageThunk(channelId, text_field))
+        // dispatch(fetchChannelMessagesThunk(channelId))
+        console.log("CURRENT USER: ", currentUser)
+        socket.emit('chat', { text_field, room: channelId, user: currentUser, date: new Date() });
+    }
+
+    const messageElements = useMemo(() => messages.map((message) => {
+        const { user } = message;
+        const { profile_images } = user
+        const url = profile_images[0]?.url || undefined
+        return <Message key={message.id} text={message.text_field} date={message.updated_at} name={message.user?.username} img={url} />
+    }), [messages])
+
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -20,16 +66,16 @@ export default function MessageLayout({ defaultMessages, channelId }){
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
-    }, [defaultMessages]);
+    }, [messages]);
 
 
     return (
         <div className={styles.main}>
-            {/* <div className={styles.messages} ref={containerRef}>
+            <div className={styles.messages} ref={containerRef}>
                 {messageElements}
+                {/* <button onClick={sendChat}>Click</button> */}
             </div>
-            <MessageInput channelId={channelId} socket={socket}/> */}
-            {/* <Chat /> */}
+            <MessageInput channelId={channelId} handleSendMessage={handleSendMessage}/> 
         </div>
     )
 }

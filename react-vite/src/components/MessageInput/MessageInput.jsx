@@ -3,52 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createMessageThunk, fetchChannelMessagesThunk } from '../../redux/message';
 import styles from './MessageInput.module.css';
 
-const MessageInput = ({ channelId, socket }) => {
-  const user = useSelector(state => state.session.user)
-  const dispatch = useDispatch();
+const MessageInput = ({ channelId, handleSendMessage }) => {
   const [message, setMessage] = useState('');
-
-//   useEffect(() => {
-//     if (channelId) {
-//       dispatch(fetchChannelMessagesThunk(channelId));
-//     }
-//   }, [dispatch, channelId]);
-
-//   const handleSendMessage = (e) => {
-//     e.preventDefault()
-
-//     if (channelId && message.trim()) {
-//         console.log("IN IF")
-//         dispatch(createMessageThunk(channelId, { text_field: message }));
-//         socket.emit('chat', { user: "TESTING 1 2 3" });
-//         setMessage('');
-//     }
-//     dispatch(fetchChannelMessagesThunk(channelId))
-//   };
-
-    const handleSendMessage = (e) => {
-        e.preventDefault()
-        // emit a message
-        socket.emit("chat", { msg: message });
-        // clear the input field after the message is sent
-        setMessage("")
-    }
-
-//   const handleEditMessage = (messageId, newText) => {
-//     // Dispatch an action to edit the message
-//   };
+  const sendMessage = (e, message) => {
+    handleSendMessage(e, message)
+    setMessage("")
+  }
 
   return (
     <div className={styles.wrapper}>
       <form className={styles.message_input_container}>
             <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className={styles.message_input}
-            placeholder="Type a message..."
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className={styles.message_input}
+                placeholder="Type a message..."
             />
-            <button onClick={(e) => handleSendMessage(e)} className={styles.send_button}>
+            <button onClick={(e) => sendMessage(e, message)} className={styles.send_button} disabled={message.length < 1}>
                 Send
             </button>
       </form>

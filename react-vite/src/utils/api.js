@@ -44,7 +44,7 @@ export const createChannelMessage = async (channelId, message) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(message),
+        body: JSON.stringify({text_field: message}),
     });
     if (res.ok) {
         const data = await res.json();
@@ -53,3 +53,10 @@ export const createChannelMessage = async (channelId, message) => {
     }
     throw new Error('Failed to create message');
 };
+
+export const getCurrentUser = async () => {
+    const res = await fetch(`/api/users/current`)
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}

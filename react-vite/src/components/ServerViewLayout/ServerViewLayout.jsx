@@ -4,6 +4,7 @@ import styles from "./ServerViewLayout.module.css"
 import { useState, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAllServersThunk } from "../../redux/server"
+import { fetchCurrentUser } from "../../redux/serverUser"
 // import { getChannelMessages, getChannelsForServerId } from "../../utils/api"
 
 // Components
@@ -16,9 +17,12 @@ export default function ServerViewLayout(){
 
     const servers = Object.values(useSelector((state) => state.servers));
     const activeServer = useMemo(() => servers.filter(server => server.id === activeServerId)[0], [activeServerId, servers]);
+    const currentUser = Object.values(useSelector((state) => state.currentUser));
+
     
     useEffect(() => {
         dispatch(fetchAllServersThunk());
+        dispatch(fetchCurrentUser())
     }, [dispatch, activeServerId])
     
     return (
@@ -29,6 +33,7 @@ export default function ServerViewLayout(){
                     <ServerView 
                         activeServerId={activeServerId}
                         activeServer={activeServer}
+                        currentUser={currentUser}
                     />
                 </div>
             </section>

@@ -36,7 +36,7 @@ def get_channel_messages(channel_id):
                 'id': message.user.id,
                 'username': message.user.username,
                 'email': message.user.email,
-                'profile_image': [profile_image.to_dict() for profile_image in message.user.profile_images]
+                'profile_images': [profile_image.to_dict() for profile_image in message.user.profile_images]
             },
             'channel_id': message.channel_id,
             'text_field': message.text_field,
@@ -55,7 +55,7 @@ def get_channel_messages(channel_id):
 def create_channel_message(channel_id):
     channel = Channel.query.get_or_404(channel_id)  # Get the channel or return 404 if not found
     data = request.get_json()  # Get the JSON data from the request
-    text = data.get('text_field')  # Get the text field from the data
+    text = data.get("text_field")  # Get the text field from the data
     
     if not text:
         return jsonify({'error': 'Text field is required'}), 400  # Return error if text field is missing
