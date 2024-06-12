@@ -12,7 +12,7 @@ import MessageInput from "../MessageInput/MessageInput"
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:8000';
 let socket;
-export default function MessageLayout({ defaultMessages, channelId }) {
+export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
     const [messages, setMessages] = useState([])
@@ -39,7 +39,7 @@ export default function MessageLayout({ defaultMessages, channelId }) {
     }, []);
 
     useEffect(() => {
-        // socket.emit('leave', { room: prevRoom })
+        socket.emit('leave', { room: prevChannelId })
         socket.emit('join', { room: channelId })
         setMessages(defaultMessages)
     }, [channelId])

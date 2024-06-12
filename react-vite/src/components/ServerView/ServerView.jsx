@@ -16,7 +16,8 @@ import UserList from "../UserList/UserList"
 export default function ServerView({ activeServerId, activeServer }) {
     const dispatch = useDispatch()
     const [activeChannelId, setActiveChannelId] = useState(1);
-    const channels = Object.values(useSelector((state) => state.channels))
+    const [prevChannelId, setPrevChannelId] = useState(1);
+    const channels = Object.values(useSelector((state) => state.channels));
     const messages = Object.values(useSelector((state) => state.messages));
     const serverUsers = Object.values(useSelector((state) => state.serverUsers));
     const activeChannel = useMemo(() => channels.filter(channel => channel.id === activeChannelId)[0], [activeChannelId, channels]);
@@ -34,9 +35,9 @@ export default function ServerView({ activeServerId, activeServer }) {
     
     return (
         <section className={styles.serverView}>
-            <ChannelNav channels={channels} activeChannel={activeChannel} setActiveChannel={setActiveChannelId} activeServer={activeServer} />
+            <ChannelNav channels={channels} activeChannel={activeChannel} setActiveChannel={setActiveChannelId} setPrevChannelId={setPrevChannelId} activeServer={activeServer} />
             <HeaderInfo activeChannel={activeChannel} />
-            <MessageLayout defaultMessages={messages} channelId={activeChannelId} />
+            <MessageLayout defaultMessages={messages} channelId={activeChannelId} prevChannelId={prevChannelId} />
             <UserList users={serverUsers} />
         </section>
     )
