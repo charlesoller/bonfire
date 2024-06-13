@@ -48,17 +48,15 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
     }, [channelId, prevChannelId, defaultMessages])
 
     useEffect(() => {
-        // Define the function to be called every second
         const fetchMessages = () => {
           dispatch(fetchChannelMessagesThunk(channelId));
         };
     
-        // Set the interval to call the function every second
-        const intervalId = setInterval(fetchMessages, 1000);
+        const intervalId = setInterval(fetchMessages, 2000);
     
         // Cleanup function to clear the interval when the component unmounts
         return () => clearInterval(intervalId);
-    }, [dispatch, channelId]); // Dependencies array
+    }, [dispatch, channelId]); 
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
