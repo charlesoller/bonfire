@@ -13,10 +13,8 @@ import ChannelNav from "../ChannelNav/ChannelNav"
 import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import UserList from "../UserList/UserList"
 
-export default function ServerView({ activeServerId, activeServer }) {
+export default function ServerView({ activeServerId, activeServer, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId }) {
     const dispatch = useDispatch()
-    const [activeChannelId, setActiveChannelId] = useState(1);
-    const [prevChannelId, setPrevChannelId] = useState(1);
     const channels = Object.values(useSelector((state) => state.channels));
     const messages = Object.values(useSelector((state) => state.messages));
     const serverUsers = Object.values(useSelector((state) => state.serverUsers));
@@ -31,13 +29,25 @@ export default function ServerView({ activeServerId, activeServer }) {
     useEffect(() => {
         // This is responsible for changing the active channel when the server changes
         setActiveChannelId(channels[0]?.id)
-    }, [activeServerId, channels])
+    }, [activeServerId, channels, setActiveChannelId])
     
     return (
         <section className={styles.serverView}>
-            <ChannelNav channels={channels} activeChannel={activeChannel} setActiveChannel={setActiveChannelId} setPrevChannelId={setPrevChannelId} activeServer={activeServer} />
-            <HeaderInfo activeChannel={activeChannel} />
-            <MessageLayout defaultMessages={messages} channelId={activeChannelId} prevChannelId={prevChannelId} />
+            <ChannelNav 
+                channels={channels} 
+                activeChannel={activeChannel} 
+                setActiveChannel={setActiveChannelId} 
+                setPrevChannel={setPrevChannelId} 
+                activeServer={activeServer} 
+            />
+            <HeaderInfo 
+                activeChannel={activeChannel} 
+            />
+            <MessageLayout 
+                defaultMessages={messages} 
+                channelId={activeChannelId} 
+                prevChannelId={prevChannelId} 
+            />
             <UserList users={serverUsers} />
         </section>
     )

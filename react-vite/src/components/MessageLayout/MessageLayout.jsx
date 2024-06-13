@@ -15,7 +15,7 @@ let socket;
 export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         socket = io(URL);
@@ -29,25 +29,26 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
                 text_field: text,
                 user
             }
-
-            setMessages(messages => [...messages, newMessage])
+            console.log("DATA FROM SOCKET: ", newMessage)
+            // const newMessages = [...messages, newMessage]
+            // setMessages(newMessages)
+            // setMessages(messages => [...messages, newMessage])
         })
 
         return (() => {
             socket.disconnect()
         })
-    }, []);
+    }, [channelId]);
 
     useEffect(() => {
         socket.emit('leave', { room: prevChannelId })
         socket.emit('join', { room: channelId })
         setMessages(defaultMessages)
-    }, [channelId])
+    }, [channelId, prevChannelId, defaultMessages])
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
         dispatch(createMessageThunk(channelId, text_field, currentUser.id))
-        console.log("CURRENT USER: ", currentUser)
         socket.emit('chat', { text_field, room: channelId, user: currentUser, date: new Date() });
     }
 

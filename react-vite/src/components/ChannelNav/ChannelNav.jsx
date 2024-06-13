@@ -5,10 +5,10 @@ import { useMemo } from "react"
 import { FaCode } from "react-icons/fa"
 import ChannelOption from "./components/ChannelOption"
 
-export default function ChannelNav({ channels, activeChannel, setActiveChannel, activeServer }){
+export default function ChannelNav({ channels, activeChannel, setActiveChannel, setPrevChannel, activeServer }){
     const channelElements = useMemo(() => channels.map(channel => (
-        <ChannelOption id={channel.id} key={channel.id} name={channel.name} setActiveChannel={setActiveChannel} active={channel.id === activeChannel?.id}/>
-    )), [channels, activeChannel, setActiveChannel])
+        <ChannelOption id={channel.id} key={channel.id} name={channel.name} activeChannelId={activeChannel?.id} setActiveChannel={setActiveChannel} setPrevChannel={setPrevChannel} active={channel.id === activeChannel?.id}/>
+    )), [channels, activeChannel, setActiveChannel, setPrevChannel])
 
     return (
         <aside className={styles.channelNav}>
