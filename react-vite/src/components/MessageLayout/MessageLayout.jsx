@@ -20,13 +20,7 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
     const [messagesSet, setMessagesSet] = useState(false)
     // // console.log(messages)
     useEffect(() => {
-        // this is crucial and ensures that it only works on first load
-        // if (defaultMessages.length > messages.length) {
-        //     console.log("RUNNING>>>>", defaultMessages)
-        //     console.log("RUNNING2>>>>>", messages)
         setMessages(defaultMessages)
-        // }
-
     }, [defaultMessages])
 
     useEffect(() => {
@@ -38,7 +32,9 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
         return (() => {
             socket.disconnect()
         })
-    }, []);
+    }, [dispatch]);
+
+    // setTimeout()
 
     // useEffect(() => {
     //     console.log("RUNNING>>>>")
@@ -49,7 +45,20 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
         socket.emit('leave', { room: prevChannelId })
         socket.emit('join', { room: channelId })
         setMessages(defaultMessages)
-    }, [channelId, prevChannelId])
+    }, [channelId, prevChannelId, defaultMessages])
+
+    useEffect(() => {
+        // Define the function to be called every second
+        const fetchMessages = () => {
+          dispatch(fetchChannelMessagesThunk(channelId));
+        };
+    
+        // Set the interval to call the function every second
+        const intervalId = setInterval(fetchMessages, 1000);
+    
+        // Cleanup function to clear the interval when the component unmounts
+        return () => clearInterval(intervalId);
+    }, [dispatch, channelId]); // Dependencies array
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
