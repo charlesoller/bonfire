@@ -3,7 +3,7 @@ import styles from "./MessageLayout.module.css"
 import { useMemo, useEffect, useState, useRef } from "react"
 import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { createMessageThunk } from "../../redux/message";
+import { createMessageThunk, fetchChannelMessagesThunk } from "../../redux/message";
 
 
 // Components
@@ -15,36 +15,41 @@ let socket;
 export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
+    // const testMessages = Object.values(useSelector((state => state.messages )));
     const [messages, setMessages] = useState([]);
+    const [messagesSet, setMessagesSet] = useState(false)
+    // // console.log(messages)
+    useEffect(() => {
+        // this is crucial and ensures that it only works on first load
+        // if (defaultMessages.length > messages.length) {
+        //     console.log("RUNNING>>>>", defaultMessages)
+        //     console.log("RUNNING2>>>>>", messages)
+        setMessages(defaultMessages)
+        // }
+
+    }, [defaultMessages])
 
     useEffect(() => {
         socket = io(URL);
         socket.on('chat', (data) => {
-            const { text_field: text, user, date } = data;
-            const newMessage = {
-                channel_id: channelId,
-                created_at: date,
-                updated_at: date,
-                message_id: defaultMessages.length + 1,
-                text_field: text,
-                user
-            }
-            console.log("DATA FROM SOCKET: ", newMessage)
-            // const newMessages = [...messages, newMessage]
-            // setMessages(newMessages)
-            // setMessages(messages => [...messages, newMessage])
+            dispatch(fetchChannelMessagesThunk(data.room))
         })
 
         return (() => {
             socket.disconnect()
         })
-    }, [channelId]);
+    }, []);
+
+    // useEffect(() => {
+    //     console.log("RUNNING>>>>")
+    //     setMessages(defaultMessages)
+    // }, [defaultMessages])
 
     useEffect(() => {
         socket.emit('leave', { room: prevChannelId })
         socket.emit('join', { room: channelId })
         setMessages(defaultMessages)
-    }, [channelId, prevChannelId, defaultMessages])
+    }, [channelId, prevChannelId])
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
