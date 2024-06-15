@@ -131,4 +131,3 @@ dist
 
 # Local Db
 instance/
-migrations/
