@@ -62,6 +62,31 @@ export const createChannelMessage = async (channelId, message, userId) => {
     throw new Error('Failed to create message');
 };
 
+export const updateChannelMessage = async (messageId, message) => {
+    const res = await fetch(`/api/channels/channel_messages/${messageId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),  // Ensure this is a plain object
+    });
+    if (res.ok) {
+        const data = await res.json();
+        return data;
+    }
+    throw new Error('Failed to update message');
+};
+
+export const deleteChannelMessage = async (messageId) => {
+    const res = await fetch(`/api/channels/channel_messages/${messageId}`, {
+        method: 'DELETE',
+    });
+    if (res.ok) {
+        return { messageId };
+    }
+    throw new Error('Failed to delete message');
+};
+
 export const getCurrentUser = async () => {
     const res = await fetch(`/api/users/current`)
         .then(res => res.json())

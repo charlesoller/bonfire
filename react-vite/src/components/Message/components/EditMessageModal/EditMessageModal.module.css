@@ -1,0 +1,69 @@
+.modal {
+    padding: 1.5em;
+    border-radius: 1em;
+    background: #313338;
+    filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #40444b;
+    color: #ffffff;
+    width: 100%;
+    min-width: 400px;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.input:hover {
+    background-color: #4b4f57;
+}
+
+.buttons {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.deleteButton {
+    padding: 0.4em 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: #c70c0c;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.submitButton {
+    padding: 0.4em 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: #7289da;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.submitButton:hover {
+    background-color: #6377bf;
+    transform: scale(1.05);
+}
+
+.deleteButton:hover {
+    background-color: #b20b0b;
+    transform: scale(1.05);
+}

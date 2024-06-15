@@ -4,7 +4,7 @@ import styles from "./ServerViewLayout.module.css"
 import { useState, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAllServersThunk } from "../../redux/server"
-import { fetchAllMessagesThunk, fetchChannelMessagesThunk } from "../../redux/message"
+import { fetchAllMessagesThunk } from "../../redux/message"
 import { fetchCurrentUser } from "../../redux/serverUser"
 // import { getChannelMessages, getChannelsForServerId } from "../../utils/api"
 import { socket } from "../../socket"
@@ -41,6 +41,7 @@ export default function ServerViewLayout(){
         }
 
         function onChat() {
+            console.log("IN ON CHAT")
             setTimeout(() => {
                 dispatch(fetchAllMessagesThunk());
             }, 1000);

@@ -25,6 +25,13 @@
     background-color: #40444b;
     color: #ffffff;
     width: 100%;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.message_input:hover {
+    background-color: #4b4f57;
 }
 
 /* Send button */

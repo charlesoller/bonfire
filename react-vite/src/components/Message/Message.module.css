@@ -22,10 +22,15 @@
     font-size: 0.78rem;
 }
 
+.rightSide {
+    width: 100%;
+}
+
 .userDetails {
     display: flex;
     align-items: center;
     gap: 0.5em;
+    width: 100%;
 }
 
 .userName {
@@ -47,4 +52,23 @@
     border-radius: 100%;
     min-width: 32px;
     max-width: 32px;
+}
+
+.buttons {
+    margin-left: auto;
+    display: flex;
+    gap: 0.3em;
+}
+
+.button {
+    opacity: 0.5;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.button:hover,
+.button:focus {
+    opacity: 1;
+    transform: scale(1.1);
 }
