@@ -1,19 +1,16 @@
 """init
 
-Revision ID: 26a1470ce94b
+Revision ID: b9b62ae6f0ea
 Revises: 
-Create Date: 2024-06-15 10:09:10.173205
+Create Date: 2024-06-15 10:48:03.023504
 
 """
 from alembic import op
 import sqlalchemy as sa
 
-import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '26a1470ce94b'
+revision = 'b9b62ae6f0ea'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,6 +21,15 @@ def upgrade():
     op.create_table('chat_rooms',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('servers',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=52), nullable=False),
+    sa.Column('description', sa.String(length=240), nullable=True),
+    sa.Column('owner_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -37,6 +43,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
+    )
+    op.create_table('channels',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=52), nullable=False),
+    sa.Column('server_id', sa.Integer(), nullable=False),
+    sa.Column('owner_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('chat_room_messages',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -60,25 +74,6 @@ def upgrade():
     sa.Column('url', sa.String(length=2048), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('servers',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=52), nullable=False),
-    sa.Column('description', sa.String(length=240), nullable=True),
-    sa.Column('owner_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('channels',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=52), nullable=False),
-    sa.Column('server_id', sa.Integer(), nullable=False),
-    sa.Column('owner_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-    sa.ForeignKeyConstraint(['server_id'], ['servers.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('server_images',
@@ -112,7 +107,7 @@ def upgrade():
     op.create_table('message_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=2048), nullable=False),
-    sa.Column('resource_type', sa.Integer(), nullable=False),
+    sa.Column('resource_type', sa.String(length=64), nullable=False),
     sa.Column('channel_message_id', sa.Integer(), nullable=True),
     sa.Column('chat_room_message_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ),
@@ -123,7 +118,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('channel_message_id', sa.Integer(), nullable=True),
     sa.Column('chat_room_message_id', sa.Integer(), nullable=True),
-    sa.Column('resource_type', sa.String(), nullable=False),
+    sa.Column('resource_type', sa.String(length=64), nullable=False),
     sa.Column('emoji', sa.String(length=1), nullable=False),
     sa.Column('count', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['channel_message_id'], ['channel_messages.id'], ),
@@ -149,11 +144,11 @@ def downgrade():
     op.drop_table('channel_messages')
     op.drop_table('server_user')
     op.drop_table('server_images')
-    op.drop_table('channels')
-    op.drop_table('servers')
     op.drop_table('profile_images')
     op.drop_table('chat_room_users')
     op.drop_table('chat_room_messages')
+    op.drop_table('channels')
     op.drop_table('users')
+    op.drop_table('servers')
     op.drop_table('chat_rooms')
     # ### end Alembic commands ###
