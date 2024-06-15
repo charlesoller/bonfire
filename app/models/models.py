@@ -4,6 +4,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from .db import add_prefix_for_prod
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -24,6 +25,7 @@ class User(db.Model, UserMixin):
     reactions = db.relationship('UserReaction', backref='user', lazy=True)
     servers = db.relationship('ServerUser', cascade="all,delete", backref='user', lazy=True)
     chat_rooms = db.relationship('ChatRoomUser', cascade="all,delete", backref='user', lazy=True)
+    # owned_servers = db.relationship("Server", cascade="all,delete", backref='user', lazy=True)
 
     @property
     def password(self):
@@ -46,9 +48,13 @@ class User(db.Model, UserMixin):
     
 class ProfileImage(db.Model):
     __tablename__ = 'profile_images'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete="CASCADE"), nullable=False)
 
     def to_dict(self):
         return {
@@ -59,9 +65,13 @@ class ProfileImage(db.Model):
 
 class ServerImage(db.Model):
     __tablename__ = 'server_images'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
-    server_id = db.Column(db.Integer, db.ForeignKey('servers.id'), nullable=False)
+    server_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('servers.id')), nullable=False)
 
     def to_dict(self):
         return {
@@ -72,10 +82,15 @@ class ServerImage(db.Model):
 
 class Server(db.Model):
     __tablename__ = 'servers'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(52), nullable=False)
     description = db.Column(db.String(240))
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    owner_id = db.Column(db.Integer)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
     channels = db.relationship('Channel', cascade="all,delete", backref='server', lazy=True)
@@ -95,9 +110,13 @@ class Server(db.Model):
 
 class ServerUser(db.Model):
     __tablename__ = 'server_user'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    server_id = db.Column(db.Integer, db.ForeignKey('servers.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    server_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('servers.id')), nullable=False)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
@@ -110,10 +129,15 @@ class ServerUser(db.Model):
 
 class Channel(db.Model):
     __tablename__ = 'channels'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(52), nullable=False)
-    server_id = db.Column(db.Integer, db.ForeignKey('servers.id'), nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    server_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('servers.id')), nullable=False)
+    # owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    owner_id = db.Column(db.Integer)
     messages = db.relationship('ChannelMessage', cascade="all,delete", backref='channel', lazy=True)
 
     def to_dict(self):
@@ -126,9 +150,13 @@ class Channel(db.Model):
 
 class ChannelMessage(db.Model):
     __tablename__ = 'channel_messages'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    channel_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('channels.id')), nullable=False)
     text_field = db.Column(db.String(240))
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
@@ -141,13 +169,19 @@ class ChannelMessage(db.Model):
             'user_id': self.user_id,
             'channel_id': self.channel_id,
             'text_field': self.text_field,
+            'message_images': [message_image.to_dict() for message_image in self.message_images],
+            'reactions': [reaction.to_dict() for reaction in self.reactions]
         }
 
 class ChatRoomMessage(db.Model):
     __tablename__ = 'chat_room_messages'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('chat_rooms.id')), nullable=False)
     text_field = db.Column(db.String(240))
     reactions = db.relationship('Reaction', cascade="all,delete", backref='chat_room_message', lazy=True)
     message_images = db.relationship('MessageImage', cascade="all,delete", backref='chat_room_message', lazy=True)
@@ -162,11 +196,15 @@ class ChatRoomMessage(db.Model):
 
 class MessageImage(db.Model):
     __tablename__ = 'message_images'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
     resource_type = db.Column(db.Integer, nullable=False)
-    channel_message_id = db.Column(db.Integer, db.ForeignKey('channel_messages.id'))
-    chat_room_message_id = db.Column(db.Integer, db.ForeignKey('chat_room_messages.id'))
+    channel_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('channel_messages.id')))
+    chat_room_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('chat_room_messages.id')))
 
     def to_dict(self):
         return {
@@ -179,9 +217,13 @@ class MessageImage(db.Model):
 
 class Reaction(db.Model):
     __tablename__ = 'reactions'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    channel_message_id = db.Column(db.Integer, db.ForeignKey('channel_messages.id'))
-    chat_room_message_id = db.Column(db.Integer, db.ForeignKey('chat_room_messages.id'))
+    channel_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('channel_messages.id')))
+    chat_room_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('chat_room_messages.id')))
     resource_type = db.Column(db.String, nullable=False)
     emoji = db.Column(db.String(1), nullable=False)
     count = db.Column(db.Integer, nullable=False)
@@ -199,9 +241,13 @@ class Reaction(db.Model):
 
 class UserReaction(db.Model):
     __tablename__ = 'user_reaction'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    reaction_id = db.Column(db.Integer, db.ForeignKey('reactions.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    reaction_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('reactions.id')), nullable=False)
 
     def to_dict(self):
         return {
@@ -212,6 +258,10 @@ class UserReaction(db.Model):
 
 class ChatRoom(db.Model):
     __tablename__ = 'chat_rooms'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     users = db.relationship('ChatRoomUser', cascade="all,delete", backref='chat_room', lazy=True)
@@ -224,9 +274,13 @@ class ChatRoom(db.Model):
 
 class ChatRoomUser(db.Model):
     __tablename__ = 'chat_room_users'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_rooms.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('chat_rooms.id')), nullable=False)
 
     def to_dict(self):
         return {
