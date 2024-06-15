@@ -6,7 +6,6 @@ from app.models import (
 )
 from sqlalchemy.sql import text
 from datetime import datetime
-from flask.cli import AppGroup
 
 # Adds multiple users, servers, channels, and related data
 def seed_data():
