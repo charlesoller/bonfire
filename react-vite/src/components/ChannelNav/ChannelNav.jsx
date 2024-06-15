@@ -1,6 +1,9 @@
 import styles from "./ChannelNav.module.css"
 // Util
 import { useMemo } from "react"
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import NewServerModal from "../NewServerModal/NewServerModal";
+import { FaGear } from "react-icons/fa6";
 // Components
 import { FaCode } from "react-icons/fa"
 import ChannelOption from "./components/ChannelOption"
@@ -15,6 +18,10 @@ export default function ChannelNav({ channels, activeChannel, setActiveChannel, 
             <div className={styles.channelName}>
                 <FaCode className={styles.channelName__logo}/>
                 <h1 className={styles.channelName__header}>{activeServer?.name || "Loading..."}</h1>
+                <OpenModalButton
+                buttonText={<FaGear />}
+                modalComponent={<NewServerModal server={activeServer} formType="Update Server"/>}
+            />
             </div>
             <div className={styles.channelOptions}>
                 {channelElements}

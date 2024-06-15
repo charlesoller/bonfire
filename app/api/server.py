@@ -39,6 +39,10 @@ def create_new_server():
         db.session.add(new_server)
         db.session.commit()
 
+        if server_image is None:
+            server_image = 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg'
+        
+
         new_server_image = ServerImage(
             url = server_image,
             server_id = new_server.id
@@ -46,15 +50,23 @@ def create_new_server():
 
         db.session.add(new_server_image)
         db.session.commit()
+
+        new_channel = Channel(
+            name = "general",
+            server_id = new_server.id,
+            owner_id = user_id
+        )
+
+        db.session.add(new_channel)
+        db.session.commit()
         
         results = db.session.query(Server, ServerImage).join(ServerImage, ServerImage.server_id == Server.id).filter(Server.id == new_server.id).all()
         print("RESULTS", results)
-        server_data = []
+        server_data = {}
+        print("SERVER DATA", server_data)
         for server, server_image in results:
             server_dict = server.to_dict()
-            server_dict['server_image'] = server_image.to_dict()
-            server_data.append(server_dict)
-
+            server_data[server_dict['id']] = server_dict
         return server_data
     else:
         print("FORM ERRORS", form.errors)
@@ -64,6 +76,7 @@ def create_new_server():
 @login_required
 def update_server(server_id):
     form = NewServerForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         server_name = form.name.data
         server_description = form.description.data
@@ -81,6 +94,18 @@ def update_server(server_id):
         db.session.commit()
 
         return jsonify(server.to_dict()), 200
+
+@server.route("/<int:server_id>", methods=["DELETE"])
+@login_required
+def delete_server(server_id):
+    server = Server.query.get_or_404(server_id)
+
+    if server.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    db.session.delete(server)
+    db.session.commit()
+    return jsonify({'message': 'Server deleted'}), 200
 
 @server.route("/<int:server_id>/channels")
 @login_required
