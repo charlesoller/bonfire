@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormPage() {
@@ -12,7 +12,12 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  useEffect(() => {
+    if (sessionUser) {
+      navigate("/", { replace: true });
+    }
+  }, [sessionUser, navigate]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,34 +37,52 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      {errors.length > 0 &&
-        errors.map((message) => <p key={message}>{message}</p>)}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-      </form>
-    </>
+    <div className="login-page">
+      <video autoPlay muted loop className="background-video">
+        <source
+          src="https://bonfire-movie.s3.us-east-2.amazonaws.com/Bonfire+Animation.mp4"
+          type="video/mp4"
+        />
+      </video>
+      <div className="content-overlay">
+        <div className="login-box">
+          <h1 className="login-header">Welcome back!</h1>
+          <p className="login-subheader">We're so excited to see you again!</p>
+          {errors.length > 0 &&
+            errors.map((message) => (
+              <p key={message} className="error-message">
+                {message}
+              </p>
+            ))}
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              {errors.email && <p className="error-message">{errors.email}</p>}
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              {errors.password && <p className="error-message">{errors.password}</p>}
+            </div>
+            <button type="submit" className="login-button">Log In</button>
+          </form>
+          <div className="login-redirect">
+            Don&apos;t have an account? Click <Link to="/signup">here</Link> to sign up.
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
