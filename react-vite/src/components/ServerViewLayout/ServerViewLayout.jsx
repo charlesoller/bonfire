@@ -21,9 +21,14 @@ export default function ServerViewLayout(){
     const [isConnected, setIsConnected] = useState(false);
 
     const servers = Object.values(useSelector((state) => state.servers));
-    const activeServer = useMemo(() => servers.filter(server => server.id === activeServerId)[0], [activeServerId, servers]);
     const currentUser = Object.values(useSelector((state) => state.currentUser));
-    
+
+    const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
+    const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
+    const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
+    const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);
+    const activeMessages = useMemo(() => activeChannel?.messages, [activeChannel]); // Not sure why this shows not used, it is being passed to ServerView
+
     useEffect(() => {
         function onConnect() {
             setIsConnected(true);
@@ -53,7 +58,7 @@ export default function ServerViewLayout(){
     useEffect(() => {
         dispatch(fetchAllServersThunk());
         dispatch(fetchCurrentUser())
-    }, [dispatch, activeServerId])
+    }, [dispatch])
     
     return (
         <main className={styles.body}> 
@@ -62,18 +67,22 @@ export default function ServerViewLayout(){
                 setActiveServerId={setActiveServerId} 
                 activeServer={activeServer} 
                 activeChannelId={activeChannelId} 
+                setActiveChannelId={setActiveChannelId}
                 setPrevChannelId={setPrevChannelId}
             />
             <section className={styles.main}>
                 <div className={styles.channel_view}>
                     <ServerView 
-                        activeServerId={activeServerId}
                         activeServer={activeServer}
+                        channels={channels}
+                        activeChannel={activeChannel}
                         currentUser={currentUser}
                         activeChannelId={activeChannelId}
                         setActiveChannelId={setActiveChannelId}
                         prevChannelId={prevChannelId}
                         setPrevChannelId={setPrevChannelId}
+                        messages={activeMessages}
+                        serverUsers={activeServerUsers}
                     />
                 </div>
             </section>

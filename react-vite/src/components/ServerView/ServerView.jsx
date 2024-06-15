@@ -13,28 +13,21 @@ import ChannelNav from "../ChannelNav/ChannelNav"
 import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import UserList from "../UserList/UserList"
 
-export default function ServerView({ activeServerId, activeServer, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId }) {
-    const dispatch = useDispatch()
-    const channels = Object.values(useSelector((state) => state.channels));
-    const messages = Object.values(useSelector((state) => state.messages));
-    const serverUsers = Object.values(useSelector((state) => state.serverUsers));
-    const activeChannel = useMemo(() => channels.filter(channel => channel.id === activeChannelId)[0], [activeChannelId, channels]);
+export default function ServerView({ activeServer, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers }) {
+    // console.log("ACTIVE SERVER: ", activeServer)
+    // console.log("ACTIVE CHANNEL ID: ", activeChannelId)
+    const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeChannelId), [channels, activeChannelId])
 
-    useEffect(() => {
-        dispatch(fetchChannelsForServerIdThunk(activeServerId));
-        dispatch(fetchChannelMessagesThunk(activeChannelId))
-        dispatch(fetchServerUsersThunk(activeServerId))
-    }, [dispatch, activeServerId, activeChannelId])
-
-    useEffect(() => {
-        // This is responsible for changing the active channel when the server changes
-        setActiveChannelId(channels[0]?.id)
-    }, [activeServerId, channels, setActiveChannelId])
+    // useEffect(() => {
+    //     console.log("RUNNING")
+    //     // This is responsible for changing the active channel when the server changes
+    //     setActiveChannelId(activeServer?.channels[0])
+    // }, [activeServer])
     
     return (
         <section className={styles.serverView}>
             <ChannelNav 
-                channels={channels} 
+                channels={activeServerChannels} 
                 activeChannel={activeChannel} 
                 setActiveChannel={setActiveChannelId} 
                 setPrevChannel={setPrevChannelId} 

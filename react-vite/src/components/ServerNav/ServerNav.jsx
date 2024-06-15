@@ -12,22 +12,13 @@ import { CiCirclePlus } from "react-icons/ci";
 
 const IMAGE_PLACEHOLDER = "https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg"
 
-export default function ServerNav({ servers, setActiveServerId, activeServer, activeChannelId, setPrevChannelId }){
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchAllServersThunk());
-
-        return () => {
-            dispatch(clearServerDetails());
-        }
-    }, [dispatch]);
+export default function ServerNav({ servers, setActiveServerId, activeChannelId, setActiveChannelId, setPrevChannelId }){
 
     const serverElements = useMemo(() => servers.map((server) => {
         return (
-            <ServerIcon key={server.id} image={IMAGE_PLACEHOLDER} id={server.id} setActiveServerId={setActiveServerId} activeChannelId={activeChannelId} setPrevChannelId={setPrevChannelId} />
+            <ServerIcon key={server.id} image={IMAGE_PLACEHOLDER} id={server.id} servers={servers} setActiveServerId={setActiveServerId} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setPrevChannelId={setPrevChannelId} />
         )
-    }), [servers, setActiveServerId])
+    }), [servers, setActiveServerId, activeChannelId, setPrevChannelId, setActiveChannelId])
 
     return (
         <aside className={styles.serverNav}>

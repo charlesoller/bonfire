@@ -124,7 +124,8 @@ class ServerUser(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'server_id': self.server_id
+            'server_id': self.server_id,
+            'user': self.user.to_dict()
         }
 
 class Channel(db.Model):
@@ -145,7 +146,8 @@ class Channel(db.Model):
             'id': self.id,
             'name': self.name,
             'server_id': self.server_id,
-            'owner_id': self.owner_id
+            'owner_id': self.owner_id,
+            'messages': [message.to_dict() for message in self.messages]
         }
 
 class ChannelMessage(db.Model):
@@ -170,7 +172,10 @@ class ChannelMessage(db.Model):
             'channel_id': self.channel_id,
             'text_field': self.text_field,
             'message_images': [message_image.to_dict() for message_image in self.message_images],
-            'reactions': [reaction.to_dict() for reaction in self.reactions]
+            'reactions': [reaction.to_dict() for reaction in self.reactions],
+            'user': self.user.to_dict(),
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class ChatRoomMessage(db.Model):

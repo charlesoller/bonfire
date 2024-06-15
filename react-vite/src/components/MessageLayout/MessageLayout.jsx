@@ -10,32 +10,19 @@ import { socket } from "../../socket";
 import Message from "../Message/Message"
 import MessageInput from "../MessageInput/MessageInput"
 
-export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
+export default function MessageLayout({ defaultMessages = [], channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
     const [messages, setMessages] = useState([]);
-
     useEffect(() => {
-        console.log("RUNNING")
         setMessages(defaultMessages)
     }, [defaultMessages])
 
-    useEffect(() => {
-        socket.emit('leave', { room: prevChannelId })
-        socket.emit('join', { room: channelId })
-        setMessages(defaultMessages)
-    }, [channelId, prevChannelId, defaultMessages])
-
     // useEffect(() => {
-    //     const fetchMessages = () => {
-    //       dispatch(fetchChannelMessagesThunk(channelId));
-    //     };
-    
-    //     const intervalId = setInterval(fetchMessages, 2000);
-    
-    //     // Cleanup function to clear the interval when the component unmounts
-    //     return () => clearInterval(intervalId);
-    // }, [dispatch, channelId]); 
+    //     socket.emit('leave', { room: prevChannelId })
+    //     socket.emit('join', { room: channelId })
+    //     setMessages(defaultMessages)
+    // }, [channelId, prevChannelId, defaultMessages])
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
