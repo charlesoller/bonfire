@@ -29,8 +29,9 @@ export default function ServerViewLayout(){
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
     const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);
-    const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]); // Not sure why this shows not used, it is being passed to ServerView
-
+    const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]);
+    console.log("ACTIVE MESSAGES: ", activeMessages)
+    console.log("ACTIVE CHANNEL ID: ", activeChannel)
     useEffect(() => {
         function onConnect() {
             setIsConnected(true);
