@@ -58,9 +58,13 @@ export const thunkSignup = (user) => async (dispatch) => {
   }
 };
 
-export const thunkLogout = () => async (dispatch) => {
+export const thunkLogout = (callback) => async (dispatch) => {
   await fetch("/api/auth/logout");
   dispatch(removeUser());
+
+  if (callback) {
+    callback()
+  }
 };
 
 const initialState = { user: null };
