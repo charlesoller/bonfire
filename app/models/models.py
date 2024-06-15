@@ -202,7 +202,7 @@ class MessageImage(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(2048), nullable=False)
-    resource_type = db.Column(db.Integer, nullable=False)
+    resource_type = db.Column(db.String(64), nullable=False)
     channel_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('channel_messages.id')))
     chat_room_message_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('chat_room_messages.id')))
 
