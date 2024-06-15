@@ -1,70 +1,101 @@
+import styles from "./NewServerModal.module.css"
 import { useState } from "react";
 import { useDispatch} from "react-redux";
-import { addNewServer, fetchAllServersThunk } from "../../redux/server";
+import { addNewServer, fetchAllServersThunk, updateOldServer, deleteAServer } from "../../redux/server";
 import { useModal } from "../../context/Modal";
 
-function NewServerModal() {
+function NewServerModal({server, formType}) {
     const dispatch = useDispatch();
-    const [serverName, setServerName] = useState("");
-    const [serverDescription, setServerDescription] = useState("");
-    const [serverImage, setServerImage] = useState("");
+    const [serverName, setServerName] = useState(server ? server.name : "");
+    const [serverDescription, setServerDescription] = useState(server ? server.description : "");
+    const [serverImage, setServerImage] = useState(server ? server.server_images[0].url : "");
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
+    console.log("FORM TYPE", formType)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const serverResponse = await dispatch(
-            addNewServer({
-                name: serverName,
-                description: serverDescription,
-                server_image: serverImage,
-            })
-        );
+        if (formType === "Update Server") {
+            console.log("UPDATE SERVER", serverImage)
+            const serverResponse = await dispatch(
+                updateOldServer({
+                    id: server.id,
+                    name: serverName,
+                    description: serverDescription,
+                    server_image: serverImage,
+                })
+            );
 
-        if (serverResponse) {
-            setErrors(serverResponse);
+            if (serverResponse) {
+                setErrors(serverResponse);
+            } else {
+                closeModal()
+            }
+    
+            await dispatch(fetchAllServersThunk());
         } else {
-            closeModal()
+            const serverResponse = await dispatch(
+                addNewServer({
+                    name: serverName,
+                    description: serverDescription,
+                    server_image: serverImage,
+                })
+            );
+    
+            if (serverResponse) {
+                setErrors(serverResponse);
+            } else {
+                closeModal()
+            }
+    
+            await dispatch(fetchAllServersThunk());
         }
-
-        await dispatch(fetchAllServersThunk());
     };
+
+    const deleteServer = async (e) => {
+        e.preventDefault();
+        await dispatch(deleteAServer(server.id));
+        closeModal();
+        await dispatch(fetchAllServersThunk());
+    }
 
     return (
         <>
-            <h1>Create a Server</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Name
-                    <input
-                        type="text"
-                        value={serverName}
-                        onChange={(e) => setServerName(e.target.value)}
-                        required
-                    />
-                </label>
-                {errors.serverName && <p>{errors.email}</p>}
-                <label>
-                    Description
-                    <input
-                        type="text"
-                        value={serverDescription}
-                        onChange={(e) => setServerDescription(e.target.value)}
-                    />
-                </label>
+        <div className={styles.modalLayout}>
+            <h1>{formType !== "Update Server" ? "Create a Server" : "Update Your Server"}</h1>
+            <form onSubmit={handleSubmit} className={styles.createServerForm}>
+                <input
+                    type="text"
+                    className={styles.serverName}
+                    value={serverName}
+                    placeholder={"Name"}
+                    onChange={(e) => setServerName(e.target.value)}
+                    required
+                />
+                {errors.serverName && <p>{errors.serverName}</p>}
+                <textarea
+                    type="text"
+                    className={styles.serverDescription}
+                    value={serverDescription}
+                    placeholder={"Description"}
+                    onChange={(e) => setServerDescription(e.target.value)}
+                />
                 {errors.serverDescription && <p>{errors.serverDescription}</p>}
-                <label>
-                    Server Image
-                    <input
-                        type="text"
-                        value={serverImage}
-                        onChange={(e) => setServerImage(e.target.value)}
-                    />
-                </label>
+                <input
+                    type="text"
+                    className={styles.serverName}
+                    value={serverImage}
+                    placeholder={"Image URL"}
+                    onChange={(e) => setServerImage(e.target.value)}
+                />
                 {errors.serverImage && <p>{errors.serverImage}</p>}
-                <button type="submit">Create Server</button>
+                <button type="submit" className={styles.createServerButton}>{formType === "Update Server" ? "Update" : "Create"}</button>
             </form>
+            <form onSubmit={deleteServer}>
+                <button type="submit" className={formType !== "Update Server" ? styles.hidden : ""}>Delete Server</button> 
+            </form>
+        </div>
         </>
     )
 }

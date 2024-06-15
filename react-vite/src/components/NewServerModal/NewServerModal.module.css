@@ -1,0 +1,52 @@
+.hidden {
+    display: none;
+}
+
+.modalLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.createServerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 25rem;
+    height: 25rem;
+}
+
+.serverName {
+    margin: 10px;
+    background-color: #201c24;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    outline: none;
+}
+
+.serverDescription {
+    margin: 10px;
+    resize: none;
+    background-color: #201c24;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.createServerButton {
+    margin: 10px;
+    background-color: #7289da;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    outline: none;
+    width: 30%;
+    height: 10%;
+    cursor: pointer;
+}
+
+.createServerButton:hover {
+    background-color: #6377bf;
+}

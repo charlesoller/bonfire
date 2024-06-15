@@ -93,3 +93,24 @@ export const getCurrentUser = async () => {
         .catch(e => console.error(e))
     return res;
 }
+
+export const updateServer = async (server) => {
+    const res = await fetch(`/api/servers/${server.id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(server)
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}
+
+export const deleteServer = async (serverId) => {
+    const res = await fetch(`/api/servers/${serverId}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}
