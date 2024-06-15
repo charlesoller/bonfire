@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createMessageThunk, fetchChannelMessagesThunk } from '../../redux/message';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createMessageThunk } from '../../redux/message';
+import { socket } from '../../socket';
 import styles from './MessageInput.module.css';
 
-const MessageInput = ({ channelId, handleSendMessage }) => {
+const MessageInput = ({ channelId }) => {
+  const dispatch = useDispatch();
   const [message, setMessage] = useState('');
-  const sendMessage = (e, message) => {
-    handleSendMessage(e, message)
+  const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
+
+  const handleSendMessage = (e, text_field) => {
+    e.preventDefault()
+    dispatch(createMessageThunk(channelId, text_field, currentUser.id))
+    socket.emit('chat', { text_field, room: channelId, user: currentUser, date: new Date() });
     setMessage("")
   }
 
@@ -20,7 +26,7 @@ const MessageInput = ({ channelId, handleSendMessage }) => {
                 className={styles.message_input}
                 placeholder="Type a message..."
             />
-            <button onClick={(e) => sendMessage(e, message)} className={styles.send_button} disabled={message.length < 1}>
+            <button onClick={(e) => handleSendMessage(e, message)} className={styles.send_button} disabled={message.length < 1}>
                 Send
             </button>
       </form>

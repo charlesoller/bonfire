@@ -1,34 +1,18 @@
 import styles from "./MessageLayout.module.css"
 // Util
 import { useMemo, useEffect, useState, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { createMessageThunk, fetchChannelMessagesThunk } from "../../redux/message";
-import { socket } from "../../socket";
-
+import { socket } from "../../socket"
 
 // Components
 import Message from "../Message/Message"
 import MessageInput from "../MessageInput/MessageInput"
 
 export default function MessageLayout({ defaultMessages = [], channelId, prevChannelId }) {
-    const dispatch = useDispatch()
-    const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
     const [messages, setMessages] = useState([]);
+
     useEffect(() => {
         setMessages(defaultMessages)
     }, [defaultMessages])
-
-    // useEffect(() => {
-    //     socket.emit('leave', { room: prevChannelId })
-    //     socket.emit('join', { room: channelId })
-    //     setMessages(defaultMessages)
-    // }, [channelId, prevChannelId, defaultMessages])
-
-    const handleSendMessage = (e, text_field) => {
-        e.preventDefault()
-        dispatch(createMessageThunk(channelId, text_field, currentUser.id))
-        socket.emit('chat', { text_field, room: channelId, user: currentUser, date: new Date() });
-    }
 
     const messageElements = useMemo(() => messages.map((message) => {
         const { user } = message;
@@ -52,7 +36,7 @@ export default function MessageLayout({ defaultMessages = [], channelId, prevCha
                 {messageElements}
                 {/* <button onClick={sendChat}>Click</button> */}
             </div>
-            <MessageInput channelId={channelId} handleSendMessage={handleSendMessage} />
+            <MessageInput channelId={channelId} />
         </div>
     )
 }

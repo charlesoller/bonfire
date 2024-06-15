@@ -4,7 +4,7 @@ import styles from "./ServerViewLayout.module.css"
 import { useState, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAllServersThunk } from "../../redux/server"
-import { fetchChannelMessagesThunk } from "../../redux/message"
+import { fetchAllMessagesThunk, fetchChannelMessagesThunk } from "../../redux/message"
 import { fetchCurrentUser } from "../../redux/serverUser"
 // import { getChannelMessages, getChannelsForServerId } from "../../utils/api"
 import { socket } from "../../socket"
@@ -21,13 +21,15 @@ export default function ServerViewLayout(){
     const [isConnected, setIsConnected] = useState(false);
 
     const servers = Object.values(useSelector((state) => state.servers));
+    const messages = Object.values(useSelector((state => state.messages)))
     const currentUser = Object.values(useSelector((state) => state.currentUser));
 
     const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
+
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
     const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);
-    const activeMessages = useMemo(() => activeChannel?.messages, [activeChannel]); // Not sure why this shows not used, it is being passed to ServerView
+    const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]); // Not sure why this shows not used, it is being passed to ServerView
 
     useEffect(() => {
         function onConnect() {
@@ -40,6 +42,7 @@ export default function ServerViewLayout(){
 
         function onChat(data) {
             setTimeout(() => {
+            //     console.log("ON CHAT")
                 dispatch(fetchChannelMessagesThunk(data.room));
             }, 1000);
         }
@@ -53,10 +56,17 @@ export default function ServerViewLayout(){
             socket.off('disconnect', onDisconnect);
             socket.off('chat', onChat)
         }
-    })
+    }, [dispatch])
+
+    useEffect(() => {
+        socket.emit('leave', { room: prevChannelId })
+        socket.emit('join', { room: activeChannelId })
+    }, [activeChannelId, prevChannelId])
+
 
     useEffect(() => {
         dispatch(fetchAllServersThunk());
+        dispatch(fetchAllMessagesThunk())
         dispatch(fetchCurrentUser())
     }, [dispatch])
     

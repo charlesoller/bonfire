@@ -1,5 +1,6 @@
-import { getChannelMessages, createChannelMessage } from "../utils/api"
+import { getChannelMessages, createChannelMessage, getAllMessages } from "../utils/api"
 
+export const LOAD_ALL_MESSAGES = 'messages/LOAD_ALL_MESSAGES'
 export const LOAD_MESSAGES = 'messages/LOAD_MESSAGES'
 export const ADD_MESSAGE = 'messages/ADD_MESSAGE';
 
@@ -14,6 +15,11 @@ export const addMessage = (message) => ({
     message,
 });
 
+export const loadAllMessages = (messages) => ({
+    type: LOAD_ALL_MESSAGES,
+    messages
+})
+
 // ================= THUNKS ================= 
 export const fetchChannelMessagesThunk = (id) => async (dispatch) => {
     const res = await getChannelMessages(id);
@@ -25,10 +31,22 @@ export const createMessageThunk = (channelId, message, userId) => async (dispatc
     dispatch(addMessage(newMessage));
 }
 
+export const fetchAllMessagesThunk = () => async (dispatch) => {
+    const res = await getAllMessages();
+    dispatch(loadAllMessages(res));
+}
+
 // ================= REDUCER ================= 
 const messageReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_MESSAGES: {
+            const messagesState = {};
+            action.messages.forEach((message) => {
+                messagesState[message.message_id] = message;
+            })
+            return messagesState;
+        }
+        case LOAD_ALL_MESSAGES: {
             const messagesState = {};
             action.messages.forEach((message) => {
                 messagesState[message.message_id] = message;
