@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import User, db
+from app.models import User, db, ProfileImage
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -55,6 +55,7 @@ def sign_up():
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        profile_image_url = form.data['profile_image_url']
         user = User(
             username=form.data['username'],
             email=form.data['email'],
@@ -62,6 +63,14 @@ def sign_up():
         )
         db.session.add(user)
         db.session.commit()
+
+        profile_image = ProfileImage(
+                url=profile_image_url,
+                user_id=user.id
+            )
+        db.session.add(profile_image)
+        db.session.commit()
+        
         login_user(user)
         return user.to_dict()
     return form.errors, 401

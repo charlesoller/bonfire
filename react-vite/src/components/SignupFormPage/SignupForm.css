@@ -1,0 +1,122 @@
+.signup-page {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  
+  .background-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+  
+  .signup-container {
+    background-color: rgba(27, 28, 31, 0.731); /* Adjusted for slight transparency */
+    border-radius: 5px;
+    padding: 40px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .signup-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .signup-label {
+    font-size: 12px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    color: #b9bbbe;
+  }
+  
+  .signup-input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #202225;
+    border-radius: 3px;
+    background-color: #202225;
+    color: white;
+    width: 100%;
+  }
+  
+  .signup-input::placeholder {
+    color: #b9bbbe;
+  }
+  
+  .signup-button {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #7289da;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .signup-button:hover {
+    background-color: #677bc4;
+  }
+  
+  .login-redirect {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  
+  .login-redirect a {
+    color: #7289da;
+    text-decoration: none;
+    font-weight: 900;
+  }
+  
+  .login-redirect a:hover {
+    text-decoration: underline;
+  }
+  
+  .error {
+    color: #f04747;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .user-profile {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .user-profile h2 {
+    margin-top: 10px;
+    color: #fff;
+  }
+  
+  .user-profile p {
+    color: #bbb;
+  }
