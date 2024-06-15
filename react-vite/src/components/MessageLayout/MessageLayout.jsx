@@ -13,30 +13,12 @@ import MessageInput from "../MessageInput/MessageInput"
 export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
-    // const testMessages = Object.values(useSelector((state => state.messages )));
     const [messages, setMessages] = useState([]);
-    const [messagesSet, setMessagesSet] = useState(false)
-    // // console.log(messages)
+
     useEffect(() => {
+        console.log("RUNNING")
         setMessages(defaultMessages)
     }, [defaultMessages])
-
-    useEffect(() => {
-        socket.on('chat', (data) => {
-            dispatch(fetchChannelMessagesThunk(data.room))
-        })
-
-        return (() => {
-            socket.disconnect()
-        })
-    }, [dispatch]);
-
-    // setTimeout()
-
-    // useEffect(() => {
-    //     console.log("RUNNING>>>>")
-    //     setMessages(defaultMessages)
-    // }, [defaultMessages])
 
     useEffect(() => {
         socket.emit('leave', { room: prevChannelId })
