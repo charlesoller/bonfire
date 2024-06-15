@@ -1,17 +1,15 @@
 import styles from "./MessageLayout.module.css"
 // Util
 import { useMemo, useEffect, useState, useRef } from "react"
-import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { createMessageThunk, fetchChannelMessagesThunk } from "../../redux/message";
+import { socket } from "../../socket";
 
 
 // Components
 import Message from "../Message/Message"
 import MessageInput from "../MessageInput/MessageInput"
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:8000';
-let socket;
 export default function MessageLayout({ defaultMessages, channelId, prevChannelId }) {
     const dispatch = useDispatch()
     const currentUser = Object.values(useSelector((state) => state.currentUser))[0];
@@ -24,7 +22,6 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
     }, [defaultMessages])
 
     useEffect(() => {
-        socket = io(URL);
         socket.on('chat', (data) => {
             dispatch(fetchChannelMessagesThunk(data.room))
         })
@@ -47,16 +44,16 @@ export default function MessageLayout({ defaultMessages, channelId, prevChannelI
         setMessages(defaultMessages)
     }, [channelId, prevChannelId, defaultMessages])
 
-    useEffect(() => {
-        const fetchMessages = () => {
-          dispatch(fetchChannelMessagesThunk(channelId));
-        };
+    // useEffect(() => {
+    //     const fetchMessages = () => {
+    //       dispatch(fetchChannelMessagesThunk(channelId));
+    //     };
     
-        const intervalId = setInterval(fetchMessages, 2000);
+    //     const intervalId = setInterval(fetchMessages, 2000);
     
-        // Cleanup function to clear the interval when the component unmounts
-        return () => clearInterval(intervalId);
-    }, [dispatch, channelId]); 
+    //     // Cleanup function to clear the interval when the component unmounts
+    //     return () => clearInterval(intervalId);
+    // }, [dispatch, channelId]); 
 
     const handleSendMessage = (e, text_field) => {
         e.preventDefault()
