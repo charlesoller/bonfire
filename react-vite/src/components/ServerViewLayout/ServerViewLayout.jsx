@@ -29,11 +29,8 @@ export default function ServerViewLayout(){
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
     const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);
-    console.log("ACTIVE CHANNEL ID: ", activeChannelId)
-    console.log("MESSAGES: ", messages)
     const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]);
-    // const activeMessages = messages.filter(message => message.channel_id === activeChannelId)
-    console.log("ACTIVE MESSAGES: ", activeMessages)
+
     useEffect(() => {
         function onConnect() {
             setIsConnected(true);
@@ -43,9 +40,8 @@ export default function ServerViewLayout(){
             setIsConnected(false);
         }
 
-        function onChat(data) {
+        function onChat() {
             setTimeout(() => {
-                console.log("ON CHAT")
                 dispatch(fetchAllMessagesThunk());
             }, 1000);
         }
@@ -64,7 +60,8 @@ export default function ServerViewLayout(){
     useEffect(() => {
         socket.emit('leave', { room: prevChannelId })
         socket.emit('join', { room: activeChannelId })
-    }, [activeChannelId, prevChannelId])
+        dispatch(fetchAllMessagesThunk())
+    }, [activeChannelId, prevChannelId, dispatch])
 
 
     useEffect(() => {
