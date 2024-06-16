@@ -12,8 +12,10 @@ function SignupFormPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [profileImage, setProfileImage] = useState("")
   const [errors, setErrors] = useState({});
   const [emailErrors, setEmailErrors] = useState({});
+  const [profileImageError, setProfileImageError] = useState({});
 
   const VALID_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
@@ -22,6 +24,7 @@ function SignupFormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailErrors({});
+    setProfileImageError({});
 
     if (password !== confirmPassword) {
       return setErrors({
@@ -35,11 +38,18 @@ function SignupFormPage() {
       return;
     }
 
+    if (!VALID_EXTENSIONS.includes(profileImage.split('.')[profileImage.split(".").length - 1]) && profileImage.length > 0) {
+      console.log("profile image ok?")
+      setProfileImageError({profileImage: "Profile Image URL must end in '.jpg', '.png', 'jpeg'"})
+      return;
+    }
+
     const serverResponse = await dispatch(
       thunkSignup({
         email,
         username,
         password,
+        profileImage
       })
     );
 
@@ -104,6 +114,15 @@ function SignupFormPage() {
                 required
               />
               {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
+            </div>
+            <div className="form-group">
+              <label>{'Profile Image URL (Optional)'}</label>
+              <input
+                type="text"
+                value={profileImage}
+                onChange={(e) => setProfileImage(e.target.value)}
+              />
+              {profileImageError.profileImage && <p className="error-message">{profileImageError.profileImage}</p>}
             </div>
             <button type="submit" className="signup-button">Sign Up</button>
           </form>

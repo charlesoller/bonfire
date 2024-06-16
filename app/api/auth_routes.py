@@ -1,11 +1,31 @@
 from flask import Blueprint, request
-from app.models import User, db
+from app.models import User, ProfileImage, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+import urllib.request
+from urllib.error import URLError, HTTPError
 
 auth_routes = Blueprint('auth', __name__)
 
+VALID_EXTENSIONS = ['jpg', 'png', 'jpeg']
+
+def is_valid_image_url(url):
+    try:
+        request = urllib.request.Request(url, method='HEAD')
+        with urllib.request.urlopen(request) as response:
+            content_type = response.headers.get('Content-Type')
+            if content_type and content_type.startswith('image'):
+                return False
+        return True
+    except:
+        return True
+
+def check_last_segment_of_url(url):
+    ext = url.split('.')
+    if ext[-1] in VALID_EXTENSIONS:
+        return False
+    return True
 
 @auth_routes.route('/')
 def authenticate():
@@ -60,8 +80,27 @@ def sign_up():
             email=form.data['email'],
             password=form.data['password']
         )
+
+        profile_image_url = form.profileImage.data
+
+        print("VALUE ERROR", form.profileImage.data)
+
+        print("PROFILE IMAGE", profile_image_url)
+        if profile_image_url is None or check_last_segment_of_url(profile_image_url) or is_valid_image_url(profile_image_url):
+            print("PROFILE IMAGE", profile_image_url)
+            profile_image_url = 'https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg'
+
         db.session.add(user)
         db.session.commit()
+
+        profile_image = ProfileImage(
+            url = profile_image_url,
+            user_id = user.id
+        )
+
+        db.session.add(profile_image)
+        db.session.commit()
+
         login_user(user)
         return user.to_dict()
     return form.errors, 401
