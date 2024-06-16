@@ -27,7 +27,7 @@ export default function ServerNav({ servers, setActiveServerId, activeChannelId,
             {serverElements}
 
             <OpenModalButton
-                buttonText={<MdEmojiEmotions size={40} className={styles.button} />}
+                buttonText={<CiCirclePlus size={40} className={styles.button} />}
                 modalComponent={<NewServerModal/>}
             />
         </aside>

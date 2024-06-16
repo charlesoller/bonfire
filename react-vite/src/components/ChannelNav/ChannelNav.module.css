@@ -14,6 +14,18 @@
     gap: 0.5em;
     align-items: center;
     padding: 0 1em;
+    justify-content: space-between;
+}
+
+.channelGroup {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.channelName__left {
+    display: flex;
+    gap: 0.5em;
 }
 
 .channelName__header {
@@ -27,4 +39,31 @@
 
 .channelOptions {
     padding: 0.8em 0.4em;
+    width: 100%;
+}
+
+.channelElements {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    width: 100%;
+}
+
+.addChannel {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    background: #7289DA;
+    border-radius: 8px;
+    padding: 0.2em 0.7em;
+    width: 100%;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.addChannel:hover {
+    background-color: #6377bf;
 }

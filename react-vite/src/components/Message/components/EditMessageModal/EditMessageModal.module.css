@@ -8,10 +8,10 @@
 .form {
     display: flex;
     flex-direction: column;
+    gap: 2em;
 }
 
 .input {
-    flex: 1;
     padding: 10px;
     border: none;
     border-radius: 8px;

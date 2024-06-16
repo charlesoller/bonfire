@@ -33,9 +33,9 @@ function NewServerModal({server, formType}) {
                 closeModal()
             }
     
-            await dispatch(fetchAllServersThunk());
+            dispatch(fetchAllServersThunk());
         } else {
-            const serverResponse = await dispatch(
+            const serverResponse = dispatch(
                 addNewServer({
                     name: serverName,
                     description: serverDescription,
@@ -49,15 +49,15 @@ function NewServerModal({server, formType}) {
                 closeModal()
             }
     
-            await dispatch(fetchAllServersThunk());
+            dispatch(fetchAllServersThunk());
         }
     };
 
     const deleteServer = async (e) => {
         e.preventDefault();
-        await dispatch(deleteAServer(server.id));
+        dispatch(deleteAServer(server.id));
         closeModal();
-        await dispatch(fetchAllServersThunk());
+        dispatch(fetchAllServersThunk());
     }
 
     return (
@@ -67,7 +67,7 @@ function NewServerModal({server, formType}) {
             <form onSubmit={handleSubmit} className={styles.createServerForm}>
                 <input
                     type="text"
-                    className={styles.serverName}
+                    className={styles.input}
                     value={serverName}
                     placeholder={"Name"}
                     onChange={(e) => setServerName(e.target.value)}
@@ -76,7 +76,7 @@ function NewServerModal({server, formType}) {
                 {errors.serverName && <p>{errors.serverName}</p>}
                 <textarea
                     type="text"
-                    className={styles.serverDescription}
+                    className={styles.input}
                     value={serverDescription}
                     placeholder={"Description"}
                     onChange={(e) => setServerDescription(e.target.value)}
@@ -84,7 +84,7 @@ function NewServerModal({server, formType}) {
                 {errors.serverDescription && <p>{errors.serverDescription}</p>}
                 <input
                     type="text"
-                    className={styles.serverName}
+                    className={styles.input}
                     value={serverImage}
                     placeholder={"Image URL"}
                     onChange={(e) => setServerImage(e.target.value)}

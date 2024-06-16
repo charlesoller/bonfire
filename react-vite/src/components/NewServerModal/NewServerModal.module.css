@@ -3,10 +3,10 @@
 }
 
 .modalLayout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    padding: 1.5em;
+    border-radius: 1em;
+    background: #313338;
+    filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
 }
 
 .createServerForm {
@@ -36,17 +36,33 @@
 }
 
 .createServerButton {
-    margin: 10px;
     background-color: #7289da;
     border: none;
     border-radius: 5px;
     padding: 3px;
     outline: none;
-    width: 30%;
+    width: 100%;
     height: 10%;
     cursor: pointer;
 }
 
 .createServerButton:hover {
     background-color: #6377bf;
+}
+
+.input {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #40444b;
+    color: #ffffff;
+    width: 100%;
+    min-width: 400px;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.input:hover {
+    background-color: #4b4f57;
 }

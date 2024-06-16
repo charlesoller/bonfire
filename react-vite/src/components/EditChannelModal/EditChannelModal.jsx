@@ -1,3 +1,5 @@
+import styles from "./EditChannelModal.module.css"
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -41,9 +43,9 @@ function EditChannelModal({ channel }) {
     }
 
     return (
-        <>
-            <h1>Channel Settings</h1>
-            <form onSubmit={handleSubmit}>
+        <section className={styles.modal}>
+            <h1 className={styles.header}>Channel Settings</h1>
+            <form onSubmit={handleSubmit} className={styles.form} >
                 <label>
                     Change Channel Name
                     <input
@@ -51,15 +53,16 @@ function EditChannelModal({ channel }) {
                         value={channelName}
                         onChange={(e) => setChannelName(e.target.value)}
                         required
+                        className={styles.input}
                     />
                 </label>
-                <button type="submit">Create Channel</button>
-            </form>
-            <form onSubmit={deleteChannel}>
-                <button type="submit">Delete Channel</button>
+                <div className={styles.buttons}>
+                    <button type="submit" className={styles.createButton}>Create Channel</button>
+                    <button onClick={deleteChannel} className={styles.deleteButton}>Delete Channel</button>
+                </div>
             </form>
             {errors.error && <p>Only the channel owner may update or delete the channel.</p>}
-        </>
+        </section>
     )
 }
 

@@ -6,8 +6,10 @@ import SignOutModal from "../SignOutModal/SignOutModal"
 export default function HeaderInfo({ activeChannel }){
     return (
         <header className={styles.headerInfo}>
-            <FaCode />
-            <h3 className={styles.headerTitle}>{ activeChannel?.name || "Loading..." }</h3>
+            <div className={styles.left}>
+                <FaCode />
+                <h3 className={styles.headerTitle}>{ activeChannel?.name || "Loading..." }</h3>
+            </div>
             <div className={styles.signOutContainer}>
                 <OpenModalButton
                     buttonText="Sign Out"
