@@ -15,7 +15,6 @@ import { GoPlus } from "react-icons/go";
 export default function ChannelNav({ channels, setActiveChannelId, setPrevChannel, activeServer, currentUser, activeChannelId }){
     const channelElements = useMemo(() => channels.map(channel => (
         <div key={channel.id}>
-            {console.log("CHANNEL LIST", channel)}
             <ChannelOption id={channel.id} name={channel.name} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setPrevChannel={setPrevChannel} active={channel.id === activeChannelId}/>
             {/* {(channel.owner_id === currentUser[0].id || activeServer?.owner_id === currentUser[0]?.id) && <OpenModalButton
                 buttonText={<FaGear />}

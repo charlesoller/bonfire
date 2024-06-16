@@ -13,11 +13,12 @@ import ChannelNav from "../ChannelNav/ChannelNav"
 import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import UserList from "../UserList/UserList"
 
-export default function ServerView({ activeServer, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers, currentUser }) {
+export default function ServerView({ activeServer, activeServerId, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers, currentUser }) {
     // console.log("ACTIVE SERVER: ", activeServer)
     // console.log("ACTIVE CHANNEL ID: ", activeChannelId)
-    const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeChannelId), [channels, activeChannelId])
-
+    console.log("all channels: ", channels)
+    const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeServerId), [channels, activeServerId])
+    console.log("Active Server Channels: ", activeServerChannels)
     // useEffect(() => {
     //     console.log("RUNNING")
     //     // This is responsible for changing the active channel when the server changes

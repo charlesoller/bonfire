@@ -30,10 +30,10 @@ export default function ServerViewLayout(){
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
     const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);
     const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]);
-    console.log("ACTIVE CHANNEL", activeChannelId)
-    console.log("ACTIVE CHANNEL", channels)
-    console.log("ACTIVE CHANNEL", activeChannel)
-    console.log("ACTIVE CHANNEL", prevChannelId)
+    // console.log("ACTIVE CHANNEL", activeChannelId)
+    // console.log("ACTIVE CHANNEL", channels)
+    // console.log("ACTIVE CHANNEL", activeChannel)
+    // console.log("ACTIVE CHANNEL", prevChannelId)
     useEffect(() => {
         function onConnect() {
             setIsConnected(true);
@@ -88,6 +88,7 @@ export default function ServerViewLayout(){
                 <div className={styles.channel_view}>
                     <ServerView 
                         activeServer={activeServer}
+                        activeServerId={activeServerId}
                         channels={channels}
                         activeChannel={activeChannel}
                         currentUser={currentUser}

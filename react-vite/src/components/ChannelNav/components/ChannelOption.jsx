@@ -3,8 +3,7 @@ import styles from "./ChannelOption.module.css"
 export default function ChannelOption({id, name, activeChannelId, setActiveChannelId, setPrevChannel, active}){
     const activeStyle = active ? {"background": "#37393f"} : {}
     const handleChangeChannel = () => {
-        console.log("ACTIVE CHANNEL ID: ", activeChannelId)
-        console.log("ACTIVE CHANNEL ID: ", id)
+        console.log("New Id: ", id)
         setPrevChannel(activeChannelId);
         setActiveChannelId(id);
     }
