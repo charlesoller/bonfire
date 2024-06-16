@@ -27,6 +27,13 @@ export const getChannelsForServerId = async (serverId) => {
     return res;
 }
 
+export const getAllUsers = async () => {
+    const res = await fetch('/api/users/')
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res
+}
+
 export const getUsersForServerId = async (serverId) => {
     const res = await fetch(`/api/servers/${serverId}/users`)
         .then(res => res.json())

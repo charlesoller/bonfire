@@ -35,19 +35,43 @@
     outline: none;
 }
 
+.buttons {
+    /* background: red; */
+    display: flex;
+    justify-content: space-between;
+}
+
 .createServerButton {
-    background-color: #7289da;
+    padding: 0.4em 1em;
     border: none;
-    border-radius: 5px;
-    padding: 3px;
-    outline: none;
-    width: 100%;
-    height: 10%;
+    border-radius: 8px;
+    background-color: #7289da;
     cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
 
 .createServerButton:hover {
+    transform: scale(1.05);
     background-color: #6377bf;
+}
+
+.deleteButton {
+    padding: 0.4em 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: #c70c0c;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.deleteButton:hover {
+    background-color: #b20b0b;
+    transform: scale(1.05);
 }
 
 .input {
@@ -65,4 +89,8 @@
 
 .input:hover {
     background-color: #4b4f57;
+}
+
+.fullWidth {
+    width: 100%;
 }

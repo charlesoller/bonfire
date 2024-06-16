@@ -13,17 +13,26 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [emailErrors, setEmailErrors] = useState({});
+
+  const VALID_EXTENSIONS = ['jpg', 'png', 'jpeg']
 
   if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEmailErrors({});
 
     if (password !== confirmPassword) {
       return setErrors({
         confirmPassword:
           "Confirm Password field must be the same as the Password field",
       });
+    }
+
+    if (!email.split("@")[1]?.split(".")[1]) {
+      setEmailErrors({email: "Please include a valid email address."})
+      return;
     }
 
     const serverResponse = await dispatch(
@@ -64,6 +73,7 @@ function SignupFormPage() {
                 required
               />
               {errors.email && <p className="error-message">{errors.email}</p>}
+              {emailErrors.email && <p className="error-message">{emailErrors.email}</p>}
             </div>
             <div className="form-group">
               <label>Username</label>

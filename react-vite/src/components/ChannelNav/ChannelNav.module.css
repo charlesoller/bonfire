@@ -66,4 +66,19 @@
 
 .addChannel:hover {
     background-color: #6377bf;
+    transform: scale(1.03);
+}
+
+.button {
+    opacity: 0.5;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    margin: 0;
+}
+
+.button:hover,
+.button:focus {
+    opacity: 1;
+    transform: scale(1.1);
 }

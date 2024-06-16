@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch} from "react-redux";
 import { addNewServer, fetchAllServersThunk, updateOldServer, deleteAServer } from "../../redux/server";
 import { useModal } from "../../context/Modal";
+import { socket } from "../../socket";
 
 function NewServerModal({server, formType}) {
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function NewServerModal({server, formType}) {
         e.preventDefault();
 
         if (formType === "Update Server") {
-            const serverResponse = await dispatch(
+            const serverResponse = dispatch(
                 updateOldServer({
                     id: server.id,
                     name: serverName,
@@ -25,13 +26,15 @@ function NewServerModal({server, formType}) {
                 })
             );
 
-            if (serverResponse) {
-                setErrors(serverResponse);
-            } else {
+            // if (serverResponse) {
+            //     setErrors(serverResponse);
+            // } else {
+                socket.emit('server', { type: "edit", server });
+                dispatch(fetchAllServersThunk());
                 closeModal()
-            }
-    
-            dispatch(fetchAllServersThunk());
+            // }
+            
+
         } else {
             const serverResponse = dispatch(
                 addNewServer({
@@ -43,16 +46,18 @@ function NewServerModal({server, formType}) {
     
             // if (serverResponse) {
             //     setErrors(serverResponse);
-            // } 
-            console.log("dispatching...")
-            dispatch(fetchAllServersThunk());
-            closeModal()
+            // } else {
+                socket.emit('server', { type: "add", server });
+                dispatch(fetchAllServersThunk());
+                closeModal()
+            // }
         }
     };
 
     const deleteServer = async (e) => {
         e.preventDefault();
         dispatch(deleteAServer(server.id));
+        socket.emit('server', { type: "delete", server });
         dispatch(fetchAllServersThunk());
         closeModal();
     }
@@ -87,10 +92,11 @@ function NewServerModal({server, formType}) {
                     onChange={(e) => setServerImage(e.target.value)}
                 />
                 {errors.serverImage && <p>{errors.serverImage}</p>}
-                <button type="submit" className={styles.createServerButton}>{formType === "Update Server" ? "Update" : "Create"}</button>
-            </form>
-            <form onSubmit={deleteServer}>
-                <button type="submit" className={formType !== "Update Server" ? styles.hidden : ""}>Delete Server</button> 
+                <div className={styles.buttons}>
+                    <button className={formType !== "Update Server" ? styles.hidden : styles.deleteButton} onClick={deleteServer}>Delete Server</button> 
+                    <button type="submit" className={`${styles.createServerButton} ${formType !== "Update Server" ? styles.fullWidth : undefined}`}>{formType === "Update Server" ? "Update" : "Create"}</button>
+                </div>
+
             </form>
         </div>
         </>

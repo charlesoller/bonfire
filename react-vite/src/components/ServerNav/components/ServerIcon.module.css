@@ -21,3 +21,7 @@
     border-radius: 35%;
     cursor: pointer;
 }
+
+.active {
+    border-radius: 35%;
+}

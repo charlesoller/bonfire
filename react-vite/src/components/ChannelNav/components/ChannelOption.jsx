@@ -13,10 +13,12 @@ export default function ChannelOption({id, name, channel, activeServer, currentU
     return (
         <div className={styles.container} onClick={handleChangeChannel} style={activeStyle}>
             <h1 className={styles.text}>{name.toLowerCase()}</h1>
-            {(channel.owner_id === currentUser[0].id || activeServer?.owner_id === currentUser[0]?.id) && <OpenModalButton
-                buttonText={<FaGear />}
-                modalComponent={<EditChannelModal channel={channel}/>}
-            />}
+            <div className={styles.edit}>
+                {(channel.owner_id === currentUser[0].id || activeServer?.owner_id === currentUser[0]?.id) && <OpenModalButton
+                    buttonText={<FaGear className={styles.button}/>}
+                    modalComponent={<EditChannelModal channel={channel}/>}
+                />}
+            </div>
         </div>
     )
 }

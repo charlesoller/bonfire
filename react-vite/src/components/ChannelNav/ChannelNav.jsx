@@ -25,10 +25,10 @@ export default function ChannelNav({ channels, setActiveChannelId, setPrevChanne
                     <h1 className={styles.channelName__header}>{activeServer?.name || "Loading..."}</h1>
                 </div>
 
-                <OpenModalButton
-                    buttonText={<FaGear />}
+                {activeServer?.owner_id === currentUser?.[0].id && <OpenModalButton
+                    buttonText={<FaGear className={styles.button} />}
                     modalComponent={<NewServerModal server={activeServer} formType="Update Server"/>}
-                />
+                />}
             </div>
             <div className={styles.channelOptions}>
                 <OpenModalButton

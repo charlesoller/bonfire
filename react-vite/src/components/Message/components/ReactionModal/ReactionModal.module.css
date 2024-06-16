@@ -2,30 +2,10 @@
     padding: 1.5em;
     border-radius: 1em;
     background: #313338;
-    filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #40444b;
-    color: #ffffff;
-    width: 100%;
-    min-width: 400px;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-}
-
-.input:hover {
-    background-color: #4b4f57;
+    max-width: 600px;
+    max-height: 600px;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .reactionButton {
@@ -44,6 +24,8 @@
 }
 
 .buttons {
-    display: flex;
-    gap: 1em;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 0.5em;
+    overflow-y: scroll;
 }

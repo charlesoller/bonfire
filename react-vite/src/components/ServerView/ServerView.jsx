@@ -12,7 +12,6 @@ import UserList from "../UserList/UserList"
 export default function ServerView({ activeServer, activeServerId, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers, currentUser }) {
     const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeServerId), [channels, activeServerId])
 
-    
     return (
         <section className={styles.serverView}>
             <ChannelNav 

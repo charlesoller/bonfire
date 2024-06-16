@@ -1,9 +1,15 @@
-import { getUsersForServerId, getCurrentUser } from "../utils/api"
+import { getUsersForServerId, getCurrentUser, getAllUsers } from "../utils/api"
 
-export const LOAD_USERS = 'messages/LOAD_USERS'
+export const LOAD_ALL_USERS = 'users/LOAD_ALL_USERS'
+export const LOAD_USERS = 'users/LOAD_USERS'
 export const LOAD_CURRENT_USER = 'users/LOAD_CURRENT_USER'
 
 // ================= ACTION CREATORS ================= 
+export const loadAllUsers = (users) => ({
+    type: LOAD_ALL_USERS,
+    users
+})
+
 export const loadUsers = (users) => ({
     type: LOAD_USERS,
     users
@@ -15,6 +21,12 @@ export const loadCurrentUser = (user) => ({
 })
 
 // ================= THUNKS ================= 
+
+export const fetchAllUsersThunk = () => async (dispatch) => {
+    const res = await getAllUsers();
+    dispatch(loadAllUsers(res));
+}
+
 export const fetchServerUsersThunk = (id) => async (dispatch) => {
     const res = await getUsersForServerId(id);
     dispatch(loadUsers(res));
@@ -36,7 +48,9 @@ const serverUserReducer = (state = {}, action) => {
             })
             return usersState;
         }
-
+        case LOAD_ALL_USERS: {
+            return action.users;
+        }
         default:
             return state;
     }
