@@ -63,7 +63,6 @@ export const createChannelMessage = async (channelId, message, userId) => {
     });
     if (res.ok) {
         const data = await res.json();
-        // console.log('API call createChannelMessage response:', data);
         return data;
     }
     throw new Error('Failed to create message');
@@ -133,7 +132,6 @@ export const addMessageReaction = async (messageId, emoji, userId) => {
 
     if (res.ok) {
         // const test = await res.json()
-        // console.log("RES: ", test)
         return await res.json();
     }
     throw new Error('Failed to add reaction');
@@ -160,7 +158,6 @@ export const incrementReaction = async (reactionId) => {
 }
 
 export const addChannel = async (channel, serverId) => {
-    console.log("ADDING CHANNELS", serverId)
     const res = await fetch(`/api/servers/${serverId}/channels`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -172,7 +169,6 @@ export const addChannel = async (channel, serverId) => {
 }
 
 export const updateChannel = async (channel) => {
-    console.log("UPDATE CHANNEL", channel)
     const res = await fetch(`/api/channels/${channel.id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
@@ -184,7 +180,6 @@ export const updateChannel = async (channel) => {
 }
 
 export const deleteChannel = async (channelId) => {
-    console.log("DELETE CHANNEL", channelId)
     const res = await fetch(`/api/channels/${channelId}`, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},

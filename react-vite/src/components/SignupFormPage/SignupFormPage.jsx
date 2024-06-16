@@ -39,7 +39,6 @@ function SignupFormPage() {
     }
 
     if (!VALID_EXTENSIONS.includes(profileImage.split('.')[profileImage.split(".").length - 1]) && profileImage.length > 0) {
-      console.log("profile image ok?")
       setProfileImageError({profileImage: "Profile Image URL must end in '.jpg', '.png', 'jpeg'"})
       return;
     }

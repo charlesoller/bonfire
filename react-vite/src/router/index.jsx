@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import ServerViewLayout from '../components/ServerViewLayout/ServerViewLayout';
+import DeadLinkPage from '../components/DeadLinkPage/DeadLink';
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <h1>{"The page you're looking for is not in this castle."}</h1>
+    element: <DeadLinkPage/>
   }
 ]);

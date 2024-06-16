@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { addNewChannel } from "../../redux/server";
 
-function ChannelModal({ activeServerId, serverChannels }) {
+function ChannelModal({ activeServerId }) {
     const dispatch = useDispatch();
     const [channelName, setChannelName] = useState("");
     const [channelNameError, setChannelNameError] = useState({})
@@ -27,8 +27,6 @@ function ChannelModal({ activeServerId, serverChannels }) {
         const channelResponse = await dispatch(
             addNewChannel(newChannel, activeServerId)
         );
-
-        console.log("CHANNEL RESPONSE", channelResponse)
 
         if (channelResponse) {
             setErrors(channelResponse);

@@ -58,13 +58,11 @@ export const addNewChannel = (channel, serverId) => async (dispatch) => {
 }
 
 export const updateOldChannel = (channel) => async (dispatch) => {
-    console.log("UPDATE CHANNEL", channel)
     await updateChannel(channel);
     dispatch(fetchAllServersThunk())
 }
 
 export const deleteAChannel = (channelId) => async (dispatch) => {
-    console.log("DELETE CHANNEL", channelId)
     await deleteChannel(channelId)
     dispatch(fetchAllServersThunk())
 }

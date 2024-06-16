@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { thunkLogin } from "../../redux/session";
+import { thunkLogin, thunkDemoLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormPage() {
@@ -35,6 +35,18 @@ function LoginFormPage() {
       navigate("/");
     }
   };
+
+  const demoLogin = async (e) => {
+    e.preventDefault();
+
+    await dispatch(
+      thunkDemoLogin({
+        email: 'user1@example.com'
+      })
+    );
+
+    navigate("/");
+  }
 
   return (
     <div className="login-page">
@@ -79,6 +91,9 @@ function LoginFormPage() {
           </form>
           <div className="login-redirect">
             Don&apos;t have an account? Click <Link to="/signup">here</Link> to sign up.
+          </div>
+          <div>
+            <button onClick={demoLogin} className="login-button">Demo User</button>
           </div>
         </div>
       </div>

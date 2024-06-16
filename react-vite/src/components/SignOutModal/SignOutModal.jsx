@@ -9,7 +9,7 @@ function SignOutModal() {
 
     const handleSignOut = async (e) => {
         e.preventDefault();
-        dispatch(thunkLogout())
+        await dispatch(thunkLogout())
         closeModal();
         window.location.href = '/login';
     };

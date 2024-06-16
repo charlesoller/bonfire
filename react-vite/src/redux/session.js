@@ -40,6 +40,24 @@ export const thunkLogin = (credentials) => async dispatch => {
   }
 };
 
+export const thunkDemoLogin = (credentials) => async dispatch => {
+  const res = await fetch("/api/auth/demo-login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(credentials)
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    dispatch(setUser(data));
+  } else if (res.status < 500) {
+    const errorMessages = await res.json();
+    return errorMessages
+  } else {
+    return { server: "Something went wrong. Please try again" }
+  }
+}
+
 export const thunkSignup = (user) => async (dispatch) => {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
@@ -68,7 +86,6 @@ const initialState = { user: null };
 function sessionReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      console.log(action.payload)
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
