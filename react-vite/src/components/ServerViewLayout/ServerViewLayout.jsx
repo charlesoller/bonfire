@@ -12,6 +12,7 @@ import { socket } from "../../socket"
 // Components
 import ServerNav from "../ServerNav/ServerNav"
 import ServerView from "../ServerView/ServerView"
+import SignupFormPage from "../SignupFormPage"
 
 export default function ServerViewLayout(){
     const dispatch = useDispatch();
@@ -23,7 +24,6 @@ export default function ServerViewLayout(){
     const servers = Object.values(useSelector((state) => state.servers));
     const messages = Object.values(useSelector((state => state.messages)))
     const currentUser = Object.values(useSelector((state) => state.currentUser));
-
     const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
 
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
@@ -71,6 +71,8 @@ export default function ServerViewLayout(){
         dispatch(fetchCurrentUser())
     }, [dispatch])
     
+    if (!currentUser[0]?.id) return <SignupFormPage />
+
     return (
         <main className={styles.body}> 
             <ServerNav 
@@ -85,6 +87,7 @@ export default function ServerViewLayout(){
                 <div className={styles.channel_view}>
                     <ServerView 
                         activeServer={activeServer}
+                        activeServerId={activeServerId}
                         channels={channels}
                         activeChannel={activeChannel}
                         currentUser={currentUser}

@@ -6,12 +6,21 @@ import { FaCode } from "react-icons/fa"
 import ChannelOption from "./components/ChannelOption"
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import NewServerModal from "../NewServerModal/NewServerModal";
+import ChannelModal from "../ChannelModal/ChannelModal";
+import EditChannelModal from "../EditChannelModal/EditChannelModal";
 import { FaGear } from "react-icons/fa6";
+import { GoPlus } from "react-icons/go";
 
-export default function ChannelNav({ channels, activeChannel, setActiveChannel, setPrevChannel, activeServer }){
+export default function ChannelNav({ channels, setActiveChannelId, setPrevChannel, activeServer, currentUser, activeChannelId }){
     const channelElements = useMemo(() => channels.map(channel => (
-        <ChannelOption id={channel.id} key={channel.id} name={channel.name} activeChannelId={activeChannel?.id} setActiveChannel={setActiveChannel} setPrevChannel={setPrevChannel} active={channel.id === activeChannel?.id}/>
-    )), [channels, activeChannel, setActiveChannel, setPrevChannel])
+        <div key={channel.id}>
+            <ChannelOption id={channel.id} key={channel.id} name={channel.name} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setPrevChannel={setPrevChannel} active={channel.id === activeChannelId} />
+            {(channel.owner_id === currentUser[0].id || activeServer?.owner_id === currentUser[0]?.id) && <OpenModalButton
+                buttonText={<FaGear />}
+                modalComponent={<EditChannelModal channel={channel}/>}
+            />}
+        </div>
+    )), [channels, setActiveChannelId, setPrevChannel, activeServer, currentUser, activeChannelId])
 
     return (
         <aside className={styles.channelNav}>
@@ -22,6 +31,15 @@ export default function ChannelNav({ channels, activeChannel, setActiveChannel, 
                     buttonText={<FaGear />}
                     modalComponent={<NewServerModal server={activeServer} formType="Update Server"/>}
                 />
+            </div>
+            <div>
+                Text Channels
+                <OpenModalButton
+                    buttonText={<GoPlus />}
+                    modalComponent={<ChannelModal
+                                        serverChannels={channels}
+                                        activeServerId={activeServer?.id}/>}
+                                    />
             </div>
             <div className={styles.channelOptions}>
                 {channelElements}

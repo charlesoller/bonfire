@@ -151,3 +151,38 @@ export const incrementReaction = async (reactionId) => {
     }
     throw new Error('Failed to delete reaction');
 }
+
+export const addChannel = async (channel, serverId) => {
+    console.log("ADDING CHANNELS", serverId)
+    const res = await fetch(`/api/servers/${serverId}/channels`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(channel)
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}
+
+export const updateChannel = async (channel) => {
+    console.log("UPDATE CHANNEL", channel)
+    const res = await fetch(`/api/channels/${channel.id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(channel)
+    })
+    .then(res => res.json())
+    .catch(e => console.error(e))
+    return res;
+}
+
+export const deleteChannel = async (channelId) => {
+    console.log("DELETE CHANNEL", channelId)
+    const res = await fetch(`/api/channels/${channelId}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+    })
+        .then(res => res.json())
+        .catch(e => console.error(e))
+    return res;
+}

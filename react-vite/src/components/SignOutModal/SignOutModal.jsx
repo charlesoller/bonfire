@@ -10,8 +10,10 @@ function SignOutModal() {
     const handleSignOut = (e) => {
         e.preventDefault();
         dispatch(thunkLogout(() => {
-            window.location.href = '/login';
+            e.preventDefault();
+            dispatch(thunkLogout());
             closeModal();
+            window.location.href = '/login';
         }));
     };
 

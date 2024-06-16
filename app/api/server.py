@@ -2,9 +2,30 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Server, db, Channel, ServerImage, User, ServerUser
 from app.forms import NewServerForm, NewChannelForm
-from sqlalchemy.orm import joinedload,subqueryload
+from sqlalchemy.orm import joinedload
+import urllib.request
+from urllib.error import URLError, HTTPError
 
 server = Blueprint("servers", __name__, url_prefix="")
+
+VALID_EXTENSIONS = ['jpg', 'png', 'jpeg']
+
+def is_valid_image_url(url):
+    try:
+        request = urllib.request.Request(url, method='HEAD')
+        with urllib.request.urlopen(request) as response:
+            content_type = response.headers.get('Content-Type')
+            if content_type and content_type.startswith('image'):
+                return False
+        return True
+    except (URLError, HTTPError):
+        return True
+
+def check_last_segment_of_url(url):
+    ext = url.split('.')
+    if ext[-1] in VALID_EXTENSIONS:
+        return False
+    return True
 
 @server.route("/")
 @login_required
@@ -36,7 +57,7 @@ def create_new_server():
             owner_id = user_id
         )
 
-        if server_image is None:
+        if server_image is None or check_last_segment_of_url(server_image) or is_valid_image_url(server_image):
             server_image = 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg'
 
         db.session.add(new_server)
@@ -83,12 +104,15 @@ def update_server(server_id):
 
         server = Server.query.get_or_404(server_id)
 
+        if server_image is None or check_last_segment_of_url(server_image) or is_valid_image_url(server_image):
+            server_image = 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg'
+
         if server.owner_id != current_user.id:
             return jsonify({"error": "Unauthorized"}), 403
         
         server.name = server_name
         server.description = server_description
-        server.server_image = server_image
+        server.server_images[0].url = server_image
 
         db.session.commit()
 
@@ -118,6 +142,8 @@ def get_all_server_channels(server_id):
 @login_required
 def create_new_channel(server_id):
     form = NewChannelForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
         channel_name = form.name.data
         user_id = current_user.id
@@ -132,10 +158,10 @@ def create_new_channel(server_id):
         db.session.commit()
 
         results = db.session.query(Channel).filter(Channel.id == new_channel.id)
-        channel_data = []
+        channel_data = {}
         for channel in results:
             channel_dict = channel.to_dict()
-            channel_data.append(channel_dict)
+            channel_data[channel_dict['id']] = channel_dict
 
         return channel_data
     else:

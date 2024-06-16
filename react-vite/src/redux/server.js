@@ -1,4 +1,4 @@
-import { getAllServers, addServer, updateServer, deleteServer } from "../utils/api"
+import { getAllServers, addServer, updateServer, deleteServer, addChannel, updateChannel, deleteChannel } from "../utils/api"
 
 export const LOAD_SERVERS = 'servers/LOAD_SERVERS'
 export const LOAD_ONE_SERVER = 'servers/LOAD_ONE_SERVER'
@@ -50,6 +50,23 @@ export const updateOldServer = (server) => async (dispatch) => {
 export const deleteAServer = (serverId) => async dispatch => {
     const res = await deleteServer(serverId);
     dispatch(removeServer(res))
+}
+
+export const addNewChannel = (channel, serverId) => async (dispatch) => {
+    await addChannel(channel,serverId);
+    dispatch(fetchAllServersThunk())
+}
+
+export const updateOldChannel = (channel) => async (dispatch) => {
+    console.log("UPDATE CHANNEL", channel)
+    await updateChannel(channel);
+    dispatch(fetchAllServersThunk())
+}
+
+export const deleteAChannel = (channelId) => async (dispatch) => {
+    console.log("DELETE CHANNEL", channelId)
+    await deleteChannel(channelId)
+    dispatch(fetchAllServersThunk())
 }
 
 
