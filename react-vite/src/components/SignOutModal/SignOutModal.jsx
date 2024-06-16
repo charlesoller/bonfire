@@ -7,12 +7,14 @@ function SignOutModal() {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
-    const handleSignOut = (e) => {
+    const handleSignOut = async (e) => {
         e.preventDefault();
-        dispatch(thunkLogout(() => {
-            window.location.href = '/login';
-            closeModal();
-        }));
+        console.log("Signing out...");
+        await dispatch(thunkLogout());
+        console.log("Signed out, closing modal...");
+        closeModal();
+        console.log("Redirecting to login...");
+        window.location.href = '/login';
     };
 
     return (

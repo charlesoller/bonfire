@@ -12,6 +12,7 @@ import { socket } from "../../socket"
 // Components
 import ServerNav from "../ServerNav/ServerNav"
 import ServerView from "../ServerView/ServerView"
+import SignupFormPage from "../SignupFormPage/SignupFormPage"
 
 export default function ServerViewLayout(){
     const dispatch = useDispatch();
@@ -21,10 +22,10 @@ export default function ServerViewLayout(){
     const [isConnected, setIsConnected] = useState(false);
 
     const servers = Object.values(useSelector((state) => state.servers));
-    const messages = Object.values(useSelector((state => state.messages)))
-    const currentUser = Object.values(useSelector((state) => state.currentUser));
+    const messages = Object.values(useSelector((state => state.messages)));
+    const currentUser = useSelector((state) => state.session.user);
 
-    const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
+    const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers]);
 
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
@@ -64,12 +65,15 @@ export default function ServerViewLayout(){
         dispatch(fetchAllMessagesThunk())
     }, [activeChannelId, prevChannelId, dispatch])
 
-
     useEffect(() => {
         dispatch(fetchAllServersThunk());
         dispatch(fetchAllMessagesThunk())
         dispatch(fetchCurrentUser())
     }, [dispatch])
+
+    if (!currentUser) {
+        return <SignupFormPage />;
+    }
     
     return (
         <main className={styles.body}> 
