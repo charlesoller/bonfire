@@ -43,11 +43,11 @@ def seed_data():
     db.session.commit()
 
     server_images = [
-        ServerImage(url='http://example.com/server1.jpg', server_id=1),
-        ServerImage(url='http://example.com/server2.jpg', server_id=2),
-        ServerImage(url='http://example.com/server3.jpg', server_id=3),
-        ServerImage(url='http://example.com/server4.jpg', server_id=4),
-        ServerImage(url='http://example.com/server5.jpg', server_id=5)
+        ServerImage(url='https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', server_id=1),
+        ServerImage(url='https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', server_id=2),
+        ServerImage(url='https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', server_id=3),
+        ServerImage(url='https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', server_id=4),
+        ServerImage(url='https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', server_id=5)
     ]
 
     db.session.add_all(server_images)

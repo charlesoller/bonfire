@@ -1,10 +1,11 @@
-import { getAllServers, addServer, updateServer, deleteServer } from "../utils/api"
+import { getAllServers, addServer, updateServer, deleteServer, addChannel, updateChannel, deleteChannel } from "../utils/api"
 
 export const LOAD_SERVERS = 'servers/LOAD_SERVERS'
 export const LOAD_ONE_SERVER = 'servers/LOAD_ONE_SERVER'
 export const CLEAR_SERVER_DETAILS = 'servers/CLEAR_SERVER_DETAILS'
 export const REMOVE_SERVER = 'servers/REMOVE_SERVER'
 export const UPDATE_SERVER = 'servers/UPDATE_SERVER'
+export const LOAD_CHANNEL = 'channels/LOAD_CHANNEL'
 
 // ================= ACTION CREATORS ================= 
 export const loadServers = (servers) => ({
@@ -31,6 +32,11 @@ export const removeServer = (serverId) => ({
     serverId
 })
 
+export const loadChannel = (channel) => ({
+    type: LOAD_CHANNEL,
+    channel,
+})
+
 // ================= THUNKS ================= 
 export const fetchAllServersThunk = () => async (dispatch) => {
     const res = await getAllServers();
@@ -50,6 +56,23 @@ export const updateOldServer = (server) => async (dispatch) => {
 export const deleteAServer = (serverId) => async dispatch => {
     const res = await deleteServer(serverId);
     dispatch(removeServer(res))
+}
+
+export const addNewChannel = (channel, serverId) => async (dispatch) => {
+    await addChannel(channel,serverId);
+    dispatch(fetchAllServersThunk())
+}
+
+export const updateOldChannel = (channel) => async (dispatch) => {
+    console.log("UPDATE CHANNEL", channel)
+    await updateChannel(channel);
+    dispatch(fetchAllServersThunk())
+}
+
+export const deleteAChannel = (channelId) => async (dispatch) => {
+    console.log("DELETE CHANNEL", channelId)
+    await deleteChannel(channelId)
+    dispatch(fetchAllServersThunk())
 }
 
 

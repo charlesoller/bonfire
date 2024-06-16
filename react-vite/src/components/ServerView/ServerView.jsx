@@ -13,7 +13,7 @@ import ChannelNav from "../ChannelNav/ChannelNav"
 import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import UserList from "../UserList/UserList"
 
-export default function ServerView({ activeServer, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers }) {
+export default function ServerView({ activeServer, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers, currentUser }) {
     // console.log("ACTIVE SERVER: ", activeServer)
     // console.log("ACTIVE CHANNEL ID: ", activeChannelId)
     const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeChannelId), [channels, activeChannelId])
@@ -28,10 +28,12 @@ export default function ServerView({ activeServer, activeChannel, channels, acti
         <section className={styles.serverView}>
             <ChannelNav 
                 channels={activeServerChannels} 
-                activeChannel={activeChannel} 
-                setActiveChannel={setActiveChannelId} 
+                activeChannel={activeChannel}
+                activeChannelId={activeChannelId}
+                setActiveChannelId={setActiveChannelId} 
                 setPrevChannel={setPrevChannelId} 
-                activeServer={activeServer} 
+                activeServer={activeServer}
+                currentUser={currentUser} 
             />
             <HeaderInfo 
                 activeChannel={activeChannel} 
