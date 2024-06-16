@@ -11,7 +11,7 @@ import { FaGear } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
 
 export default function ChannelNav({ channels, setActiveChannelId, setPrevChannel, activeServer, currentUser, activeChannelId }){
-    const channelElements = useMemo(() => channels.map(channel => (
+    const channelElements = useMemo(() => channels?.map(channel => (
         <div key={channel.id} className={styles.channelGroup}>
             <ChannelOption id={channel.id} key={channel.id} channel={channel} activeServer={activeServer} currentUser={currentUser} name={channel.name} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setPrevChannel={setPrevChannel} active={channel.id === activeChannelId} />
         </div>

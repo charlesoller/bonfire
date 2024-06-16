@@ -25,7 +25,7 @@ export default function ServerViewLayout(){
     const messages = Object.values(useSelector((state => state.messages)))
     const currentUser = Object.values(useSelector((state) => state.currentUser));
     const allUsers = Object.values(useSelector((state) => state.serverUsers))[0];
-    const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
+    const channels = useMemo(() => servers?.map(server => server.channels).flat(), [servers])
     const activeServer = useMemo(() => servers.find(server => server.id === activeServerId), [activeServerId, servers]);
     const activeChannel = useMemo(() => channels.find(channel => channel.id === activeChannelId), [activeChannelId, channels]);
     const activeServerUsers = useMemo(() => activeServer?.users?.map(user => user.user), [activeServer]);

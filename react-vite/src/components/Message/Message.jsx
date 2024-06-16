@@ -14,7 +14,7 @@ import { socket } from "../../socket";
 
 export default function Message({id, text, date, name, channelId, reactions, currentUser, ownerId, img = "https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg"}){
     const dispatch = useDispatch()
-    const reactionElements = useMemo(() => reactions.map((reaction) => {
+    const reactionElements = useMemo(() => reactions?.map((reaction) => {
         const handleReaction = (reactionId, hasReacted) => {
             if (hasReacted) {
                 deleteReaction(reactionId)

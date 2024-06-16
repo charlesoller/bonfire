@@ -32,7 +32,7 @@ export default function ReactionModal({ id, channelId, currentUser, reactions })
         closeModal();
     }
 
-    const reactionElements = REACTIONS.map((reaction, index) => (
+    const reactionElements = REACTIONS?.map((reaction, index) => (
         <button key={`${reaction}${index}`} className={styles.reactionButton} onClick={() => handleAddReaction(reaction)}>{reaction}</button>
     ))
 

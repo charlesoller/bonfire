@@ -16,7 +16,7 @@ export default function MessageLayout({ defaultMessages = [], channelId }) {
     }, [defaultMessages])
 
 
-    const messageElements = useMemo(() => messages.map((message) => {
+    const messageElements = useMemo(() => messages?.map((message) => {
         const { user } = message;
         const url = user?.profile_images[0]?.url || undefined
         return <Message 

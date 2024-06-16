@@ -61,7 +61,7 @@ function LoginFormPage() {
           <h1 className="login-header">Welcome back!</h1>
           <p className="login-subheader">We're so excited to see you again!</p>
           {errors.length > 0 &&
-            errors.map((message) => (
+            errors?.map((message) => (
               <p key={message} className="error-message">
                 {message}
               </p>

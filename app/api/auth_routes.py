@@ -57,6 +57,12 @@ def login():
         return user.to_dict()
     return form.errors, 401
 
+@auth_routes.route('/demo-login', methods=['POST'])
+def demo_login():
+    user = User.query.filter(User.email == 'user1@example.com').first()
+    login_user(user)
+    return user.to_dict()
+
 
 @auth_routes.route('/logout')
 def logout():

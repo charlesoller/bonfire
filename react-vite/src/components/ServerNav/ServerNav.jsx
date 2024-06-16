@@ -12,7 +12,7 @@ const IMAGE_PLACEHOLDER = "https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t
 
 export default function ServerNav({ servers, activeServerId, setActiveServerId, activeChannelId, setActiveChannelId, setPrevChannelId }){
 
-    const serverElements = useMemo(() => servers.map((server) => {
+    const serverElements = useMemo(() => servers?.map((server) => {
         return (
             <ServerIcon key={server.id} image={server.server_images[0]?.url || IMAGE_PLACEHOLDER} id={server.id} servers={servers} setActiveServerId={setActiveServerId} activeChannelId={activeChannelId} setActiveChannelId={setActiveChannelId} setPrevChannelId={setPrevChannelId} isActive={server.id === activeServerId}/>
         )
