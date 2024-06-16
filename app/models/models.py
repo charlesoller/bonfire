@@ -175,7 +175,7 @@ class ChannelMessage(db.Model):
             'reactions': [reaction.to_dict() for reaction in self.reactions],
             'user': self.user.to_dict(),
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
         }
 
 class ChatRoomMessage(db.Model):
@@ -241,7 +241,7 @@ class Reaction(db.Model):
             'chat_room_message_id': self.chat_room_message_id,
             'resource_type': self.resource_type,
             'emoji': self.emoji,
-            'count': self.count
+            'count': self.count,
         }
 
 class UserReaction(db.Model):
@@ -258,7 +258,8 @@ class UserReaction(db.Model):
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'reaction_id': self.reaction_id
+            'reaction_id': self.reaction_id,
+            'user': self.user.to_dict()
         }
 
 class ChatRoom(db.Model):

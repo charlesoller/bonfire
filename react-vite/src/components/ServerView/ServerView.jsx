@@ -18,11 +18,6 @@ export default function ServerView({ activeServer, activeChannel, channels, acti
     // console.log("ACTIVE CHANNEL ID: ", activeChannelId)
     const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeChannelId), [channels, activeChannelId])
 
-    // useEffect(() => {
-    //     console.log("RUNNING")
-    //     // This is responsible for changing the active channel when the server changes
-    //     setActiveChannelId(activeServer?.channels[0])
-    // }, [activeServer])
     
     return (
         <section className={styles.serverView}>

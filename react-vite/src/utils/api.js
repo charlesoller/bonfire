@@ -114,3 +114,40 @@ export const deleteServer = async (serverId) => {
         .catch(e => console.error(e))
     return res;
 }
+
+export const addMessageReaction = async (messageId, emoji, userId) => {
+    const res = await fetch(`/api/channels/channel_messages/${messageId}/reactions`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ emoji, user_id: userId }),
+    })
+
+    if (res.ok) {
+        // const test = await res.json()
+        // console.log("RES: ", test)
+        return await res.json();
+    }
+    throw new Error('Failed to add reaction');
+};
+
+export const deleteReaction = async (reactionId) => {
+    const res = await fetch(`/api/channels/reactions/${reactionId}`, {
+        method: 'DELETE',
+    });
+    if (res.ok) {
+        return { reactionId };
+    }
+    throw new Error('Failed to delete reaction');
+};
+
+export const incrementReaction = async (reactionId) => {
+    const res = await fetch(`/api/channels/reactions/${reactionId}`, {
+        method: 'PUT',
+    });
+    if (res.ok) {
+        return { reactionId };
+    }
+    throw new Error('Failed to delete reaction');
+}

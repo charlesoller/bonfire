@@ -126,9 +126,9 @@ def add_channel_message_reaction(message_id):
     )
     db.session.add(new_reaction)  # Add the new reaction to the session
     db.session.commit()  # Commit the session to save the reaction
-    
+
     user_reaction = UserReaction(
-        user_id=1,  # Use a hardcoded user ID for testing
+        user_id=current_user.id,  
         reaction_id=new_reaction.id
     )
     db.session.add(user_reaction)  # Add the user's reaction to the session
@@ -151,26 +151,45 @@ def add_chat_room_message_reaction(message_id):
         chat_room_message_id=message_id,
         resource_type='chat_room_message',
         emoji=emoji,
-        count=1
+        count=1,
     )
     db.session.add(new_reaction)  # Add the new reaction to the session
     db.session.commit()  # Commit the session to save the reaction
     
     user_reaction = UserReaction(
-        user_id=1,  # Use a hardcoded user ID for testing
+        user_id=current_user.id,
         reaction_id=new_reaction.id
     )
+
     db.session.add(user_reaction)  # Add the user's reaction to the session
     db.session.commit()  # Commit the session to save the user's reaction
     
     return jsonify(new_reaction.to_dict()), 201  # Return the new reaction as JSON
+
+@channels_bp.route('/reactions/<int:reaction_id>', methods=['PUT'])
+@login_required
+def increment_reaction(reaction_id):
+    reaction = Reaction.query.get_or_404(reaction_id)
+    reaction.count += 1
+    db.session.commit()
+
+    user_reaction = UserReaction(
+        user_id=current_user.id,
+        reaction_id=reaction.id
+    )
+
+    db.session.add(user_reaction)  # Add the user's reaction to the session
+    db.session.commit()  # Commit the session to save the user's reaction
+    
+    # Return a success message
+    return jsonify({'message': 'Reaction count incremented successfully', 'new_count': reaction.count}), 200
 
 # Remove a user's reaction from a message
 @channels_bp.route('/reactions/<int:reaction_id>', methods=['DELETE'])
 @login_required
 def delete_reaction(reaction_id):
     reaction = Reaction.query.get_or_404(reaction_id)  # Get the reaction or return 404 if not found
-    user_reaction = UserReaction.query.filter_by(user_id=1, reaction_id=reaction_id).first()  # Use a hardcoded user ID for testing
+    user_reaction = UserReaction.query.filter_by(user_id=current_user.id, reaction_id=reaction_id).first()  # Use a hardcoded user ID for testing
     
     if not user_reaction:
         return jsonify({'error': 'Unauthorized or reaction not found'}), 403  # Return error if unauthorized or reaction not found

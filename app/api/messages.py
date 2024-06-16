@@ -30,6 +30,26 @@ def get_channel_messages():
                 'email': message.user.email,
                 'profile_images': [profile_image.to_dict() for profile_image in message.user.profile_images]
             },
+            'reactions': [
+                {
+                    'id': reaction.id,
+                    'channel_message_id': reaction.channel_message_id,
+                    'chat_room_message_id': reaction.chat_room_message_id,
+                    'resource_type': reaction.resource_type,
+                    'emoji': reaction.emoji,
+                    'count': reaction.count,
+                    'user_reactions': [
+                        {
+                            'id': user_reaction.id,
+                            'user_id': user_reaction.user.id,
+                            'username': user_reaction.user.username,
+                            'email': user_reaction.user.email
+                        }
+                        for user_reaction in reaction.user_reactions
+                    ]
+                }
+                for reaction in message.reactions
+            ],
             'channel_id': message.channel_id,
             'text_field': message.text_field,
             'created_at': message.created_at,

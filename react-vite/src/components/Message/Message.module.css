@@ -60,6 +60,32 @@
     gap: 0.3em;
 }
 
+.reactions {
+    display: flex;
+    margin-top: 0.3em;
+    gap: 0.3em;
+}
+
+.reactionButton {
+    background: #41444A;
+    padding: 0.2em 0.5em;
+    border-radius: 0.2em;
+    font-size: 0.7rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.selected {
+    background-color: #5e636d;
+}
+
+.reactionButton:hover {
+    transform: scale(1.08);
+    background-color: #5e636d;
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+}
+
 .button {
     opacity: 0.5;
     transition-property: all;
