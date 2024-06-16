@@ -1,15 +1,15 @@
 .headerInfo {
     background: #313338;
-    width: 100%;
     height: 2.5rem;
     border-bottom: 1.2px solid rgba(0,0,0,0.3);
     display: flex;
-    /* justify-content: space-evenly; */
+    justify-content: space-between;
     gap: 1em;
     align-items: center;
     padding: 1em;
     position: fixed;
     left: 15.6rem;
+    right: 0;
 }
 
 .left {
@@ -23,10 +23,16 @@
 }
 
 .signOutContainer {
-    background: #C70B0B;
+    /* background: #C70B0B; */
+    /* background: blue; */
+    font-size: 0.8rem;
     padding: 0.2rem 0.7rem;
     border-radius: 8px;
     display: flex;
+    /* position: absolute; */
+    right: 0;
+    /* margin-left: auto; */
+    background-color: #c70c0c;
     align-items: center;
     justify-content: center;
     transition-property: all;
@@ -36,5 +42,5 @@
 
 .signOutContainer:hover {
     background-color: #b20b0b;
-    transform: scale(1.05);
+    transform: scale(1.03);
 }

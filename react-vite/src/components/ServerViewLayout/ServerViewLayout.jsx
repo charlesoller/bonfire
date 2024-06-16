@@ -19,9 +19,10 @@ export default function ServerViewLayout(){
     const [activeServerId, setActiveServerId] = useState(1);
     const [activeChannelId, setActiveChannelId] = useState(1);
     const [prevChannelId, setPrevChannelId] = useState(1);
-    const [isConnected, setIsConnected] = useState(false);
+    // const [isConnected, setIsConnected] = useState(false);
 
     const servers = Object.values(useSelector((state) => state.servers));
+    console.log("Servers: ", servers)
     const messages = Object.values(useSelector((state => state.messages)))
     const currentUser = Object.values(useSelector((state) => state.currentUser));
     const channels = useMemo(() => servers.map(server => server.channels).flat(), [servers])
@@ -32,28 +33,33 @@ export default function ServerViewLayout(){
     const activeMessages = useMemo(() => messages.filter(message => message.channel_id === activeChannelId), [activeChannelId, messages]);
 
     useEffect(() => {
-        function onConnect() {
-            setIsConnected(true);
-        }
+        // function onConnect() {
+        //     setIsConnected(true);
+        // }
       
-        function onDisconnect() {
-            setIsConnected(false);
-        }
+        // function onDisconnect() {
+        //     setIsConnected(false);
+        // }
 
         function onChat() {
-            console.log("IN ON CHAT")
             setTimeout(() => {
                 dispatch(fetchAllMessagesThunk());
             }, 1000);
         }
 
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
+        function onServer() {
+            setTimeout(() => {
+                dispatch(fetchAllServersThunk());
+            }, 1000)
+        }
+
+        // socket.on('connect', onConnect);
+        // socket.on('disconnect', onDisconnect);
         socket.on('chat', data => onChat(data));
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
+            // socket.off('connect', onConnect);
+            // socket.off('disconnect', onDisconnect);
             socket.off('chat', onChat)
         }
     }, [dispatch])

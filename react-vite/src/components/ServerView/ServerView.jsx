@@ -1,11 +1,7 @@
 import styles from "./ServerView.module.css"
 
 // Util
-import { useEffect, useState, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchChannelsForServerIdThunk } from "../../redux/channel"
-import { fetchChannelMessagesThunk } from "../../redux/message"
-import { fetchServerUsersThunk } from "../../redux/serverUser"
+import { useMemo } from "react"
 
 // Components
 import MessageLayout from "../MessageLayout/MessageLayout"
@@ -14,8 +10,6 @@ import HeaderInfo from "../HeaderInfo/HeaderInfo"
 import UserList from "../UserList/UserList"
 
 export default function ServerView({ activeServer, activeServerId, activeChannel, channels, activeChannelId, setActiveChannelId, prevChannelId, setPrevChannelId, messages, serverUsers, currentUser }) {
-    // console.log("ACTIVE SERVER: ", activeServer)
-    // console.log("ACTIVE CHANNEL ID: ", activeChannelId)
     const activeServerChannels = useMemo(() => channels.filter(channel => channel.server_id === activeServerId), [channels, activeServerId])
 
     

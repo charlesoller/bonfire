@@ -11,13 +11,11 @@ function NewServerModal({server, formType}) {
     const [serverImage, setServerImage] = useState(server ? server.server_images[0].url : "");
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
-    console.log("FORM TYPE", formType)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (formType === "Update Server") {
-            console.log("UPDATE SERVER", serverImage)
             const serverResponse = await dispatch(
                 updateOldServer({
                     id: server.id,
@@ -43,21 +41,20 @@ function NewServerModal({server, formType}) {
                 })
             );
     
-            if (serverResponse) {
-                setErrors(serverResponse);
-            } else {
-                closeModal()
-            }
-    
+            // if (serverResponse) {
+            //     setErrors(serverResponse);
+            // } 
+            console.log("dispatching...")
             dispatch(fetchAllServersThunk());
+            closeModal()
         }
     };
 
     const deleteServer = async (e) => {
         e.preventDefault();
         dispatch(deleteAServer(server.id));
-        closeModal();
         dispatch(fetchAllServersThunk());
+        closeModal();
     }
 
     return (

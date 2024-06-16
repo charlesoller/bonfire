@@ -14,7 +14,6 @@ export default function HeaderInfo({ activeChannel }){
                 <OpenModalButton
                     buttonText="Sign Out"
                     modalComponent={<SignOutModal />}
-                    className={styles.signOutButton}
                 />
             </div>
         </header>
