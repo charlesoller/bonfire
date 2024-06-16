@@ -9,13 +9,20 @@ function EditChannelModal({ channel }) {
     const dispatch = useDispatch();
     const { name } = channel
     const [channelName, setChannelName] = useState(name);
+    const [channelNameError, setChannelNameError] = useState({})
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if (channelName === 'general') {
+            setChannelNameError({channelName: "Cannot name your channel general."})
+            return;
+        }
 
         channel.name = channelName
+
 
         const channelResponse = await dispatch(
             updateOldChannel(channel)
@@ -56,12 +63,13 @@ function EditChannelModal({ channel }) {
                         className={styles.input}
                     />
                 </label>
+                {channelNameError.channelName && <p>{channelNameError.channelName}</p>}
+                {errors.error && <p>Only the channel owner may update or delete the channel.</p>}
                 <div className={styles.buttons}>
-                    <button type="submit" className={styles.createButton}>Create Channel</button>
+                    <button type="submit" className={styles.createButton}>Update Channel</button>
                     <button onClick={deleteChannel} className={styles.deleteButton}>Delete Channel</button>
                 </div>
             </form>
-            {errors.error && <p>Only the channel owner may update or delete the channel.</p>}
         </section>
     )
 }

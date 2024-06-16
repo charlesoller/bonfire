@@ -76,11 +76,11 @@ def seed_data():
     db.session.commit()
 
     channels = [
-        Channel(name='Channel1', server_id=1, owner_id=1),
-        Channel(name='Channel2', server_id=2, owner_id=2),
-        Channel(name='Channel3', server_id=3, owner_id=3),
-        Channel(name='Channel4', server_id=4, owner_id=4),
-        Channel(name='Channel5', server_id=5, owner_id=5)
+        Channel(name='general', server_id=1, owner_id=1),
+        Channel(name='general', server_id=2, owner_id=2),
+        Channel(name='general', server_id=3, owner_id=3),
+        Channel(name='general', server_id=4, owner_id=4),
+        Channel(name='general', server_id=5, owner_id=5)
     ]
 
     db.session.add_all(channels)

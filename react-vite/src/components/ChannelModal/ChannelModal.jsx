@@ -8,6 +8,7 @@ import { addNewChannel } from "../../redux/server";
 function ChannelModal({ activeServerId, serverChannels }) {
     const dispatch = useDispatch();
     const [channelName, setChannelName] = useState("");
+    const [channelNameError, setChannelNameError] = useState({})
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
@@ -16,6 +17,11 @@ function ChannelModal({ activeServerId, serverChannels }) {
 
         const newChannel = {
             name: channelName
+        }
+
+        if (channelName === 'general') {
+            setChannelNameError({channelName: "Cannot name your channel general."})
+            return;
         }
 
         const channelResponse = await dispatch(
@@ -48,6 +54,7 @@ function ChannelModal({ activeServerId, serverChannels }) {
                     />
                 </label>
                 {errors.channelName && <p>{errors.channelName}</p>}
+                {channelNameError.channelName && <p>{channelNameError.channelName}</p>}
                 <button type="submit" className={styles.button}>Create Channel</button>
             </form>
         </section>
