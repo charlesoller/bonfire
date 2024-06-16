@@ -7,7 +7,7 @@ https://bonfire-j5fr.onrender.com/
 
 
 # WikiLinks
-## [Wiki](https://github.com/Waris-95/Bonfire/wiki/🔥--Welcome-to-Bonfire!)
+## [Wiki](https://github.com/charlesoller/bonfire/wiki/%F0%9F%94%A5--Welcome-to-Bonfire!)
 
 # Technologies Used
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
