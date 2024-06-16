@@ -17,3 +17,13 @@
 .fireLogo {
     color: red;
 }
+
+.button {
+    background: #41444A;
+    padding: 0.2em 0.5em;
+    border-radius: 0.2em;
+    font-size: 0.7rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}

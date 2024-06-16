@@ -27,6 +27,7 @@ export default function MessageLayout({ defaultMessages = [], channelId }) {
             name={message.user?.username} 
             img={url} channelId={channelId} 
             reactions={message.reactions}
+            ownerId={message.user.id}
             currentUser={currentUser}
         />
     }), [messages, channelId, currentUser])
@@ -45,7 +46,6 @@ export default function MessageLayout({ defaultMessages = [], channelId }) {
         <div className={styles.main}>
             <div className={styles.messages} ref={containerRef}>
                 {messageElements}
-                {/* <button onClick={sendChat}>Click</button> */}
             </div>
             <MessageInput channelId={channelId} />
         </div>

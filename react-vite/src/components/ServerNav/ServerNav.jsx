@@ -1,6 +1,4 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch } from 'react-redux';
-import { fetchAllServersThunk, clearServerDetails } from '../../redux/server';
+import { useMemo } from "react";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import NewServerModal from "../NewServerModal/NewServerModal";
 import styles from "./ServerNav.module.css"
@@ -9,6 +7,7 @@ import ServerIcon from "./components/ServerIcon";
 // import { FaFireAlt, FaFire } from "react-icons/fa";
 import { AiFillFire } from "react-icons/ai";
 import { CiCirclePlus } from "react-icons/ci";
+import { MdEmojiEmotions } from "react-icons/md";
 
 const IMAGE_PLACEHOLDER = "https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg"
 
@@ -28,7 +27,7 @@ export default function ServerNav({ servers, setActiveServerId, activeChannelId,
             {serverElements}
 
             <OpenModalButton
-                buttonText={<CiCirclePlus size={44}/>}
+                buttonText={<MdEmojiEmotions size={40} className={styles.button} />}
                 modalComponent={<NewServerModal/>}
             />
         </aside>

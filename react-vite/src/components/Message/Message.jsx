@@ -12,9 +12,8 @@ import { deleteReaction, incrementReaction } from "../../utils/api";
 import { fetchAllMessagesThunk } from "../../redux/message";
 import { socket } from "../../socket";
 
-export default function Message({id, text, date, name, channelId, reactions, currentUser, img = "https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg"}){
+export default function Message({id, text, date, name, channelId, reactions, currentUser, ownerId, img = "https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg"}){
     const dispatch = useDispatch()
-
     const reactionElements = useMemo(() => reactions.map((reaction) => {
         const handleReaction = (reactionId, hasReacted) => {
             if (hasReacted) {
@@ -47,10 +46,10 @@ export default function Message({id, text, date, name, channelId, reactions, cur
                             buttonText={<MdEmojiEmotions className={styles.button} />}
                             modalComponent={<ReactionModal id={id} channelId={channelId} currentUser={currentUser} reactions={reactions} />}
                         />
-                        <OpenModalButton 
+                        {ownerId === currentUser.id && <OpenModalButton 
                             buttonText={<MdEdit className={styles.button} />}
                             modalComponent={<EditMessageModal id={id} message={text} channelId={channelId} />}
-                        />
+                        />}
                     </div>
                 </div>
                 <p className={styles.textBody}>{text}</p>
