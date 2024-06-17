@@ -27,5 +27,4 @@
     display: grid;
     grid-template-columns: repeat(11, 1fr);
     gap: 0.5em;
-    overflow-y: scroll;
 }
