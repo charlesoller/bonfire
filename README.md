@@ -39,7 +39,7 @@ To see Bonfire live, click the live link above. To run Bonfire locally on your m
 * Clone the repository:
   * git clone https://github.com/charlesoller/bonfire
 
-* Navigate to the backen folder and install python packages
+* Navigate to the backend folder and install python packages
    * pipenv install
    * pipenv shell
 
