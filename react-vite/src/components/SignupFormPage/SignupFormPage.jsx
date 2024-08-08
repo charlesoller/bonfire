@@ -12,14 +12,14 @@ function SignupFormPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profileImage, setProfileImage] = useState("")
+  const [profileImage, setProfileImage] = useState("");
   const [errors, setErrors] = useState({});
   const [emailErrors, setEmailErrors] = useState({});
   const [profileImageError, setProfileImageError] = useState({});
 
-  const VALID_EXTENSIONS = ['jpg', 'png', 'jpeg']
+  const VALID_EXTENSIONS = ['jpg', 'png', 'jpeg'];
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  if (sessionUser) return <Navigate to="/home" replace={true} />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,12 +34,12 @@ function SignupFormPage() {
     }
 
     if (!email.split("@")[1]?.split(".")[1]) {
-      setEmailErrors({email: "Please include a valid email address."})
+      setEmailErrors({ email: "Please include a valid email address." });
       return;
     }
 
-    if (!VALID_EXTENSIONS.includes(profileImage.split('.')[profileImage.split(".").length - 1]) && profileImage.length > 0) {
-      setProfileImageError({profileImage: "Profile Image URL must end in '.jpg', '.png', 'jpeg'"})
+    if (!VALID_EXTENSIONS.includes(profileImage.split('.').pop()) && profileImage.length > 0) {
+      setProfileImageError({ profileImage: "Profile Image URL must end in '.jpg', '.png', 'jpeg'" });
       return;
     }
 
@@ -55,8 +55,7 @@ function SignupFormPage() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      // navigate("/");
-      location.reload();
+      navigate("/home");
     }
   };
 

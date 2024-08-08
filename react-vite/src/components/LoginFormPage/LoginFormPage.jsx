@@ -14,10 +14,9 @@ function LoginFormPage() {
 
   useEffect(() => {
     if (sessionUser) {
-      navigate("/", { replace: true });
+      navigate("/home", { replace: true });
     }
   }, [sessionUser, navigate]);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +31,7 @@ function LoginFormPage() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 
@@ -45,7 +44,7 @@ function LoginFormPage() {
       })
     );
 
-    navigate("/");
+    navigate("/home");
   }
 
   return (
