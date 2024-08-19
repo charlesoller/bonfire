@@ -5,12 +5,13 @@
     background-color: lightblue;
 }
 
-.main {
-    padding: 0;
-    width: 100%;
-}
 
 .channel_view {
     height: 100%;
     display: flex;
+}
+
+.main {
+    padding: 0;
+    width: 100%;
 }
